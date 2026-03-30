@@ -3,7 +3,7 @@ export default function Navbar() {
     <>
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
-          <img src="" alt="" />
+          <img src="../src/assets/img/wineguys_logo2.png" alt="" />
           <button
             className="navbar-toggler"
             type="button"
