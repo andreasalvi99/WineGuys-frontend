@@ -24,7 +24,7 @@ function WineDetailPage() {
       3: { name: "Prosecco", price: 8.99, year: 2022 }
     };
 
-    const fakeWine = fakeData[id];
+    const fakeWine = fakeData[Number(id)];
 
     setTimeout(() => {
       if (fakeWine) {
