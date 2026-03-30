@@ -1,7 +1,7 @@
 export default function HomePage() {
   return (
     <>
-      <p>
+      <p className="fs-5">
         <em>
           "WineGuys è una giovane realtà nata dall’idea di cinque amici uniti da
           una passione comune: il vino. Quello vero, non quello scelto a caso al
