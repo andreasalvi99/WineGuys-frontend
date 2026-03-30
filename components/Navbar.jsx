@@ -4,7 +4,7 @@ export default function Navbar() {
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
           <img
-            src="../src/assets/img/src/assets/img/wineguys.png"
+            src="../src/assets/img/wineguys.png"
             alt="navbar-logo"
             className="navbar-logo"
           />
@@ -28,7 +28,7 @@ export default function Navbar() {
               </li>
               <li className="nav-item">
                 <a className="nav-link" href="#">
-                  Link
+                  Vini
                 </a>
               </li>
               <li className="nav-item">
