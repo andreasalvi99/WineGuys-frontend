@@ -85,9 +85,22 @@ return (
     marginRight: "auto"
   }}>
     
-    <button onClick={() => navigate(-1)}>
-      ← Torna indietro
-    </button>
+    <button
+  onClick={() => navigate(-1)}
+  style={{
+    padding: "6px 12px",
+    fontSize: "14px",
+    backgroundColor: "#f5f5f5",
+    border: "1px solid #ccc",
+    borderRadius: "5px",
+    cursor: "pointer",
+    marginBottom: "10px"
+  }}
+  onMouseOver={(e) => e.target.style.backgroundColor = "#e0e0e0"}
+  onMouseOut={(e) => e.target.style.backgroundColor = "#f5f5f5"}
+>
+  ← Torna indietro
+</button>
 
     <h1 style={{ marginTop: "20px" }}>{wine.name}</h1>
 
