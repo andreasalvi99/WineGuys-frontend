@@ -6,34 +6,32 @@ export default function HomePage() {
   const [promos, setPromos] = useState([]);
   const [awarded, setAwarded] = useState([]);
   const [bestSellers, setBestSellers] = useState([]);
-  const [springsWines, setSpringsWines] = useState([]);
+  const [springWines, setSpringWines] = useState([]);
 
-  function fetchPromos() {
-    axios.get("http://localhost:3000/vini/promo").then((response) => {
-      console.log(response.data);
-      setPromos(response.data);
-    });
-  }
-  function fetchAwarded() {
-    axios.get("http://localhost:3000/vini/premiati").then((response) => {
-      console.log(response.data);
-      setAwarded(response.data);
-    });
-  }
-  function fetchBestSellers() {
-    axios.get("http://localhost:3000/vini/piuvenduti").then((response) => {
-      console.log(response.data);
-      setBestSellers(response.data);
-    });
-  }
-  function fetchspringWines() {
-    axios.get("http://localhost:3000/vini/primavera").then((response) => {
-      console.log(response.data);
-      setSpringsWines(response.data);
-    });
-  }
+  useEffect(() => {
+    async function fetchAllWines() {
+      const promosResponse = await axios.get(
+        "http://localhost:3000/vini/promo",
+      );
+      setPromos(promosResponse.data);
 
-  useEffect(fetchPromos, []);
+      const awardedResponse = await axios.get(
+        "http://localhost:3000/vini/premiati",
+      );
+      setAwarded(awardedResponse.data);
+
+      const bestSellersResponse = await axios.get(
+        "http://localhost:3000/vini/piuvenduti",
+      );
+      setBestSellers(bestSellersResponse.data);
+
+      const springWinesResponse = await axios.get(
+        "http://localhost:3000/vini/primavera",
+      );
+      setSpringWines(springWinesResponse.data);
+    }
+    fetchAllWines();
+  }, []);
 
   return (
     <>
@@ -60,7 +58,7 @@ export default function HomePage() {
           </p>
         </div>
       </section>
-      <section id="best-sellers" className="">
+      <section id="promos" className="">
         <div className="container text-center p-3">
           <div className="row row-cols-5 gy-2">
             {promos.map((promo) => {
@@ -70,6 +68,54 @@ export default function HomePage() {
                   img={promo.img_url}
                   name={promo.product_name}
                   price={promo.price}
+                />
+              );
+            })}
+          </div>
+        </div>
+      </section>
+      <section id="awarded" className="">
+        <div className="container text-center p-3">
+          <div className="row row-cols-5 gy-2">
+            {awarded.map((award) => {
+              return (
+                <WineCard
+                  key={award.id}
+                  img={award.img_url}
+                  name={award.product_name}
+                  price={award.price}
+                />
+              );
+            })}
+          </div>
+        </div>
+      </section>
+      <section id="best-sellers" className="">
+        <div className="container text-center p-3">
+          <div className="row row-cols-5 gy-2">
+            {bestSellers.map((bestSeller) => {
+              return (
+                <WineCard
+                  key={bestSeller.id}
+                  img={bestSeller.img_url}
+                  name={bestSeller.product_name}
+                  price={bestSeller.price}
+                />
+              );
+            })}
+          </div>
+        </div>
+      </section>
+      <section id="spring-wines" className="">
+        <div className="container text-center p-3">
+          <div className="row row-cols-5 gy-2">
+            {springWines.map((springWine) => {
+              return (
+                <WineCard
+                  key={springWine.id}
+                  img={springWine.img_url}
+                  name={springWine.product_name}
+                  price={springWine.price}
                 />
               );
             })}
