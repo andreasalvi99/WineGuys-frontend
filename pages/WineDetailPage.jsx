@@ -101,17 +101,21 @@ return (
       <p><strong>Prezzo:</strong> €{wine.price.toFixed(2)}</p>
     </div>
 
-    <button style={{
-      marginTop: "20px",
-      padding: "10px 20px",
-      backgroundColor: "#800020",
-      color: "white",
-      border: "none",
-      borderRadius: "5px",
-      cursor: "pointer"
-    }}>
-      Aggiungi al carrello
-    </button>
+    <button
+    style={{
+    marginTop: "20px",
+    padding: "10px 20px",
+    backgroundColor: "#800020",
+    color: "white",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer"
+  }}
+  onMouseOver={(e) => e.target.style.backgroundColor = "#a00030"}
+  onMouseOut={(e) => e.target.style.backgroundColor = "#800020"}
+>
+  Aggiungi al carrello
+</button>
 
   </div>
 );
