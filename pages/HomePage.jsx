@@ -37,6 +37,11 @@ export default function HomePage() {
     <>
       <section className="playfair-display_special">
         <div className="container text-start">
+          <div className="d-flex justify-content-start">
+            <div>
+              <h1 className="border-bottom border-black">CHI SIAMO</h1>
+            </div>
+          </div>
           <p className="fs-5 my-3">
             <em>
               "WineGuys è una giovane realtà nata dall’idea di cinque amici
@@ -76,10 +81,15 @@ export default function HomePage() {
         </div>
       </section>
       <section className="my-4 p-3 playfair-display_special">
-        <div className="container">
+        <div className="container text-start">
+          <div className="d-flex justify-content-start">
+            <div>
+              <h2 className="border-bottom border-black h1">IN PROMO</h2>
+            </div>
+          </div>
           <div className="card info-card border-0">
-            <div className="card-body">
-              <p className="card-text fs-3">
+            <div className="card-body p-0">
+              <p className="card-text fs-5">
                 Che tu stia cercando un rosso deciso per la cena, un bianco
                 fresco per l’aperitivo o uno spumante frizzante per brindare,
                 qui trovi grandi vini a prezzi più leggeri rispetto alla normale
@@ -120,9 +130,14 @@ export default function HomePage() {
       </section>
       <section className="my-4 p-3 playfair-display_special">
         <div className="container">
+          <div className="d-flex justify-content-start">
+            <div>
+              <h2 className="border-bottom border-black h1">PREMIATI</h2>
+            </div>
+          </div>
           <div className="card info-card border-0">
-            <div className="card-body">
-              <p className="card-text fs-3">
+            <div className="card-body p-0">
+              <p className="card-text fs-5">
                 Scopri la nostra selezione di vini premiati, autentiche gemme
                 dell’enologia che hanno conquistato riconoscimenti nei più
                 prestigiosi concorsi e guide del mondo del vino. Ogni bottiglia
@@ -165,9 +180,14 @@ export default function HomePage() {
       </section>
       <section className="my-4 p-3 playfair-display_special">
         <div className="container">
+          <div className="d-flex justify-content-start">
+            <div>
+              <h2 className="border-bottom border-black h1">PIÙ VENDUTI</h2>
+            </div>
+          </div>
           <div className="card info-card border-0">
-            <div className="card-body">
-              <p className="card-text fs-3">
+            <div className="card-body p-0">
+              <p className="card-text fs-5">
                 Che tu stia cercando un rosso deciso per la cena, un bianco
                 fresco per l’aperitivo o uno spumante frizzante per brindare,
                 qui trovi grandi vini a prezzi più leggeri rispetto alla normale
@@ -208,9 +228,14 @@ export default function HomePage() {
       </section>
       <section className="my-4 p-3 playfair-display_special">
         <div className="container">
+          <div className="d-flex justify-content-start">
+            <div>
+              <h2 className="border-bottom border-black h1">PRIMAVERILI</h2>
+            </div>
+          </div>
           <div className="card info-card border-0">
-            <div className="card-body">
-              <p className="card-text fs-3">
+            <div className="card-body p-0">
+              <p className="card-text fs-5">
                 Scopri la nostra selezione di vini premiati, autentiche gemme
                 dell’enologia che hanno conquistato riconoscimenti nei più
                 prestigiosi concorsi e guide del mondo del vino. Ogni bottiglia
