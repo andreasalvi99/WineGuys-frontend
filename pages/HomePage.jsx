@@ -2,35 +2,39 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 export default function HomePage() {
-  const [bestSeller, setBestSeller] = useState([]);
+  const [bestSellers, setBestSellers] = useState([]);
 
-  function fetchBestSeller() {
+  function fetchBestSellers() {
     axios.get("http://localhost:3000/vini/promo").then((response) => {
       console.log(response.data);
-      setBestSeller(response.data);
+      setBestSellers(response.data);
     });
   }
 
-  useEffect(fetchBestSeller, []);
+  useEffect(fetchBestSellers, []);
 
   return (
     <>
-      <section id="primary" className="">
+      <section id="best-sellers" className="">
         <div className="container text-center">
-          {bestSeller.map((item) => {
-            return (
-              <div key={item.id} className="card">
-                <img
-                  src={item.img}
-                  className="card-img-top"
-                  alt={item.product_name}
-                />
-                <div className="card-body">
-                  <p className="card-text">{item.description}</p>
+          <div className="row row-cols-3 g-3">
+            {bestSellers.map((bestSeller) => {
+              return (
+                <div className="col">
+                  <div key={bestSeller.id} className="card">
+                    <img
+                      src={bestSeller.img}
+                      className="card-img-top"
+                      alt={bestSeller.product_name}
+                    />
+                    <div className="card-body">
+                      <p className="card-text">{bestSeller.description}</p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </section>
       <div className="container text-center">
