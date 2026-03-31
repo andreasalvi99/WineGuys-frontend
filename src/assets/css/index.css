@@ -1,9 +1,17 @@
 .navbar-logo {
   height: 100px;
-  width: 180px;
+  width: 170px;
   border-radius: 50%;
 }
 
 .navbar {
   height: 30px;
+}
+
+#primary {
+  background: linear-gradient(
+    to top right,
+    rgb(254, 213, 220),
+    rgb(239, 194, 255)
+  );
 }

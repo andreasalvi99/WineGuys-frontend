@@ -6,9 +6,7 @@ export default function DefaultLayout() {
     <>
       <Navbar />
       <section>
-        <div className="container text-center">
-          <Outlet />
-        </div>
+        <Outlet />
       </section>
     </>
   );
