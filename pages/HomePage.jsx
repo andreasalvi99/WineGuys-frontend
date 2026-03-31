@@ -75,6 +75,29 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      <section className="my-4 p-3">
+        <div className="container">
+          <div className="card info-card border-0">
+            <div className="card-body">
+              <p className="card-text fs-3">
+                Che tu stia cercando un rosso deciso per la cena, un bianco
+                fresco per l’aperitivo o uno spumante frizzante per brindare,
+                qui trovi grandi vini a prezzi più leggeri rispetto alla normale
+                enoteca. Approfitta degli sconti esclusivi e porta a casa
+                qualità, carattere e gusto, tutti con un ottimo rapporto
+                qualità‑prezzo.
+              </p>
+              <div className="d-flex justify-content-end">
+                <a href="#">
+                  <button type="button" class="btn btn-outline-dark btn-more">
+                    SCOPRI DI PIÙ
+                  </button>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
       <section id="awarded" className="">
         <div className="container text-center p-3">
           <div className="row row-cols-5 gy-2">
@@ -89,6 +112,31 @@ export default function HomePage() {
                 />
               );
             })}
+          </div>
+        </div>
+      </section>
+      <section className="my-4 p-3">
+        <div className="container">
+          <div className="card info-card border-0">
+            <div className="card-body">
+              <p className="card-text fs-3">
+                Scopri la nostra selezione di vini premiati, autentiche gemme
+                dell’enologia che hanno conquistato riconoscimenti nei più
+                prestigiosi concorsi e guide del mondo del vino. Ogni bottiglia
+                racconta la dedizione del produttore, il carattere del proprio
+                terroir e l’equilibrio perfetto tra profumo, sapore e struttura.
+                I premi ottenuti non sono solo un sigillo di qualità, ma una
+                garanzia di un’esperienza sensoriale unica, capace di
+                sorprendere anche gli amanti più esigenti.
+              </p>
+              <div className="d-flex justify-content-end">
+                <a href="#">
+                  <button type="button" class="btn btn-outline-dark btn-more">
+                    SCOPRI DI PIÙ
+                  </button>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -109,6 +157,29 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      <section className="my-4 p-3">
+        <div className="container">
+          <div className="card info-card border-0">
+            <div className="card-body">
+              <p className="card-text fs-3">
+                Che tu stia cercando un rosso deciso per la cena, un bianco
+                fresco per l’aperitivo o uno spumante frizzante per brindare,
+                qui trovi grandi vini a prezzi più leggeri rispetto alla normale
+                enoteca. Approfitta degli sconti esclusivi e porta a casa
+                qualità, carattere e gusto, tutti con un ottimo rapporto
+                qualità‑prezzo.
+              </p>
+              <div className="d-flex justify-content-end">
+                <a href="#">
+                  <button type="button" class="btn btn-outline-dark btn-more">
+                    SCOPRI DI PIÙ
+                  </button>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
       <section id="spring-wines" className="">
         <div className="container text-center p-3">
           <div className="row row-cols-5 gy-2">
@@ -123,6 +194,31 @@ export default function HomePage() {
                 />
               );
             })}
+          </div>
+        </div>
+      </section>
+      <section className="my-4 p-3">
+        <div className="container">
+          <div className="card info-card border-0">
+            <div className="card-body">
+              <p className="card-text fs-3">
+                Scopri la nostra selezione di vini premiati, autentiche gemme
+                dell’enologia che hanno conquistato riconoscimenti nei più
+                prestigiosi concorsi e guide del mondo del vino. Ogni bottiglia
+                racconta la dedizione del produttore, il carattere del proprio
+                terroir e l’equilibrio perfetto tra profumo, sapore e struttura.
+                I premi ottenuti non sono solo un sigillo di qualità, ma una
+                garanzia di un’esperienza sensoriale unica, capace di
+                sorprendere anche gli amanti più esigenti.
+              </p>
+              <div className="d-flex justify-content-end">
+                <a href="#">
+                  <button type="button" class="btn btn-outline-dark btn-more">
+                    SCOPRI DI PIÙ
+                  </button>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </section>

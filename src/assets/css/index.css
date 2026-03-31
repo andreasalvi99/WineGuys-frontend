@@ -1,3 +1,4 @@
+/*^ NAVBAR^*/
 .navbar-logo {
   height: 100px;
   width: 450px;
@@ -8,6 +9,7 @@
   height: 30px;
 }
 
+/* ^SECTIONS^ */
 #spring-wines {
   background: linear-gradient(
     to top right,
@@ -40,11 +42,26 @@
   );
 }
 
-.card {
+/*^CARD^*/
+.wine-card {
   transition: 0.4s all ease;
 }
 
-.card:hover {
+.wine-card:hover {
   transform: scale(1.05);
   cursor: pointer;
+}
+
+/* .info-card {
+  box-shadow: 4px 6px rgba(0, 0, 0, 0.2);
+} */
+
+/*^BUTTON^*/
+
+.btn-more {
+  transition: 0.4s all ease;
+}
+
+.btn-more:hover {
+  transform: scale(1.1);
 }
