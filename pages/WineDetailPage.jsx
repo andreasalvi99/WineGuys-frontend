@@ -48,8 +48,9 @@ function WineDetailPage() {
     <div
       style={{
         display: "flex",
+        flexDirection: "column",
         gap: "10px",
-        justifyContent: "center",
+        alignItems: "center",
         marginBottom: "15px"
       }}
     >
