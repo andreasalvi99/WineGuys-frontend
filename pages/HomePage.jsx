@@ -48,7 +48,7 @@ export default function HomePage() {
                   key={bestSeller.id}
                   img={bestSeller.img_url}
                   name={bestSeller.product_name}
-                  description={bestSeller.description}
+                  price={bestSeller.price}
                 />
               );
             })}
