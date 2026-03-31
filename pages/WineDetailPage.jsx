@@ -49,7 +49,27 @@ function WineDetailPage() {
         marginRight: "auto",
       }}
     >
-      <button
+    {/*Button return Home*/}
+    <button
+    onClick={() => navigate("/")}
+    style={{
+    padding: "6px 12px",
+    fontSize: "14px",
+    backgroundColor: "#e0e0e0",
+    border: "1px solid #ccc",
+    borderRadius: "5px",
+    cursor: "pointer",
+    marginBottom: "10px",
+    marginRight: "5px"
+    }}
+    onMouseOver={(e) => (e.target.style.backgroundColor = "#d5d5d5")}
+    onMouseOut={(e) => (e.target.style.backgroundColor = "#e0e0e0")}
+    >
+     🏠 Torna alla home
+    </button>
+
+      {/*Button return Back*/}
+       <button
         onClick={() => navigate(-1)}
         style={{
           padding: "6px 12px",
@@ -65,6 +85,8 @@ function WineDetailPage() {
       >
         ← Torna indietro
       </button>
+
+      
 
       <img
        src={`http://localhost:3000/wines/${wine.img}`}
