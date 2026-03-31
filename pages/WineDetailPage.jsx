@@ -36,32 +36,33 @@ function WineDetailPage() {
   if (error) return <p>{error}</p>;
   if (!wine) return <p>Nessun vino trovato</p>;
 
-  return (
+ return (
   <div
     style={{
-      maxWidth: "400px",
+      maxWidth: "900px",
       margin: "0 auto",
       padding: "20px"
     }}
   >
+
     {/* BOTTONI NAVIGAZIONE */}
     <div
       style={{
         display: "flex",
         flexDirection: "column",
         gap: "10px",
-        alignItems: "center",
-        marginBottom: "15px"
+        marginBottom: "20px",
+        alignItems: "center"
       }}
     >
       <button
         onClick={() => navigate("/")}
         style={{
-          padding: "6px 12px",
+          padding: "8px",
           fontSize: "14px",
           backgroundColor: "#e0e0e0",
           border: "1px solid #ccc",
-          borderRadius: "5px",
+          borderRadius: "6px",
           cursor: "pointer"
         }}
         onMouseOver={(e) =>
@@ -77,11 +78,11 @@ function WineDetailPage() {
       <button
         onClick={() => navigate(-1)}
         style={{
-          padding: "6px 12px",
+          padding: "8px",
           fontSize: "14px",
           backgroundColor: "#f5f5f5",
           border: "1px solid #ccc",
-          borderRadius: "5px",
+          borderRadius: "6px",
           cursor: "pointer"
         }}
         onMouseOver={(e) =>
@@ -98,87 +99,109 @@ function WineDetailPage() {
     {/* CARD */}
     <div
       style={{
-        textAlign: "center",
-        padding: "20px",
+        display: "flex",
+        flexDirection: window.innerWidth > 768 ? "row" : "column",
+        gap: "30px",
+        padding: "30px",
         borderRadius: "16px",
         boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-        backgroundColor: "white"
+        backgroundColor: "white",
+        alignItems: "center"
       }}
     >
+
       {/* IMG */}
-      <img
-        src={
-          wine.img
-            ? `http://localhost:3000/wines/${wine.img}`
-            : ""
-        }
-        alt={wine.product_name}
+      <div
         style={{
-          width: "100%",
-          maxHeight: "350px",
-          objectFit: "contain",
-          marginBottom: "15px"
-        }}
-      />
-
-      {/* NOME */}
-      <h2 style={{ marginBottom: "10px" }}>
-        {wine.product_name}
-      </h2>
-
-      {/* PREZZO */}
-      <p
-        style={{
-          fontSize: "26px",
-          fontWeight: "700",
-          color: "#800020",
-          margin: "10px 0"
+          flex: 1,
+          display: "flex",
+          justifyContent: "center"
         }}
       >
-        {wine?.price
-          ? Number(wine.price).toFixed(2) + " €"
-          : "N/A"}
-      </p>
+        <img
+          src={
+            wine.img
+              ? `http://localhost:3000/wines/${wine.img}`
+              : ""
+          }
+          alt={wine.product_name}
+          style={{
+            width: "100%",
+            maxHeight: "400px",
+            objectFit: "contain"
+          }}
+        />
+      </div>
 
-      {/* DESCRIZIONE */}
-      <p
+      {/* CONTENUTO */}
+      <div
         style={{
-          color: "#666",
-          marginTop: "10px"
+          flex: 1,
+          textAlign: "left",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "flex-start"
         }}
       >
-        {wine.description}
-      </p>
+        {/* NOME */}
+        <h2 style={{ marginBottom: "10px" }}>
+          {wine.product_name}
+        </h2>
 
-      {/* INFO */}
-      <p>
-        <strong>Anno:</strong> {wine.vintage}
-      </p>
+        {/* PREZZO */}
+        <p
+          style={{
+            fontSize: "26px",
+            fontWeight: "700",
+            color: "#800020",
+            margin: "10px 0"
+          }}
+        >
+          {wine?.price
+            ? Number(wine.price).toFixed(2) + " €"
+            : "N/A"}
+        </p>
 
-      {/* BUTTON CARRELLO */}
-      <button
-        style={{
-          marginTop: "15px",
-          minWidth: "200px",
-          padding: "12px",
-          backgroundColor: "#800020",
-          color: "white",
-          border: "none",
-          borderRadius: "8px",
-          cursor: "pointer",
-          display: "block",
-          marginLeft: "auto",
-          marginRight: "auto"
-        }}
-        onMouseOver={(e) =>
-          (e.target.style.backgroundColor = "#a00030")
-        }
-        onMouseOut={(e) =>
-          (e.target.style.backgroundColor = "#800020")
-        }
-      >
-        Aggiungi al carrello
-      </button>
+        {/* DESCRIZIONE */}
+        <p
+          style={{
+            color: "#666",
+            marginTop: "10px"
+          }}
+        >
+          {wine.description}
+        </p>
+
+        {/* ANNO */}
+        <p style={{ marginTop: "10px" }}>
+          <strong>Anno:</strong> {wine.vintage}
+        </p>
+
+        {/* BOTTONE */}
+        <button
+          style={{
+            marginTop: "20px",
+            padding: "12px 20px",
+            backgroundColor: "#800020",
+            color: "white",
+            border: "none",
+            borderRadius: "8px",
+            cursor: "pointer",
+            width: "auto",
+            minWidth: "200px"
+          }}
+          onMouseOver={(e) =>
+            (e.target.style.backgroundColor = "#a00030")
+          }
+          onMouseOut={(e) =>
+            (e.target.style.backgroundColor = "#800020")
+          }
+        >
+          Aggiungi al carrello
+        </button>
+      </div>
+
     </div>
   </div>
 );
