@@ -34,12 +34,12 @@ export default function Navbar() {
               </li>
               <li className="nav-item">
                 <a className="nav-link" href="#">
-                  Link
+                  Vini
                 </a>
               </li>
               <li className="nav-item dropdown">
                 <a className="nav-link " href="#">
-                  Dropdown
+                  Link
                 </a>
               </li>
             </ul>
