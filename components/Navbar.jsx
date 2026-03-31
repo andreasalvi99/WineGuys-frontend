@@ -10,6 +10,9 @@ export default function Navbar() {
       </div>
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
+          <a className="navbar-brand" href="#">
+            Navbar
+          </a>
           <button
             className="navbar-toggler"
             type="button"
@@ -21,11 +24,8 @@ export default function Navbar() {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div
-            className="collapse navbar-collapse d-flex justify-content-center"
-            id="navbarSupportedContent"
-          >
-            <ul className="navbar-nav mb-2 mb-lg-0">
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
                 <a className="nav-link active" aria-current="page" href="#">
                   Home
@@ -33,12 +33,12 @@ export default function Navbar() {
               </li>
               <li className="nav-item">
                 <a className="nav-link" href="#">
-                  Vini
+                  Link
                 </a>
               </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">
-                  Link
+              <li className="nav-item dropdown">
+                <a className="nav-link " href="#">
+                  Dropdown
                 </a>
               </li>
             </ul>
