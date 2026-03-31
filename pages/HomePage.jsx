@@ -3,16 +3,37 @@ import { useEffect, useState } from "react";
 import WineCard from "../components/WineCard";
 
 export default function HomePage() {
+  const [promos, setPromos] = useState([]);
+  const [awarded, setAwarded] = useState([]);
   const [bestSellers, setBestSellers] = useState([]);
+  const [springsWines, setSpringsWines] = useState([]);
 
-  function fetchBestSellers() {
+  function fetchPromos() {
     axios.get("http://localhost:3000/vini/promo").then((response) => {
+      console.log(response.data);
+      setPromos(response.data);
+    });
+  }
+  function fetchAwarded() {
+    axios.get("http://localhost:3000/vini/premiati").then((response) => {
+      console.log(response.data);
+      setAwarded(response.data);
+    });
+  }
+  function fetchBestSellers() {
+    axios.get("http://localhost:3000/vini/piuvenduti").then((response) => {
       console.log(response.data);
       setBestSellers(response.data);
     });
   }
+  function fetchspringWines() {
+    axios.get("http://localhost:3000/vini/primavera").then((response) => {
+      console.log(response.data);
+      setSpringsWines(response.data);
+    });
+  }
 
-  useEffect(fetchBestSellers, []);
+  useEffect(fetchPromos, []);
 
   return (
     <>
@@ -42,13 +63,13 @@ export default function HomePage() {
       <section id="best-sellers" className="">
         <div className="container text-center p-3">
           <div className="row row-cols-5 gy-2">
-            {bestSellers.map((bestSeller) => {
+            {promos.map((promo) => {
               return (
                 <WineCard
-                  key={bestSeller.id}
-                  img={bestSeller.img_url}
-                  name={bestSeller.product_name}
-                  price={bestSeller.price}
+                  key={promo.id}
+                  img={promo.img_url}
+                  name={promo.product_name}
+                  price={promo.price}
                 />
               );
             })}
