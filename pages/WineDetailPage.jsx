@@ -97,7 +97,7 @@ function WineDetailPage() {
       
 
       <img
-       src={`http://localhost:3000/wines/${wine.img}`}
+       src={wine.img ?`http://localhost:3000/wines/${wine.img}` : ""}
        alt={wine.product_name}
        style={{
        width: "100%",
