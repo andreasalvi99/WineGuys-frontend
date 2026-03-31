@@ -89,7 +89,7 @@ export default function HomePage() {
           </div>
           <div className="card info-card border-0">
             <div className="card-body p-0">
-              <p className="card-text fs-5">
+              <p className="card-text fs-5 my-3">
                 Che tu stia cercando un rosso deciso per la cena, un bianco
                 fresco per l’aperitivo o uno spumante frizzante per brindare,
                 qui trovi grandi vini a prezzi più leggeri rispetto alla normale
@@ -137,7 +137,7 @@ export default function HomePage() {
           </div>
           <div className="card info-card border-0">
             <div className="card-body p-0">
-              <p className="card-text fs-5">
+              <p className="card-text fs-5 my-3">
                 Scopri la nostra selezione di vini premiati, autentiche gemme
                 dell’enologia che hanno conquistato riconoscimenti nei più
                 prestigiosi concorsi e guide del mondo del vino. Ogni bottiglia
@@ -187,7 +187,7 @@ export default function HomePage() {
           </div>
           <div className="card info-card border-0">
             <div className="card-body p-0">
-              <p className="card-text fs-5">
+              <p className="card-text fs-5 my-3">
                 Che tu stia cercando un rosso deciso per la cena, un bianco
                 fresco per l’aperitivo o uno spumante frizzante per brindare,
                 qui trovi grandi vini a prezzi più leggeri rispetto alla normale
@@ -235,7 +235,7 @@ export default function HomePage() {
           </div>
           <div className="card info-card border-0">
             <div className="card-body p-0">
-              <p className="card-text fs-5">
+              <p className="card-text fs-5 my-3">
                 Scopri la nostra selezione di vini premiati, autentiche gemme
                 dell’enologia che hanno conquistato riconoscimenti nei più
                 prestigiosi concorsi e guide del mondo del vino. Ogni bottiglia
