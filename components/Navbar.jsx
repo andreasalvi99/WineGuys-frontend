@@ -3,7 +3,7 @@ export default function Navbar() {
     <>
       <div className="container-fluid text-center">
         <img
-          src="../src/assets/img/wineguys.png"
+          src="../src/assets/img/wineguys2.png"
           alt="navbar-logo"
           className="navbar-logo"
         />
