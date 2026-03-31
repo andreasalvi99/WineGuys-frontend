@@ -62,7 +62,8 @@ function WineDetailPage() {
         setError(err.message);
         setLoading(false);
       });
-    */
+      */
+    
 
   }, [id]);
 
@@ -72,23 +73,31 @@ function WineDetailPage() {
   // Error
   if (error) return <p>{error}</p>;
 
-  return (
-    <div>
-      <button onClick={() => navigate(-1)}>
-        ← Torna indietro
-      </button>
+return (
+  <div style={{ textAlign: "center", marginTop: "50px" }}>
+    
+    <button onClick={() => navigate(-1)}>
+      ← Torna indietro
+    </button>
 
-      <h1>{wine.name}</h1>
+    <h1 style={{ marginTop: "20px" }}>{wine.name}</h1>
 
-      <p>{wine.description}</p>
+    <p style={{ fontStyle: "italic", color: "gray" }}>
+      {wine.description}
+    </p>
 
+    <div style={{ marginTop: "20px" }}>
       <p><strong>ID:</strong> {wine.id}</p>
       <p><strong>Anno:</strong> {wine.year}</p>
       <p><strong>Prezzo:</strong> €{wine.price.toFixed(2)}</p>
-
-      <button>Aggiungi al carrello</button>
     </div>
-  );
+
+    <button style={{ marginTop: "20px" }}>
+      Aggiungi al carrello
+    </button>
+
+  </div>
+);
 }
 
 export default WineDetailPage;
