@@ -89,7 +89,10 @@ export default function HomePage() {
               </p>
               <div className="d-flex justify-content-end">
                 <a href="#">
-                  <button type="button" class="btn btn-outline-dark btn-more">
+                  <button
+                    type="button"
+                    className="btn btn-outline-dark btn-more"
+                  >
                     SCOPRI DI PIÙ
                   </button>
                 </a>
@@ -131,7 +134,10 @@ export default function HomePage() {
               </p>
               <div className="d-flex justify-content-end">
                 <a href="#">
-                  <button type="button" class="btn btn-outline-dark btn-more">
+                  <button
+                    type="button"
+                    className="btn btn-outline-dark btn-more"
+                  >
                     SCOPRI DI PIÙ
                   </button>
                 </a>
@@ -171,7 +177,10 @@ export default function HomePage() {
               </p>
               <div className="d-flex justify-content-end">
                 <a href="#">
-                  <button type="button" class="btn btn-outline-dark btn-more">
+                  <button
+                    type="button"
+                    className="btn btn-outline-dark btn-more"
+                  >
                     SCOPRI DI PIÙ
                   </button>
                 </a>
@@ -213,7 +222,10 @@ export default function HomePage() {
               </p>
               <div className="d-flex justify-content-end">
                 <a href="#">
-                  <button type="button" class="btn btn-outline-dark btn-more">
+                  <button
+                    type="button"
+                    className="btn btn-outline-dark btn-more"
+                  >
                     SCOPRI DI PIÙ
                   </button>
                 </a>
