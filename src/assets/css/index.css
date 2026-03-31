@@ -39,3 +39,11 @@
     rgba(77, 252, 162, 0.7)
   );
 }
+
+.card {
+  transition: 0.4s all ease;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
