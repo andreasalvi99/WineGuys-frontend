@@ -69,6 +69,7 @@
 
 .btn-more {
   transition: 0.4s all ease;
+  margin-top: 15px;
 }
 
 .btn-more:hover {
