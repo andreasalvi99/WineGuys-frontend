@@ -74,7 +74,16 @@ function WineDetailPage() {
   if (error) return <p>{error}</p>;
 
 return (
-  <div style={{ textAlign: "center", marginTop: "50px" }}>
+  <div style={{
+    textAlign: "center",
+    marginTop: "50px",
+    border: "1px solid #ddd",
+    padding: "30px",
+    borderRadius: "10px",
+    width: "300px",
+    marginLeft: "auto",
+    marginRight: "auto"
+  }}>
     
     <button onClick={() => navigate(-1)}>
       ← Torna indietro
@@ -92,7 +101,15 @@ return (
       <p><strong>Prezzo:</strong> €{wine.price.toFixed(2)}</p>
     </div>
 
-    <button style={{ marginTop: "20px" }}>
+    <button style={{
+      marginTop: "20px",
+      padding: "10px 20px",
+      backgroundColor: "#800020",
+      color: "white",
+      border: "none",
+      borderRadius: "5px",
+      cursor: "pointer"
+    }}>
       Aggiungi al carrello
     </button>
 
