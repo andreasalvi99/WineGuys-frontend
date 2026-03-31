@@ -60,6 +60,8 @@ function WineDetailPage() {
           cursor: "pointer",
           marginBottom: "10px",
         }}
+        onMouseOver={(e) => (e.target.style.backgroundColor = "#e0e0e0")}
+        onMouseOut={(e) => (e.target.style.backgroundColor = "#f5f5f5")}
       >
         ← Torna indietro
       </button>
@@ -89,6 +91,8 @@ function WineDetailPage() {
           borderRadius: "5px",
           cursor: "pointer",
         }}
+        onMouseOver={(e) => (e.target.style.backgroundColor = "#a00030")}
+        onMouseOut={(e) => (e.target.style.backgroundColor = "#800020")}
       >
         Aggiungi al carrello
       </button>
