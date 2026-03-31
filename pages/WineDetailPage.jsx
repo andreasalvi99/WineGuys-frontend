@@ -66,6 +66,16 @@ function WineDetailPage() {
         ← Torna indietro
       </button>
 
+      <img
+       src={`http://localhost:3000/wines/${wine.img}`}
+       alt={wine.product_name}
+       style={{
+       width: "100%",
+       borderRadius: "10px",
+       marginBottom: "15px"
+       }}
+      />
+
       <h1 style={{ marginTop: "20px" }}>{wine.product_name}</h1>
 
       <p style={{ fontStyle: "italic", color: "gray" }}>
