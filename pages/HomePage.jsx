@@ -68,6 +68,7 @@ export default function HomePage() {
                   img={promo.img_url}
                   name={promo.product_name}
                   price={promo.price}
+                  slug={promo.slug}
                 />
               );
             })}
@@ -84,6 +85,7 @@ export default function HomePage() {
                   img={award.img_url}
                   name={award.product_name}
                   price={award.price}
+                  slug={award.slug}
                 />
               );
             })}
@@ -100,6 +102,7 @@ export default function HomePage() {
                   img={bestSeller.img_url}
                   name={bestSeller.product_name}
                   price={bestSeller.price}
+                  slug={bestSeller.slug}
                 />
               );
             })}
@@ -116,6 +119,7 @@ export default function HomePage() {
                   img={springWine.img_url}
                   name={springWine.product_name}
                   price={springWine.price}
+                  slug={springWine.slug}
                 />
               );
             })}
