@@ -37,47 +37,43 @@ function WineDetailPage() {
   if (!wine) return <p>Nessun vino trovato</p>;
 
   return (
-    <div
-      style={{
-        maxwWith: "1200px",
-        margin: "0 auto",
-        padding: "20px",
-      }}
-    >
-
-    <div
-      style={{
-        textAlign: "center",
-        marginTop: "50px",
-        border: "1px solid #ddd",
-        padding: "30px",
-        borderRadius: "10px",
-        width: "300px",
-        marginLeft: "auto",
-        marginRight: "auto",
-      }}
-    >
-    {/*Button return Home*/}
-    <button
-    onClick={() => navigate("/")}
+  <div
     style={{
-    padding: "6px 12px",
-    fontSize: "14px",
-    backgroundColor: "#e0e0e0",
-    border: "1px solid #ccc",
-    borderRadius: "5px",
-    cursor: "pointer",
-    marginBottom: "10px",
-    marginRight: "5px"
+      maxWidth: "400px",
+      margin: "0 auto",
+      padding: "20px"
     }}
-    onMouseOver={(e) => (e.target.style.backgroundColor = "#d5d5d5")}
-    onMouseOut={(e) => (e.target.style.backgroundColor = "#e0e0e0")}
+  >
+    {/* BOTTONI NAVIGAZIONE */}
+    <div
+      style={{
+        display: "flex",
+        gap: "10px",
+        justifyContent: "center",
+        marginBottom: "15px"
+      }}
     >
-     🏠 Torna alla home
-    </button>
+      <button
+        onClick={() => navigate("/")}
+        style={{
+          padding: "6px 12px",
+          fontSize: "14px",
+          backgroundColor: "#e0e0e0",
+          border: "1px solid #ccc",
+          borderRadius: "5px",
+          cursor: "pointer"
+        }}
+        onMouseOver={(e) =>
+          (e.target.style.backgroundColor = "#d5d5d5")
+        }
+        onMouseOut={(e) =>
+          (e.target.style.backgroundColor = "#e0e0e0")
+        }
+      >
+        🏠 Home
+      </button>
 
-      {/*Button return Back*/}
-       <button
+      <button
         onClick={() => navigate(-1)}
         style={{
           padding: "6px 12px",
@@ -85,60 +81,106 @@ function WineDetailPage() {
           backgroundColor: "#f5f5f5",
           border: "1px solid #ccc",
           borderRadius: "5px",
-          cursor: "pointer",
-          marginBottom: "10px",
+          cursor: "pointer"
         }}
-        onMouseOver={(e) => (e.target.style.backgroundColor = "#e0e0e0")}
-        onMouseOut={(e) => (e.target.style.backgroundColor = "#f5f5f5")}
+        onMouseOver={(e) =>
+          (e.target.style.backgroundColor = "#e0e0e0")
+        }
+        onMouseOut={(e) =>
+          (e.target.style.backgroundColor = "#f5f5f5")
+        }
       >
-        ← Torna indietro
+        ← Indietro
       </button>
+    </div>
 
-      
-
+    {/* CARD */}
+    <div
+      style={{
+        textAlign: "center",
+        padding: "20px",
+        borderRadius: "16px",
+        boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+        backgroundColor: "white"
+      }}
+    >
+      {/* IMG */}
       <img
-       src={wine.img ?`http://localhost:3000/wines/${wine.img}` : ""}
-       alt={wine.product_name}
-       style={{
-       width: "100%",
-       borderRadius: "10px",
-       marginBottom: "15px"
-       }}
+        src={
+          wine.img
+            ? `http://localhost:3000/wines/${wine.img}`
+            : ""
+        }
+        alt={wine.product_name}
+        style={{
+          width: "100%",
+          maxHeight: "350px",
+          objectFit: "contain",
+          marginBottom: "15px"
+        }}
       />
 
-      <h1 style={{ marginTop: "20px" }}>{wine.product_name}</h1>
+      {/* NOME */}
+      <h2 style={{ marginBottom: "10px" }}>
+        {wine.product_name}
+      </h2>
 
-      <p style={{ fontStyle: "italic", color: "gray" }}>
+      {/* PREZZO */}
+      <p
+        style={{
+          fontSize: "26px",
+          fontWeight: "700",
+          color: "#800020",
+          margin: "10px 0"
+        }}
+      >
+        {wine?.price
+          ? Number(wine.price).toFixed(2) + " €"
+          : "N/A"}
+      </p>
+
+      {/* DESCRIZIONE */}
+      <p
+        style={{
+          color: "#666",
+          marginTop: "10px"
+        }}
+      >
         {wine.description}
       </p>
 
-      <div style={{ marginTop: "20px" }}>
-        <p><strong>ID:</strong> {wine.id}</p>
-        <p><strong>Anno:</strong> {wine.vintage}</p>
-        <p>
-          <strong>Prezzo:</strong>{" "}
-          {wine?.price ? Number(wine.price).toFixed(2) + "€" : "N/A"}
-        </p>
-      </div>
+      {/* INFO */}
+      <p>
+        <strong>Anno:</strong> {wine.vintage}
+      </p>
 
+      {/* BUTTON CARRELLO */}
       <button
         style={{
-          marginTop: "20px",
-          padding: "10px 20px",
+          marginTop: "15px",
+          minWidth: "200px",
+          padding: "12px",
           backgroundColor: "#800020",
           color: "white",
           border: "none",
-          borderRadius: "5px",
+          borderRadius: "8px",
           cursor: "pointer",
+          display: "block",
+          marginLeft: "auto",
+          marginRight: "auto"
         }}
-        onMouseOver={(e) => (e.target.style.backgroundColor = "#a00030")}
-        onMouseOut={(e) => (e.target.style.backgroundColor = "#800020")}
+        onMouseOver={(e) =>
+          (e.target.style.backgroundColor = "#a00030")
+        }
+        onMouseOut={(e) =>
+          (e.target.style.backgroundColor = "#800020")
+        }
       >
         Aggiungi al carrello
       </button>
     </div>
   </div>
-  );
+);
 }
 
 export default WineDetailPage;
