@@ -18,7 +18,7 @@ export default function HomePage() {
     <>
       <section id="best-sellers" className="">
         <div className="container text-center">
-          <div className="row row-cols-3 g-3">
+          <div className="row row-cols-3 gy-2">
             {bestSellers.map((bestSeller) => {
               return (
                 <WineCard
