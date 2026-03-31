@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import WineCard from "../components/WineCard";
 
 export default function HomePage() {
   const [bestSellers, setBestSellers] = useState([]);
@@ -20,18 +21,12 @@ export default function HomePage() {
           <div className="row row-cols-3 g-3">
             {bestSellers.map((bestSeller) => {
               return (
-                <div className="col">
-                  <div key={bestSeller.id} className="card">
-                    <img
-                      src={bestSeller.img}
-                      className="card-img-top"
-                      alt={bestSeller.product_name}
-                    />
-                    <div className="card-body">
-                      <p className="card-text">{bestSeller.description}</p>
-                    </div>
-                  </div>
-                </div>
+                <WineCard
+                  key={bestSeller.id}
+                  img={bestSeller.img}
+                  name={bestSeller.product_name}
+                  description={bestSeller.description}
+                />
               );
             })}
           </div>
