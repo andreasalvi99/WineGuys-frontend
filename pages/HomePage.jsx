@@ -35,7 +35,7 @@ export default function HomePage() {
 
   return (
     <>
-      <section>
+      <section className="playfair-display_special">
         <div className="container text-start">
           <p className="fs-5 my-3">
             <em>
@@ -75,7 +75,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <section className="my-4 p-3">
+      <section className="my-4 p-3 playfair-display_special">
         <div className="container">
           <div className="card info-card border-0">
             <div className="card-body">
@@ -115,7 +115,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <section className="my-4 p-3">
+      <section className="my-4 p-3 playfair-display_special">
         <div className="container">
           <div className="card info-card border-0">
             <div className="card-body">
@@ -157,7 +157,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <section className="my-4 p-3">
+      <section className="my-4 p-3 playfair-display_special">
         <div className="container">
           <div className="card info-card border-0">
             <div className="card-body">
@@ -197,7 +197,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <section className="my-4 p-3">
+      <section className="my-4 p-3 playfair-display_special">
         <div className="container">
           <div className="card info-card border-0">
             <div className="card-body">
