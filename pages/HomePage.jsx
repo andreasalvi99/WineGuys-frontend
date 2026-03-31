@@ -78,6 +78,7 @@ export default function HomePage() {
                   name={promo.product_name}
                   price={promo.price}
                   slug={promo.slug}
+                  discounted={promo.promotion_price}
                 />
               );
             })}
