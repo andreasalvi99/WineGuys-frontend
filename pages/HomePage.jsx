@@ -205,12 +205,13 @@ export default function HomePage() {
           <div className="card info-card border-0">
             <div className="card-body p-0">
               <p className="card-text fs-5 my-3">
-                Che tu stia cercando un rosso deciso per la cena, un bianco
-                fresco per l’aperitivo o uno spumante frizzante per brindare,
-                qui trovi grandi vini a prezzi più leggeri rispetto alla normale
-                enoteca. Approfitta degli sconti esclusivi e porta a casa
-                qualità, carattere e gusto, tutti con un ottimo rapporto
-                qualità‑prezzo.
+                Scopri la nostra selezione di vini premiati, riconosciuti per
+                qualità ed eccellenza. Etichette selezionate che hanno
+                conquistato esperti e guide del settore. Ogni bottiglia esprime
+                carattere, equilibrio e cura nella produzione. Ideali per
+                occasioni speciali o per chi cerca un’esperienza superiore.
+                Porta in tavola vini che si distinguono davvero, non solo per
+                l’etichetta.
               </p>
               <div className="d-flex justify-content-end">
                 <a href="#">
@@ -253,14 +254,13 @@ export default function HomePage() {
           <div className="card info-card border-0">
             <div className="card-body p-0">
               <p className="card-text fs-5 my-3">
-                Scopri la nostra selezione di vini premiati, autentiche gemme
-                dell’enologia che hanno conquistato riconoscimenti nei più
-                prestigiosi concorsi e guide del mondo del vino. Ogni bottiglia
-                racconta la dedizione del produttore, il carattere del proprio
-                terroir e l’equilibrio perfetto tra profumo, sapore e struttura.
-                I premi ottenuti non sono solo un sigillo di qualità, ma una
-                garanzia di un’esperienza sensoriale unica, capace di
-                sorprendere anche gli amanti più esigenti.
+                Scopri la nostra selezione di vini primaverili, freschi e
+                profumati, ideali per la stagione. Caratterizzati da note
+                floreali e fruttate, offrono un gusto leggero e piacevole.
+                Perfetti per aperitivi, pranzi all’aperto e momenti di relax.
+                Dai bianchi aromatici ai rosati delicati, fino ai rossi giovani
+                e vivaci. La scelta giusta per portare in tavola tutta la
+                freschezza della primavera.
               </p>
               <div className="d-flex justify-content-end">
                 <a href="#">
