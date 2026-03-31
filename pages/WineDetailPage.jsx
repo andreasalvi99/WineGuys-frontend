@@ -39,6 +39,14 @@ function WineDetailPage() {
   return (
     <div
       style={{
+        maxwWith: "1200px",
+        margin: "0 auto",
+        padding: "20px",
+      }}
+    >
+
+    <div
+      style={{
         textAlign: "center",
         marginTop: "50px",
         border: "1px solid #ddd",
@@ -129,6 +137,7 @@ function WineDetailPage() {
         Aggiungi al carrello
       </button>
     </div>
+  </div>
   );
 }
 
