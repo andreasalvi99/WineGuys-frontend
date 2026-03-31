@@ -17,16 +17,16 @@ export default function WineCard({ img, name, price, slug, discounted }) {
             {discounted !== null && discounted !== undefined ? (
               <>
                 <span className="text-decoration-line-through position-relative">
-                  {price} &euro;
+                  {price}&euro;
                   <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                     {calcDiscount(price, discounted)}%
                   </span>
                 </span>
 
-                <span className="d-block">{discounted} &euro;</span>
+                <span className="d-block">{discounted}&euro;</span>
               </>
             ) : (
-              <span>{price} &euro;</span>
+              <span>{price}&euro;</span>
             )}
           </p>
         </div>
