@@ -122,13 +122,15 @@ function WineDetailPage() {
 
       <div className="row justify-content-center">
        {relatedWines.map(w => (
-      <div className="col-md-4" key={w.id}>
+      <div className="col-md-4 text-center mb-4" key={w.id}>
+        <div style={{ maxWidth: "250px", margin: "0 auto" }}>
       <WineCard
         img={w.img ? `http://localhost:3000/wines/${w.img}` : ""}
         name={w.product_name}
         price={w.price}
         slug={w.slug}
       />
+      </div>
       </div>
       ))}
       </div>
