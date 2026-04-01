@@ -25,7 +25,7 @@ function WineDetailPage() {
         setWine(data.result);
         const relatedRes = await fetch("http://localhost:3000/vini");
         const relatedData = await relatedRes.json();
-        console.log("RELATED DATA:", relatedData); // debug
+        
 
         const filtered = (relatedData || [])
         .filter(w => 
