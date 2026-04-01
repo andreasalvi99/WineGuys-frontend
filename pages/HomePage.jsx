@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import WineCard from "../components/WineCard";
+import WineCardSliced from "../components/WineCardSliced";
 
 export default function HomePage() {
   const [promos, setPromos] = useState([]);
@@ -107,6 +108,22 @@ export default function HomePage() {
             })}
           </div>
         </div>
+        <div className="container text-center p-3 d-xl-none">
+          <div className="row row-cols-3 gy-2">
+            {promosToShow.map((promo) => {
+              return (
+                <WineCardSliced
+                  key={promo.id}
+                  img={promo.img_url}
+                  name={promo.product_name}
+                  price={promo.price}
+                  slug={promo.slug}
+                  discounted={promo.promotion_price}
+                />
+              );
+            })}
+          </div>
+        </div>
       </section>
       <section className="my-4 p-3 playfair-display_special">
         <div className="container">
@@ -147,6 +164,21 @@ export default function HomePage() {
             {awarded.map((award) => {
               return (
                 <WineCard
+                  key={award.id}
+                  img={award.img_url}
+                  name={award.product_name}
+                  price={award.price}
+                  slug={award.slug}
+                />
+              );
+            })}
+          </div>
+        </div>
+        <div className="container text-center p-3 d-xl-none">
+          <div className="row row-cols-3 gy-2">
+            {awardedToShow.map((award) => {
+              return (
+                <WineCardSliced
                   key={award.id}
                   img={award.img_url}
                   name={award.product_name}
@@ -206,6 +238,21 @@ export default function HomePage() {
             })}
           </div>
         </div>
+        <div className="container text-center p-3 d-xl-none">
+          <div className="row row-cols-3 gy-2">
+            {bestSellersToShow.map((bestSeller) => {
+              return (
+                <WineCardSliced
+                  key={bestSeller.id}
+                  img={bestSeller.img_url}
+                  name={bestSeller.product_name}
+                  price={bestSeller.price}
+                  slug={bestSeller.slug}
+                />
+              );
+            })}
+          </div>
+        </div>
       </section>
       <section className="my-4 p-3 playfair-display_special">
         <div className="container">
@@ -255,8 +302,22 @@ export default function HomePage() {
             })}
           </div>
         </div>
+        <div className="container text-center p-3 d-xl-none">
+          <div className="row row-cols-3 gy-2">
+            {springWinesToShow.map((springWine) => {
+              return (
+                <WineCardSliced
+                  key={springWine.id}
+                  img={springWine.img_url}
+                  name={springWine.product_name}
+                  price={springWine.price}
+                  slug={springWine.slug}
+                />
+              );
+            })}
+          </div>
+        </div>
       </section>
-
       <section className="playfair-display_special mt-3">
         <div className="container text-start">
           <div className="d-flex justify-content-center">
