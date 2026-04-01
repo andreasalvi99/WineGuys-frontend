@@ -54,7 +54,7 @@ export default function HomePage() {
             <p className="h3">
               SCOPRI LE NOSTRE SELEZIONI E <br /> UNISCITI ALLA COMMUNITY.
             </p>
-            <button type="button" className="btn btn-outline-secondary mt-2">
+            <button type="button" className="btn btn-outline-dark mt-2">
               ESPLORA IL CATALOGO
             </button>
           </div>
