@@ -39,64 +39,6 @@ export default function HomePage() {
 
   return (
     <>
-      <section className="playfair-display_special">
-        <div className="container text-start">
-          <div className="d-flex justify-content-between">
-            <div className="">
-              <div className="d-flex justify-content-start">
-                <div>
-                  <h1 className="border-bottom border-black">CHI SIAMO</h1>
-                </div>
-              </div>
-              <p className="fs-5 my-3">
-                <em>
-                  "WineGuys è una giovane realtà nata dall’idea di cinque amici
-                  uniti da una passione comune: il vino. Quello vero, non quello
-                  scelto a caso al supermercato perché “boh, l’etichetta è
-                  carina”. L’obiettivo è semplice: rendere il mondo del vino più
-                  accessibile, senza snobismi inutili e senza dover avere un
-                  sommelier interiore per scegliere una bottiglia decente.
-                  Attraverso il nostro e-commerce, selezioniamo vini di qualità
-                  provenienti da diverse regioni, dando spazio sia a cantine
-                  affermate che a piccoli produttori che meritano di essere
-                  scoperti. Ogni prodotto è accompagnato da descrizioni chiare e
-                  consigli pratici, pensati per aiutare chiunque, dal curioso al
-                  più esperto, a trovare il vino giusto per ogni occasione.
-                  WineGuys non è solo vendita online, ma un progetto che punta a
-                  costruire una community di appassionati, dove il vino diventa
-                  un’esperienza da condividere, senza complicazioni e senza
-                  pretese."
-                </em>
-              </p>
-            </div>
-            <div className="">
-              <img
-                src="../src/assets/img/wineguys_logo2.png"
-                alt=""
-                className="secondary-logo"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-      <section id="promos" className="">
-        <div className="container text-center p-3">
-          <div className="row row-cols-5 gy-2">
-            {promos.map((promo) => {
-              return (
-                <WineCard
-                  key={promo.id}
-                  img={promo.img_url}
-                  name={promo.product_name}
-                  price={promo.price}
-                  slug={promo.slug}
-                  discounted={promo.promotion_price}
-                />
-              );
-            })}
-          </div>
-        </div>
-      </section>
       <section className="my-4 p-3 playfair-display_special">
         <div className="container text-start">
           <div className="d-flex justify-content-start">
@@ -128,17 +70,18 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <section id="awarded" className="">
+      <section id="promos" className="">
         <div className="container text-center p-3">
           <div className="row row-cols-5 gy-2">
-            {awarded.map((award) => {
+            {promos.map((promo) => {
               return (
                 <WineCard
-                  key={award.id}
-                  img={award.img_url}
-                  name={award.product_name}
-                  price={award.price}
-                  slug={award.slug}
+                  key={promo.id}
+                  img={promo.img_url}
+                  name={promo.product_name}
+                  price={promo.price}
+                  slug={promo.slug}
+                  discounted={promo.promotion_price}
                 />
               );
             })}
@@ -178,17 +121,17 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <section id="best-sellers" className="">
+      <section id="awarded" className="">
         <div className="container text-center p-3">
           <div className="row row-cols-5 gy-2">
-            {bestSellers.map((bestSeller) => {
+            {awarded.map((award) => {
               return (
                 <WineCard
-                  key={bestSeller.id}
-                  img={bestSeller.img_url}
-                  name={bestSeller.product_name}
-                  price={bestSeller.price}
-                  slug={bestSeller.slug}
+                  key={award.id}
+                  img={award.img_url}
+                  name={award.product_name}
+                  price={award.price}
+                  slug={award.slug}
                 />
               );
             })}
@@ -227,17 +170,17 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <section id="spring-wines" className="">
+      <section id="best-sellers" className="">
         <div className="container text-center p-3">
           <div className="row row-cols-5 gy-2">
-            {springWines.map((springWine) => {
+            {bestSellers.map((bestSeller) => {
               return (
                 <WineCard
-                  key={springWine.id}
-                  img={springWine.img_url}
-                  name={springWine.product_name}
-                  price={springWine.price}
-                  slug={springWine.slug}
+                  key={bestSeller.id}
+                  img={bestSeller.img_url}
+                  name={bestSeller.product_name}
+                  price={bestSeller.price}
+                  slug={bestSeller.slug}
                 />
               );
             })}
@@ -272,6 +215,64 @@ export default function HomePage() {
                   </button>
                 </a>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="spring-wines" className="">
+        <div className="container text-center p-3">
+          <div className="row row-cols-5 gy-2">
+            {springWines.map((springWine) => {
+              return (
+                <WineCard
+                  key={springWine.id}
+                  img={springWine.img_url}
+                  name={springWine.product_name}
+                  price={springWine.price}
+                  slug={springWine.slug}
+                />
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section className="playfair-display_special">
+        <div className="container text-start">
+          <div className="d-flex justify-content-between">
+            <div className="">
+              <div className="d-flex justify-content-start">
+                <div>
+                  <h1 className="border-bottom border-black">CHI SIAMO</h1>
+                </div>
+              </div>
+              <p className="fs-5 my-3">
+                <em>
+                  "WineGuys è una giovane realtà nata dall’idea di cinque amici
+                  uniti da una passione comune: il vino. Quello vero, non quello
+                  scelto a caso al supermercato perché “boh, l’etichetta è
+                  carina”. L’obiettivo è semplice: rendere il mondo del vino più
+                  accessibile, senza snobismi inutili e senza dover avere un
+                  sommelier interiore per scegliere una bottiglia decente.
+                  Attraverso il nostro e-commerce, selezioniamo vini di qualità
+                  provenienti da diverse regioni, dando spazio sia a cantine
+                  affermate che a piccoli produttori che meritano di essere
+                  scoperti. Ogni prodotto è accompagnato da descrizioni chiare e
+                  consigli pratici, pensati per aiutare chiunque, dal curioso al
+                  più esperto, a trovare il vino giusto per ogni occasione.
+                  WineGuys non è solo vendita online, ma un progetto che punta a
+                  costruire una community di appassionati, dove il vino diventa
+                  un’esperienza da condividere, senza complicazioni e senza
+                  pretese."
+                </em>
+              </p>
+            </div>
+            <div className="">
+              <img
+                src="../src/assets/img/wineguys_logo2.png"
+                alt=""
+                className="secondary-logo"
+              />
             </div>
           </div>
         </div>
