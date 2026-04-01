@@ -51,11 +51,25 @@ function WineDetailPage() {
   if (!wine) return <p>Nessun vino trovato</p>;
 
   return (
-  <section className="py-5 playfair-display_special">
-    <div className="container">
+  <section
+    className="py-5 playfair-display_special"
+    style={{
+      minHeight: "100vh",
+      display: "flex",
+      flexDirection: "column"
+    }}
+  >
+    <div
+      className="container-fluid px-4"
+      style={{
+        flex: 1,
+        display: "flex",
+        flexDirection: "column"
+      }}
+    >
 
       {/* NAV */}
-      <div className="d-flex justify-content-between mb-4">
+      <div className="d-flex justify-content-between mb-4 px-md-4">
         <button
           className="btn btn-outline-dark"
           onClick={() => navigate("/")}
@@ -78,10 +92,10 @@ function WineDetailPage() {
         <div className="col-md-6 text-center">
           <img
             src={
-            wine.img
-            ? `http://localhost:3000/wines/${wine.img}`
-            : ""
-          }
+              wine.img
+                ? `http://localhost:3000/wines/${wine.img}`
+                : ""
+            }
             alt={wine.product_name}
             className="img-fluid"
             style={{
@@ -93,7 +107,6 @@ function WineDetailPage() {
 
         {/* INFO */}
         <div className="col-md-6">
-
           <h1 className="mb-3">{wine.product_name}</h1>
 
           <h3 className="mb-3" style={{ color: "#800020" }}>
@@ -103,7 +116,7 @@ function WineDetailPage() {
           </h3>
 
           <p className="mt-3 fs-5" style={{ color: "#000000" }}>
-             {wine.description}
+            {wine.description}
           </p>
 
           <p className="mt-3 fs-5">
@@ -113,27 +126,51 @@ function WineDetailPage() {
           <button className="btn btn-dark mt-3">
             Aggiungi al carrello
           </button>
-
         </div>
       </div>
+
       <hr className="my-5" />
 
+      {/* RELATED */}
       <h4 className="text-center mb-4">Potrebbero piacerti</h4>
 
       <div className="row justify-content-center">
-       {relatedWines.map(w => (
-      <div className="col-md-4 text-center mb-4" key={w.id}>
-        <div style={{ maxWidth: "200px", margin: "0 auto" }}>
-      <WineCard
-        img={w.img ? `http://localhost:3000/wines/${w.img}` : ""}
-        name={w.product_name}
-        price={w.price}
-        slug={w.slug}
-      />
+        {relatedWines.map((w) => (
+          <div
+            className="col-md-4 text-center mb-4"
+            key={w.id}
+          >
+            <div style={{ maxWidth: "200px", margin: "0 auto" }}>
+              <WineCard
+                img={
+                  w.img
+                    ? `http://localhost:3000/wines/${w.img}`
+                    : ""
+                }
+                name={w.product_name}
+                price={w.price}
+                slug={w.slug}
+              />
+            </div>
+          </div>
+        ))}
       </div>
-      </div>
-      ))}
-      </div>
+
+      {/* FOOTER */}
+      <footer
+        style={{
+          marginTop: "auto",
+          padding: "20px 0",
+          backgroundColor: "#f8f8f8",
+          borderTop: "1px solid #ddd",
+          textAlign: "center"
+        }}
+      >
+        <p style={{ margin: 0, fontSize: "14px", color: "#666" }}>
+          © 2026 WineGuys – Made with 🍷
+        </p>
+      </footer>
+
     </div>
   </section>
 );
