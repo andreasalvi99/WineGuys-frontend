@@ -39,23 +39,22 @@ export default function HomePage() {
 
   return (
     <>
-      <section id="hero-space" className="">
-        <div className="container">
-          <div className="d-flex justify-content-start align-items-center h-100">
-            <div className="">
-              <div className="hero-space-card">
-                <h2 className="h1">
-                  WINEGUYS: IL VINO,
-                  <br /> SENZA TROPPI GIRI <br /> DI PAROLE.
-                </h2>
-                <p className="h3">
-                  SCOPRI LE NOSTRE SELEZIONI E <br /> UNISCITI ALLA COMMUNITY.
-                </p>
-                <button type="button" class="btn btn-outline-secondary mt-2">
-                  ESPLORA IL CATALOGO
-                </button>
-              </div>
-            </div>
+      <section
+        id="hero-space"
+        className="d-flex justify-content-start align-items-center"
+      >
+        <div className="container d-flex justify-content-start align-items-center">
+          <div className="hero-space-card">
+            <h2 className="h1">
+              WINEGUYS: IL VINO,
+              <br /> SENZA TROPPI GIRI <br /> DI PAROLE.
+            </h2>
+            <p className="h3">
+              SCOPRI LE NOSTRE SELEZIONI E <br /> UNISCITI ALLA COMMUNITY.
+            </p>
+            <button type="button" class="btn btn-outline-secondary mt-2">
+              ESPLORA IL CATALOGO
+            </button>
           </div>
         </div>
       </section>
