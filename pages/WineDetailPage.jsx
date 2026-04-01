@@ -156,6 +156,28 @@ function WineDetailPage() {
         ))}
       </div>
 
+      {/*PHILOSOPHY*/}
+      <div
+      style={{
+      marginTop: "60px",
+      padding: "60px 20px",
+      textAlign: "center",
+      maxWidth: "700px",
+      marginInline: "auto",
+      color: "#333"
+      }}
+      >
+     <h3 style={{ marginBottom: "20px", fontStyle: "italic" }}>
+      Un’esperienza che va oltre il vino
+     </h3>
+
+     <p style={{ fontSize: "15px", lineHeight: "1.8" }}>
+     Ogni bottiglia racconta una storia fatta di territorio, passione e tradizione.
+     Scopri la nostra selezione e lasciati guidare in un viaggio tra le migliori
+     etichette, pensate per accompagnare ogni momento speciale.
+     </p>
+     </div>
+
       {/* FOOTER */}
       <footer
         style={{
