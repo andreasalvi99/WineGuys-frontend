@@ -13,25 +13,21 @@ export default function HomePage() {
       const promosResponse = await axios.get(
         "http://localhost:3000/vini/promo",
       );
-      console.log(promosResponse.data);
       setPromos(promosResponse.data);
 
       const awardedResponse = await axios.get(
         "http://localhost:3000/vini/premiati",
       );
-      console.log(awardedResponse.data);
       setAwarded(awardedResponse.data);
 
       const bestSellersResponse = await axios.get(
         "http://localhost:3000/vini/piuvenduti",
       );
-      console.log(bestSellersResponse.data);
       setBestSellers(bestSellersResponse.data);
 
       const springWinesResponse = await axios.get(
         "http://localhost:3000/vini/primavera",
       );
-      console.log(springWinesResponse.data);
       setSpringWines(springWinesResponse.data);
     }
     fetchAllWines();
