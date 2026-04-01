@@ -1,11 +1,13 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import WineCard from "../components/WineCard";  
 
 function WineDetailPage() {
   const { slug } = useParams(); // qui è lo SLUG
   const navigate = useNavigate();
 
   const [wine, setWine] = useState(null);
+  const [relatedWines, setRelatedWines] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -21,6 +23,18 @@ function WineDetailPage() {
         console.log(data); // debug
 
         setWine(data.result);
+        const relatedRes = await fetch("http://localhost:3000/vini");
+        const relatedData = await relatedRes.json();
+        console.log("RELATED DATA:", relatedData); // debug
+
+        const filtered = (relatedData || [])
+        .filter(w => 
+        w.slug !== slug && 
+        w.category_id === data.result.category_id
+        )
+        .slice(0, 3);
+
+       setRelatedWines(filtered);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -101,6 +115,22 @@ function WineDetailPage() {
           </button>
 
         </div>
+      </div>
+      <hr className="my-5" />
+
+      <h4 className="text-center mb-4">Potrebbero piacerti</h4>
+
+      <div className="row justify-content-center">
+       {relatedWines.map(w => (
+      <div className="col-md-4" key={w.id}>
+      <WineCard
+        img={w.img ? `http://localhost:3000/wines/${w.img}` : ""}
+        name={w.product_name}
+        price={w.price}
+        slug={w.slug}
+      />
+      </div>
+      ))}
       </div>
     </div>
   </section>
