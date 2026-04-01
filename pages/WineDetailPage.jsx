@@ -50,6 +50,10 @@ function WineDetailPage() {
   if (error) return <p>{error}</p>;
   if (!wine) return <p>Nessun vino trovato</p>;
 
+  function calcDiscount(original, discount) {
+    return Math.ceil(((original - discount) / original) * 100);
+  }
+  
   return (
   <section
     className="py-5 playfair-display_special w-100"
@@ -109,11 +113,25 @@ function WineDetailPage() {
         <div className="col-md-6">
           <h1 className="mb-3">{wine.product_name}</h1>
 
-          <h3 className="mb-3" style={{ color: "#800020" }}>
-            {wine?.price
-              ? Number(wine.price).toFixed(2) + " €"
-              : "N/A"}
-          </h3>
+          <h3 className="mb-3">
+          {wine?.promotion_price ? (
+           <>
+            <span style={{ textDecoration: "line-through", color: "#999" }}>
+             {Number(wine.price).toFixed(2)} €
+            </span>{" "}
+          <span style={{ color: "#800020", fontWeight: "bold" }}>
+          {Number(wine.promotion_price).toFixed(2)} €
+          </span>{" "}
+           <span style={{ color: "red", fontSize: "0.9rem" }}>
+            -{calcDiscount(wine.price, wine.promotion_price)}%
+          </span>
+          </>
+          ) : (
+          <span style={{ color: "#800020" }}>
+           {Number(wine.price).toFixed(2)} €
+          </span>
+          )}
+           </h3>
 
           <p className="mt-3 fs-5" style={{ color: "#000000" }}>
             {wine.description}
