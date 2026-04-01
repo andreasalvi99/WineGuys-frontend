@@ -52,7 +52,7 @@ function WineDetailPage() {
 
   return (
   <section
-    className="py-5 playfair-display_special"
+    className="py-5 playfair-display_special w-100"
     style={{
       minHeight: "100vh",
       display: "flex",
@@ -60,7 +60,7 @@ function WineDetailPage() {
     }}
   >
     <div
-      className="container-fluid px-4"
+      className="container-fluid px-0"
       style={{
         flex: 1,
         display: "flex",
@@ -69,7 +69,7 @@ function WineDetailPage() {
     >
 
       {/* NAV */}
-      <div className="d-flex justify-content-between mb-4 px-md-4">
+      <div className="d-flex justify-content-between mb-4 px-4 px-md-5">
         <button
           className="btn btn-outline-dark"
           onClick={() => navigate("/")}
