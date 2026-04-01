@@ -88,11 +88,11 @@ function WineDetailPage() {
               : "N/A"}
           </h3>
 
-          <p className="text-muted">
-            {wine.description}
+          <p className="mt-3 fs-5" style={{ color: "#000000" }}>
+             {wine.description}
           </p>
 
-          <p>
+          <p className="mt-3 fs-5">
             <strong>Anno:</strong> {wine.vintage}
           </p>
 
