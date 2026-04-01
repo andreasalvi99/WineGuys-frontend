@@ -37,151 +37,74 @@ function WineDetailPage() {
   if (!wine) return <p>Nessun vino trovato</p>;
 
   return (
-    <div
-      style={{
-        maxWidth: "900px",
-        margin: "0 auto",
-        padding: "20px",
-      }}
-    >
-      {/* BOTTONI NAVIGAZIONE */}
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "10px",
-          marginBottom: "20px",
-          alignItems: "center",
-        }}
-      >
+  <section className="py-5 playfair-display_special">
+    <div className="container">
+
+      {/* NAV */}
+      <div className="d-flex justify-content-between mb-4">
         <button
+          className="btn btn-outline-dark"
           onClick={() => navigate("/")}
-          style={{
-            padding: "8px",
-            fontSize: "14px",
-            backgroundColor: "#e0e0e0",
-            border: "1px solid #ccc",
-            borderRadius: "6px",
-            cursor: "pointer",
-          }}
-          onMouseOver={(e) => (e.target.style.backgroundColor = "#d5d5d5")}
-          onMouseOut={(e) => (e.target.style.backgroundColor = "#e0e0e0")}
         >
-          🏠 Home
+          Home
         </button>
 
         <button
+          className="btn btn-outline-dark"
           onClick={() => navigate(-1)}
-          style={{
-            padding: "8px",
-            fontSize: "14px",
-            backgroundColor: "#f5f5f5",
-            border: "1px solid #ccc",
-            borderRadius: "6px",
-            cursor: "pointer",
-          }}
-          onMouseOver={(e) => (e.target.style.backgroundColor = "#e0e0e0")}
-          onMouseOut={(e) => (e.target.style.backgroundColor = "#f5f5f5")}
         >
-          ← Indietro
+          Indietro
         </button>
       </div>
 
-      {/* CARD */}
-      <div
-        style={{
-          display: "flex",
-          flexDirection: window.innerWidth > 768 ? "row" : "column",
-          gap: "30px",
-          padding: "30px",
-          borderRadius: "16px",
-          boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-          backgroundColor: "white",
-          alignItems: "center",
-        }}
-      >
+      {/* CARD DETTAGLIO */}
+      <div className="row align-items-center">
+
         {/* IMG */}
-        <div
-          style={{
-            flex: 1,
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
+        <div className="col-md-6 text-center">
           <img
-            src={wine.img ? `http://localhost:3000/wines/${wine.img}` : ""}
+            src={
+            wine.img
+            ? `http://localhost:3000/wines/${wine.img}`
+            : ""
+          }
             alt={wine.product_name}
+            className="img-fluid"
             style={{
-              width: "100%",
               maxHeight: "400px",
-              objectFit: "contain",
+              objectFit: "contain"
             }}
           />
         </div>
 
-        {/* CONTENUTO */}
-        <div
-          style={{
-            flex: 1,
-            textAlign: "left",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "flex-start",
-          }}
-        >
-          {/* NOME */}
-          <h2 style={{ marginBottom: "10px" }}>{wine.product_name}</h2>
+        {/* INFO */}
+        <div className="col-md-6">
 
-          {/* PREZZO */}
-          <p
-            style={{
-              fontSize: "26px",
-              fontWeight: "700",
-              color: "#800020",
-              margin: "10px 0",
-            }}
-          >
-            {wine?.price ? Number(wine.price).toFixed(2) + " €" : "N/A"}
-          </p>
+          <h1 className="mb-3">{wine.product_name}</h1>
 
-          {/* DESCRIZIONE */}
-          <p
-            style={{
-              color: "#666",
-              marginTop: "10px",
-            }}
-          >
+          <h3 className="mb-3" style={{ color: "#800020" }}>
+            {wine?.price
+              ? Number(wine.price).toFixed(2) + " €"
+              : "N/A"}
+          </h3>
+
+          <p className="text-muted">
             {wine.description}
           </p>
 
-          {/* ANNO */}
-          <p style={{ marginTop: "10px" }}>
+          <p>
             <strong>Anno:</strong> {wine.vintage}
           </p>
 
-          {/* BOTTONE */}
-          <button
-            style={{
-              marginTop: "20px",
-              padding: "12px 20px",
-              backgroundColor: "#800020",
-              color: "white",
-              border: "none",
-              borderRadius: "8px",
-              cursor: "pointer",
-              width: "auto",
-              minWidth: "200px",
-            }}
-            onMouseOver={(e) => (e.target.style.backgroundColor = "#a00030")}
-            onMouseOut={(e) => (e.target.style.backgroundColor = "#800020")}
-          >
+          <button className="btn btn-dark mt-3">
             Aggiungi al carrello
           </button>
+
         </div>
       </div>
     </div>
-  );
+  </section>
+);
 }
 
 export default WineDetailPage;
