@@ -167,6 +167,7 @@ function WineDetailPage() {
                 }
                 name={w.product_name}
                 price={w.price}
+                discounted={w.promotion_price}
                 slug={w.slug}
               />
             </div>
