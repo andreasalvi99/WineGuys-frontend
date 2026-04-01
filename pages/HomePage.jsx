@@ -33,6 +33,11 @@ export default function HomePage() {
     fetchAllWines();
   }, []);
 
+  const promosToShow = promos.slice(0, 3);
+  const awardedToShow = awarded.slice(0, 3);
+  const bestSellersToShow = bestSellers.slice(0, 3);
+  const springWinesToShow = springWines.slice(0, 3);
+
   return (
     <>
       <section
@@ -86,7 +91,7 @@ export default function HomePage() {
         </div>
       </section>
       <section id="promos" className="">
-        <div className="container text-center p-3">
+        <div className="container text-center p-3 d-none d-xl-block">
           <div className="row row-cols-5 gy-2">
             {promos.map((promo) => {
               return (
@@ -137,7 +142,7 @@ export default function HomePage() {
         </div>
       </section>
       <section id="awarded" className="">
-        <div className="container text-center p-3">
+        <div className="container text-center p-3 d-none d-xl-block">
           <div className="row row-cols-5 gy-2">
             {awarded.map((award) => {
               return (
@@ -186,7 +191,7 @@ export default function HomePage() {
         </div>
       </section>
       <section id="best-sellers" className="">
-        <div className="container text-center p-3">
+        <div className="container text-center p-3 d-none d-xl-block">
           <div className="row row-cols-5 gy-2">
             {bestSellers.map((bestSeller) => {
               return (
@@ -235,7 +240,7 @@ export default function HomePage() {
         </div>
       </section>
       <section id="spring-wines" className="">
-        <div className="container text-center p-3">
+        <div className="container text-center p-3 d-none d-xl-block">
           <div className="row row-cols-5 gy-2">
             {springWines.map((springWine) => {
               return (
