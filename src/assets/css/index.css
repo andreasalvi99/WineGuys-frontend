@@ -1,5 +1,88 @@
+/*^FONTSYLE^*/
+
+.playfair-display_special {
+  font-family: "Playfair Display", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: italic;
+}
+
+/*^ NAVBAR^*/
 .navbar-logo {
   height: 100px;
-  width: 100px;
+  width: 450px;
   border-radius: 50%;
+}
+
+/* ^SECTIONS^ */
+#spring-wines {
+  background: linear-gradient(
+    to top right,
+    rgba(254, 213, 220, 0.7),
+    rgba(239, 194, 255, 0.7)
+  );
+}
+
+#awarded {
+  background: linear-gradient(
+    to top right,
+    rgba(255, 236, 128, 0.7),
+    rgba(86, 56, 0, 0.7)
+  );
+}
+
+#best-sellers {
+  background: linear-gradient(
+    to top right,
+    rgba(255, 165, 147, 0.7),
+    rgba(202, 43, 7, 0.7)
+  );
+}
+
+#promos {
+  background: linear-gradient(
+    to top right,
+    rgba(57, 163, 250, 0.7),
+    rgba(77, 252, 162, 0.7)
+  );
+}
+
+#hero-space {
+  background-image: url("../img/pexels-andreamostiphotography-15508429.jpg");
+  height: 500px;
+  width: 100%;
+  background-position: center;
+  background-size: cover;
+}
+
+/*^CARD^*/
+.wine-card {
+  transition: 0.4s all ease;
+}
+
+.wine-card:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+.hero-space-card {
+  background-color: rgba(224, 224, 224, 0.7);
+  border-radius: 10px;
+  padding: 15px;
+}
+
+/*^BUTTON^*/
+
+.btn-more {
+  transition: 0.4s all ease;
+  margin-top: 15px;
+}
+
+.btn-more:hover {
+  transform: scale(1.1);
+}
+
+.secondary-logo {
+  max-width: 500px;
+  max-height: 350px;
 }
