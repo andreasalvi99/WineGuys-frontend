@@ -8,7 +8,7 @@ export default function WineCard({ img, name, price, slug, discounted }) {
   return (
     <div className="col">
       <div className="card h-100 bg-transparent border-0 wine-card">
-        <Link to={"/vini" + slug}>
+        <Link to={"/vini/" + slug}>
           <img src={img} className="card-img-top" alt={name} />
         </Link>
         <div className="card-body">
