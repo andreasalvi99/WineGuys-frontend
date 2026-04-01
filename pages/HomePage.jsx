@@ -41,7 +41,7 @@ export default function HomePage() {
     <>
       <section
         id="hero-space"
-        className="d-flex justify-content-start align-items-center"
+        className="d-flex justify-content-start align-items-center playfair-display_special"
       >
         <div className="container d-flex justify-content-start align-items-center">
           <div className="hero-space-card">
