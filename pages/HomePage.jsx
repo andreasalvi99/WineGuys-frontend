@@ -252,11 +252,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="playfair-display_special">
+      <section className="playfair-display_special mt-3">
         <div className="container text-start">
-          <div className="d-flex justify-content-between">
-            <div className="">
-              <div className="d-flex justify-content-start">
+          <div className="d-flex justify-content-center">
+            <div className="d-none d-xl-block">
+              <div className="d-flex">
                 <div>
                   <h1 className="border-bottom border-black">CHI SIAMO</h1>
                 </div>
