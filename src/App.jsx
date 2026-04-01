@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomePage from "../pages/HomePage";
-import DefaultLayout from "../layouts/DefaultLayout";
-
+import WineDetailPage from "./pages/WineDetailPage";
+import DefaultLayout from "./layouts/DefaultLayout";
 export default function App() {
   return (
     <>
@@ -9,8 +9,7 @@ export default function App() {
         <Routes>
           <Route Component={DefaultLayout}>
             <Route index Component={HomePage} />
-            {/* <Route path="/vini" Component={WinesPage} />
-          <Route path="/vini/:id" Component={WinesDetailPage} /> */}
+            <Route path="/vini/:id" Component={WineDetailPage} />
           </Route>
         </Routes>
       </BrowserRouter>
