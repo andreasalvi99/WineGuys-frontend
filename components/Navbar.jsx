@@ -3,13 +3,14 @@ export default function Navbar() {
     <>
       <div className="container-fluid text-center">
         <img
-          src="../src/assets/img/wineguys.png"
+          src="../src/assets/img/wineguys2.png"
           alt="navbar-logo"
           className="navbar-logo"
         />
       </div>
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
+          <a className="navbar-brand" href="#"></a>
           <button
             className="navbar-toggler"
             type="button"
@@ -22,7 +23,7 @@ export default function Navbar() {
             <span className="navbar-toggler-icon"></span>
           </button>
           <div
-            className="collapse navbar-collapse d-flex justify-content-center"
+            className="collapse navbar-collapse justify-content-lg-center"
             id="navbarSupportedContent"
           >
             <ul className="navbar-nav mb-2 mb-lg-0">
@@ -36,8 +37,8 @@ export default function Navbar() {
                   Vini
                 </a>
               </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">
+              <li className="nav-item dropdown">
+                <a className="nav-link " href="#">
                   Link
                 </a>
               </li>
