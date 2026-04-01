@@ -39,6 +39,26 @@ export default function HomePage() {
 
   return (
     <>
+      <section id="hero-space" className="">
+        <div className="container">
+          <div className="d-flex justify-content-start align-items-center h-100">
+            <div className="">
+              <div className="hero-space-card">
+                <h2 className="h1">
+                  WINEGUYS: IL VINO,
+                  <br /> SENZA TROPPI GIRI <br /> DI PAROLE.
+                </h2>
+                <p className="h3">
+                  SCOPRI LE NOSTRE SELEZIONI E <br /> UNISCITI ALLA COMMUNITY.
+                </p>
+                <button type="button" class="btn btn-outline-secondary">
+                  Secondary
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
       <section className="my-4 p-3 playfair-display_special">
         <div className="container text-start">
           <div className="d-flex justify-content-start">

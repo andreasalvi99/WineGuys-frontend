@@ -51,6 +51,14 @@
   );
 }
 
+#hero-space {
+  background-image: url("../img/pexels-andreamostiphotography-15508429.jpg");
+  height: 500px;
+  width: 100%;
+  background-position: center;
+  background-size: cover;
+}
+
 /*^CARD^*/
 .wine-card {
   transition: 0.4s all ease;
@@ -59,6 +67,12 @@
 .wine-card:hover {
   transform: scale(1.05);
   cursor: pointer;
+}
+
+.hero-space-card {
+  background-color: rgba(224, 224, 224, 0.7);
+  border-radius: 10px;
+  padding: 15px;
 }
 
 /* .info-card {
