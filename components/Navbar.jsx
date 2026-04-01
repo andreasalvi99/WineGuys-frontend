@@ -39,7 +39,7 @@ export default function Navbar() {
                   Vini
                 </NavLink>
               </li>
-              <li className="nav-item dropdown">
+              <li className="nav-item">
                 <NavLink to={""} className="nav-link">
                   Link
                 </NavLink>
