@@ -9,7 +9,7 @@ export default function App() {
         <Routes>
           <Route Component={DefaultLayout}>
             <Route index Component={HomePage} />
-            <Route path="/vini/:id" Component={WineDetailPage} />
+            <Route path="/vini/:slug" Component={WineDetailPage} />
           </Route>
         </Routes>
       </BrowserRouter>
