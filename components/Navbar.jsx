@@ -26,10 +26,12 @@ export default function Navbar() {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
+
           <div
-            className="collapse navbar-collapse justify-content-lg-center"
+            className="collapse navbar-collapse justify-content-lg-between align-items-center"
             id="navbarSupportedContent"
           >
+            <div></div>
             <ul className="navbar-nav mb-2 mb-lg-0">
               <li className="nav-item">
                 <NavLink to={"/"} className="nav-link">
@@ -47,6 +49,13 @@ export default function Navbar() {
                 </NavLink>
               </li>
             </ul>
+            <div className="d-flex justify-content-between align-items-center">
+              <i className="bi bi-cart shopping-cart position-relative">
+                <span class="position-absolute top-0 start-100 translate-middle p-2 bg-success border border-light rounded-circle">
+                  <span class="visually-hidden"></span>
+                </span>
+              </i>
+            </div>
           </div>
         </div>
       </nav>
