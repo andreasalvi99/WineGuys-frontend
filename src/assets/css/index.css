@@ -58,6 +58,7 @@
 /*^CARD^*/
 .wine-card {
   transition: 0.4s all ease;
+  position: relative;
 }
 
 .wine-card:hover {

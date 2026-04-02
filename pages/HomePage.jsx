@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import WineCard from "../components/WineCard";
 import WineCardSliced from "../components/WineCardSliced";
+import { Link } from "react-router-dom";
 
 export default function HomePage() {
   const [promos, setPromos] = useState([]);
@@ -54,9 +55,11 @@ export default function HomePage() {
             <p className="h3">
               SCOPRI LE NOSTRE SELEZIONI E <br /> UNISCITI ALLA COMMUNITY.
             </p>
-            <button type="button" className="btn btn-outline-dark mt-2">
-              ESPLORA IL CATALOGO
-            </button>
+            <Link to="/vini">
+              <button type="button" className="btn btn-outline-dark mt-2">
+                ESPLORA IL CATALOGO
+              </button>
+            </Link>
           </div>
         </div>
       </section>
