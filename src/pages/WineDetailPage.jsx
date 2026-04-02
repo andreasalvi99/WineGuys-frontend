@@ -255,7 +255,7 @@ function WineDetailPage() {
       {/*PHILOSOPHY*/}
       <div
       style={{
-      marginTop: "10px",
+      marginTop: "15px",
       padding: "60px 20px",
       textAlign: "center",
       maxWidth: "700px",
