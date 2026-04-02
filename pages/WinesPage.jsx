@@ -20,7 +20,7 @@ export default function WinesPage() {
   return (
     <>
       <div className="container p-3">
-        <div className="row row-cols-5 g-3 playfair-display_special">
+        <div className="row row-cols-5 g-4 playfair-display_special">
           {wines.map((wine) => {
             return (
               <div key={wine.id} className="col">
