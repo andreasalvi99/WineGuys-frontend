@@ -1,15 +1,18 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { CartProvider } from "./context/CartContext";
 
-import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import "../node_modules/bootstrap/dist/js/bootstrap.min.js";
-import "../node_modules/bootstrap-icons/font/bootstrap-icons.min.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.min.js";
+import "bootstrap-icons/font/bootstrap-icons.min.css";
 
-import "../src/assets/css/index.css";
+import "./assets/css/index.css";
 import App from "./App.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <App />
-  </StrictMode>,
+    <CartProvider>
+      <App />
+    </CartProvider>
+  </StrictMode>
 );
