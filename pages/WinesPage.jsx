@@ -16,11 +16,11 @@ export default function WinesPage() {
 
   return (
     <>
-      <div className="row row-cols-4 g-3">
+      <div className="row row-cols-5 g-3 playfair-display_special">
         {wines.map((wine) => {
           return (
             <div key={wine.id} className="col">
-              <div className="card h-100">
+              <div className="card h-100 p-3">
                 <Link to={"/vini/" + wine.slug}>
                   <img
                     src={`http://localhost:3000/wines/${wine.img}`}
@@ -28,11 +28,9 @@ export default function WinesPage() {
                     alt={wine.product_name}
                   />
                 </Link>
-                <div className="card-body">
-                  <p className="card-text">
-                    Some quick example text to build on the card title and make
-                    up the bulk of the card’s content.
-                  </p>
+                <div className="card-body text-center">
+                  <p className="card-text">{wine.product_name}</p>
+                  <p className="card-text">{wine.price}&euro;</p>
                 </div>
               </div>
             </div>
