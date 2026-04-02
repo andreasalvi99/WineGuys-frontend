@@ -21,7 +21,7 @@ export default function WinesPage() {
     <>
       <section id="wines-catalog">
         <div className="container p-3">
-          <div className="row row-cols-5 g-4 playfair-display_special">
+          <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 playfair-display_special">
             {wines.map((wine) => {
               return (
                 <div key={wine.id} className="col">
