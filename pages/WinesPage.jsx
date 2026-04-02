@@ -79,12 +79,22 @@ export default function WinesPage() {
 
                       <div className="card-body text-center d-flex flex-column justify-content-between">
                         <p className="card-text">{wine.product_name}</p>
-                        <button
-                          type="button"
-                          className="btn btn-outline-danger"
-                        >
-                          Aggiungi al carrello
-                        </button>
+                        {wine.stock_quantity > 0 ? (
+                          <button
+                            type="button"
+                            className="btn btn-outline-danger"
+                          >
+                            Aggiungi al carrello
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            className="btn btn-outline-danger"
+                            disabled
+                          >
+                            Aggiungi al carrello
+                          </button>
+                        )}
                       </div>
                     </div>
                   </Link>
