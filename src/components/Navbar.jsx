@@ -1,6 +1,10 @@
+import { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { CartContext } from "../context/CartContextObject";
 
 export default function Navbar() {
+  const { cart, addToCart } = useContext(CartContext);
+
   return (
     <>
       <div className="container-fluid text-center">
@@ -55,36 +59,36 @@ export default function Navbar() {
           </div>
         </nav>
         <button
-          class="btn m-0"
+          className="btn m-0"
           type="button"
           data-bs-toggle="offcanvas"
           data-bs-target="#offcanvasRight"
           aria-controls="offcanvasRight"
         >
           <i className="bi bi-cart shopping-cart position-relative">
-            <span class="position-absolute top-0 start-100 translate-middle p-2 bg-success border border-light rounded-circle">
-              <span class="visually-hidden"></span>
+            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
+              <span className="fw-light">{cart.length}</span>
             </span>
           </i>
         </button>
         <div
-          class="offcanvas offcanvas-end"
-          tabindex="-1"
+          className="offcanvas offcanvas-end"
+          tabIndex={-1}
           id="offcanvasRight"
           aria-labelledby="offcanvasRightLabel"
         >
-          <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasRightLabel">
-              Offcanvas right
+          <div className="offcanvas-header">
+            <h5 className="offcanvas-title" id="offcanvasRightLabel">
+              Carrello
             </h5>
             <button
               type="button"
-              class="btn-close"
+              className="btn-close"
               data-bs-dismiss="offcanvas"
               aria-label="Close"
             ></button>
           </div>
-          <div class="offcanvas-body">...</div>
+          <div className="offcanvas-body">...</div>
         </div>
       </div>
     </>
