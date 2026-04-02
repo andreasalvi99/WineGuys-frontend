@@ -30,7 +30,7 @@ function WineDetailPage() {
         const res = await fetch(`http://localhost:3000/vini/${slug}`);
         const data = await res.json();
 
-        console.log(data.result); // debug
+        
 
         setWine(data.result);
         const relatedRes = await fetch("http://localhost:3000/vini");
