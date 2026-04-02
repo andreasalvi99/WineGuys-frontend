@@ -23,7 +23,7 @@ export default function CartCard({
         <div className="col-md-8">
           <div className="card-body py-0">
             <div className="d-flex justify-content-between">
-              <h5 className="card-title">{name}</h5>
+              <h5 className="card-title fs-6">{name}</h5>
               <button
                 onClick={() => deleteItem(item)}
                 type="button"
