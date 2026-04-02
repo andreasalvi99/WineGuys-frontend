@@ -1,16 +1,26 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import WineCard from "../components/WineCard";  
+import WineCard from "../components/WineCard.jsx";  
+import { useContext } from "react";
+import { CartContext } from "../context/CartContextObject";
 
-function WineDetailPage() {
+function WineDetailPage() { 
+  const [quantity, setQuantity] = useState(1);
   const { slug } = useParams(); // qui è lo SLUG
   const navigate = useNavigate();
+  const { addToCart } = useContext(CartContext);
+ 
+  
 
   const [wine, setWine] = useState(null);
   const [relatedWines, setRelatedWines] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  
+
+  
+  
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -20,7 +30,7 @@ function WineDetailPage() {
         const res = await fetch(`http://localhost:3000/vini/${slug}`);
         const data = await res.json();
 
-        console.log(data); // debug
+        
 
         setWine(data.result);
         const relatedRes = await fetch("http://localhost:3000/vini");
@@ -49,11 +59,20 @@ function WineDetailPage() {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
   if (!wine) return <p>Nessun vino trovato</p>;
+  
+  
+  const isAvailable = wine.stock_quantity > 0;
+  
+  
 
+  {/* funzione per calcolare lo sconto in percentuale */}
   function calcDiscount(original, discount) {
     return Math.ceil(((original - discount) / original) * 100);
   }
   
+
+
+  {/* RENDER PRINCIPALE */}
   return (
   <section
     className="py-5 playfair-display_special w-100"
@@ -141,8 +160,32 @@ function WineDetailPage() {
             <strong>Anno:</strong> {wine.vintage}
           </p>
 
-          <button className="btn btn-dark mt-3">
-            Aggiungi al carrello
+          
+          {/* QUANTITY */}
+          <div className="d-flex align-items-center gap-2 mt-3">
+           <button
+          className="btn btn-outline-dark"
+          onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
+           >-</button>
+          
+          <span style={{ minWidth: "30px", textAlign: "center" }}>
+          {quantity}
+          </span>
+
+          <button
+          className="btn btn-outline-dark"
+          onClick={() => setQuantity(prev => prev + 1)}
+          >+</button>
+          </div>
+         
+         
+        {/* ADD TO CART */}
+          <button
+          className={`btn mt-3 ${isAvailable ? "btn-outline-dark" : "btn-secondary"}`}
+          onClick={() => addToCart(wine, quantity)}
+          disabled={!isAvailable}
+         >
+          {isAvailable ? "Aggiungi al carrello" : "Non disponibile"}
           </button>
         </div>
       </div>
