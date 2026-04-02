@@ -1,9 +1,13 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { CartContext } from "../context/CartContextObject";
 
 export default function WinesPage() {
   const [wines, setWines] = useState([]);
+  const { addToCart } = useContext(CartContext);
+
   function calcDiscount(original, discount) {
     return Math.ceil(((original - discount) / original) * 100);
   }
@@ -72,7 +76,7 @@ export default function WinesPage() {
                         </div>
                       </div>
                       <img
-                        src={`http://localhost:3000/wines/${wine.img}`}
+                        src={wine.img_url}
                         className="card-img-top"
                         alt={wine.product_name}
                       />
@@ -81,6 +85,7 @@ export default function WinesPage() {
                       <p className="card-text">{wine.product_name}</p>
                       {wine.stock_quantity > 0 ? (
                         <button
+                          onClick={() => addToCart(wine, 1)}
                           type="button"
                           className="btn btn-outline-danger"
                         >
