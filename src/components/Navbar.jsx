@@ -16,9 +16,9 @@ export default function Navbar() {
           />
         </Link>
       </div>
-      <div className="d-flex justify-content-between bg-body-tertiary align-items-center">
+      <div className="d-flex justify-content-between bg-body-tertiary align-items-center sticky-top">
         <div></div>
-        <nav className="navbar navbar-expand-lg bg-body-tertiary sticky-top">
+        <nav className="navbar navbar-expand-lg bg-body-tertiary">
           <div className="container-fluid">
             <a className="navbar-brand" href="#"></a>
             <button
