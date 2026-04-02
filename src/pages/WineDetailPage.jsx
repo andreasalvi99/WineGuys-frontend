@@ -75,7 +75,7 @@ function WineDetailPage() {
   {/* RENDER PRINCIPALE */}
   return (
   <section
-    className="py-5 playfair-display_special w-100"
+    className="playfair-display_special w-100"
     style={{
       minHeight: "100vh",
       display: "flex",
