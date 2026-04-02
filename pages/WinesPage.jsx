@@ -19,42 +19,44 @@ export default function WinesPage() {
 
   return (
     <>
-      <div className="row row-cols-5 g-3 playfair-display_special">
-        {wines.map((wine) => {
-          return (
-            <div key={wine.id} className="col">
-              <div className="card h-100 p-3">
-                <Link to={"/vini/" + wine.slug}>
-                  <img
-                    src={`http://localhost:3000/wines/${wine.img}`}
-                    className="card-img-top"
-                    alt={wine.product_name}
-                  />
-                </Link>
-                <div className="card-body text-center">
-                  <p className="card-text">{wine.product_name}</p>
-                  {wine.promotion_price !== null &&
-                  wine.promotion_price !== undefined ? (
-                    <>
-                      <span className="text-decoration-line-through position-relative">
-                        {wine.price}&euro;
-                        <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                          {calcDiscount(wine.price, wine.promotion_price)}%
+      <div className="container p-3">
+        <div className="row row-cols-5 g-3 playfair-display_special">
+          {wines.map((wine) => {
+            return (
+              <div key={wine.id} className="col">
+                <div className="card h-100 p-3 wine-card">
+                  <Link to={"/vini/" + wine.slug}>
+                    <img
+                      src={`http://localhost:3000/wines/${wine.img}`}
+                      className="card-img-top"
+                      alt={wine.product_name}
+                    />
+                  </Link>
+                  <div className="card-body text-center">
+                    <p className="card-text">{wine.product_name}</p>
+                    {wine.promotion_price !== null &&
+                    wine.promotion_price !== undefined ? (
+                      <>
+                        <span className="text-decoration-line-through position-relative">
+                          {wine.price}&euro;
+                          <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            {calcDiscount(wine.price, wine.promotion_price)}%
+                          </span>
                         </span>
-                      </span>
 
-                      <span className="d-block">
-                        {wine.promotion_price}&euro;
-                      </span>
-                    </>
-                  ) : (
-                    <span>{wine.price}&euro;</span>
-                  )}
+                        <span className="d-block">
+                          {wine.promotion_price}&euro;
+                        </span>
+                      </>
+                    ) : (
+                      <span>{wine.price}&euro;</span>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </>
   );
