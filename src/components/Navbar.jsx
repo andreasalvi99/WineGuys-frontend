@@ -38,6 +38,29 @@ export default function Navbar() {
     return Math.ceil(((original - discount) / original) * 100);
   }
 
+  function calcTotalAmount(cart) {
+    let totalPrice = 0;
+
+    for (let i = 0; i < cart.length; i++) {
+      const currentItem = cart[i];
+
+      let currentItemPrice = 0;
+
+      if (
+        currentItem.promotion_price !== null &&
+        currentItem.promotion_price !== undefined
+      ) {
+        currentItemPrice = currentItem.promotion_price * currentItem.quantity;
+      } else {
+        currentItemPrice = currentItem.price * currentItem.quantity;
+      }
+
+      totalPrice += currentItemPrice;
+    }
+
+    return totalPrice.toFixed(2);
+  }
+
   console.log(cart);
 
   return (
@@ -145,7 +168,7 @@ export default function Navbar() {
           <nav className="navbar sticky-bottom bg-body-tertiary">
             <div className="container-fluid justify-content-end">
               <a className="navbar-brand" href="#">
-                Totale: {}
+                Totale: &euro;{calcTotalAmount(cart)}
               </a>
             </div>
           </nav>
