@@ -25,8 +25,6 @@ export default function Navbar() {
     return Math.ceil(((original - discount) / original) * 100);
   }
 
-  console.log(cart);
-
   return (
     <>
       <div className="container-fluid text-center">
