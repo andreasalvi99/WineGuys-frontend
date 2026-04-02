@@ -20,6 +20,10 @@ export default function Navbar() {
     return setCart(prevCart);
   }
 
+  function calcDiscount(original, discount) {
+    return Math.ceil(((original - discount) / original) * 100);
+  }
+
   console.log(cart);
 
   return (
@@ -89,7 +93,7 @@ export default function Navbar() {
           </i>
         </button>
         <div
-          className="offcanvas offcanvas-end"
+          className="offcanvas offcanvas-end playfair-display_special"
           tabIndex={-1}
           id="offcanvasRight"
           aria-labelledby="offcanvasRightLabel"
@@ -110,11 +114,11 @@ export default function Navbar() {
               return (
                 <div key={index} className="card mb-3 p-3">
                   <div className="row g-0">
-                    <div className="col-md-4">
+                    <div className="col-md-4 h-100">
                       <img
                         src={`http://localhost:3000/wines/${item.img}`}
                         className="img-fluid rounded-start"
-                        alt="..."
+                        alt={item.name}
                       />
                     </div>
                     <div className="col-md-8">
@@ -126,7 +130,7 @@ export default function Navbar() {
                             type="button"
                             className="btn btn-secondary btn-sm mb-4 mt-0"
                           >
-                            <i class="bi bi-trash3"></i>
+                            <i className="bi bi-trash3"></i>
                           </button>
                         </div>
                         <div className="d-flex justify-content-start align-items-center">
@@ -151,13 +155,41 @@ export default function Navbar() {
                             </button>
                           </p>
                         </div>
-                        <p className="card-text">
-                          <small className="text-black">
-                            &euro;{item.price}
-                          </small>
-                          <small className="text-black d-block mt-4 text-end">
+                        <p className="card-text mt-3">
+                          {item.promotion_price !== null &&
+                          item.promotion_price !== undefined ? (
+                            <small className="text-danger">
+                              <span className="text-dark text-decoration-line-through position-relative">
+                                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                  -
+                                  {calcDiscount(
+                                    item.price,
+                                    item.promotion_price,
+                                  )}
+                                  %
+                                </span>
+                                &euro;{item.price}
+                              </span>
+                              <span className="d-block">
+                                &euro;{item.promotion_price}
+                              </span>
+                            </small>
+                          ) : (
+                            <small>&euro;{item.price}</small>
+                          )}
+                          {item.promotion_price !== null &&
+                          item.promotion_price !== undefined ? (
+                            <small className="text-black d-block text-end">
+                              Total: &euro;{item.promotion_price * quantity}
+                            </small>
+                          ) : (
+                            <small className="text-black d-block mt-4 text-end">
+                              Total: &euro;{item.price * item.quantity}
+                            </small>
+                          )}
+                          {/* <small className="text-black d-block mt-4 text-end">
                             Total: &euro;{item.price * item.quantity}
-                          </small>
+                          </small> */}
                         </p>
                       </div>
                     </div>
