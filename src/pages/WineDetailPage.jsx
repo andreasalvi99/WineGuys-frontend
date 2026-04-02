@@ -80,7 +80,8 @@ function WineDetailPage() {
       minHeight: "100vh",
       display: "flex",
       flexDirection: "column",
-      backgroundColor: "#ffffff"
+      backgroundColor: "#ffffff",
+    
     }}
   >
     <div
@@ -115,6 +116,9 @@ function WineDetailPage() {
           Indietro
         </button>
       </div>
+
+      {/* 🔥 WRAPPER */}
+      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
 
       {/* CARD DETTAGLIO */}
       
@@ -268,6 +272,7 @@ function WineDetailPage() {
      Scopri la nostra selezione e lasciati guidare in un viaggio tra le migliori
      etichette, pensate per accompagnare ogni momento speciale.
      </p>
+     </div>
      </div>
 
       {/* FOOTER */}
