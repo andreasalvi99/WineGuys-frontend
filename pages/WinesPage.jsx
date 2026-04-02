@@ -18,9 +18,13 @@ export default function WinesPage() {
       <div className="row row-cols-4">
         {wines.map((wine) => {
           return (
-            <div className="col">
+            <div key={wine.id} className="col">
               <div className="card">
-                <img src="..." className="card-img-top" alt="..." />
+                <img
+                  src={`http://localhost:3000/wines/${wine.img}`}
+                  className="card-img-top"
+                  alt={wine.product_name}
+                />
                 <div className="card-body">
                   <p className="card-text">
                     Some quick example text to build on the card title and make
