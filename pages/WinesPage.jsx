@@ -4,6 +4,9 @@ import { Link } from "react-router-dom";
 
 export default function WinesPage() {
   const [wines, setWines] = useState([]);
+  function calcDiscount(original, discount) {
+    return Math.ceil(((original - discount) / original) * 100);
+  }
 
   function fetchWines() {
     axios.get("http://localhost:3000/vini").then((response) => {
@@ -30,7 +33,23 @@ export default function WinesPage() {
                 </Link>
                 <div className="card-body text-center">
                   <p className="card-text">{wine.product_name}</p>
-                  <p className="card-text">{wine.price}&euro;</p>
+                  {wine.promotion_price !== null &&
+                  wine.promotion_price !== undefined ? (
+                    <>
+                      <span className="text-decoration-line-through position-relative">
+                        {wine.price}&euro;
+                        <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                          {calcDiscount(wine.price, wine.promotion_price)}%
+                        </span>
+                      </span>
+
+                      <span className="d-block">
+                        {wine.promotion_price}&euro;
+                      </span>
+                    </>
+                  ) : (
+                    <span>{wine.price}&euro;</span>
+                  )}
                 </div>
               </div>
             </div>
