@@ -73,12 +73,12 @@
 
 /*^BUTTON^*/
 
-.btn-more {
+.btn {
   transition: 0.4s all ease;
   margin-top: 15px;
 }
 
-.btn-more:hover {
+.btn:hover {
   transform: scale(1.1);
 }
 
