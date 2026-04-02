@@ -1,7 +1,5 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useContext } from "react";
-import { CartContext } from "../context/CartContextObject";
 import AllWinesCard from "../components/AllWinesCard";
 
 export default function WinesPage() {
