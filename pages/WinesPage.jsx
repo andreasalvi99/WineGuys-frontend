@@ -26,6 +26,11 @@ export default function WinesPage() {
               return (
                 <div key={wine.id} className="col">
                   <div className="card h-100 p-3 wine-card bg-body-tertiary">
+                    <div className="layover">
+                      <button type="button" className="btn btn-outline-danger">
+                        Aggiungi al carrello
+                      </button>
+                    </div>
                     <Link to={"/vini/" + wine.slug}>
                       <img
                         src={`http://localhost:3000/wines/${wine.img}`}
