@@ -3,7 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import { CartContext } from "../context/CartContextObject";
 
 export default function Navbar() {
-  const { cart } = useContext(CartContext);
+  const { cart, setCart } = useContext(CartContext);
   const [quantity, setQuantity] = useState(1);
 
   function plusOne(item) {
@@ -12,6 +12,12 @@ export default function Navbar() {
 
   function minusOne(item) {
     return setQuantity((item.quantity = item.quantity - 1));
+  }
+
+  function deleteItem(item) {
+    const prevCart = cart.filter((cartItem) => cartItem.id !== item.id);
+
+    return setCart(prevCart);
   }
 
   console.log(cart);
@@ -113,7 +119,16 @@ export default function Navbar() {
                     </div>
                     <div className="col-md-8">
                       <div className="card-body py-0">
-                        <h5 className="card-title">{item.name}</h5>
+                        <div className="d-flex justify-content-between">
+                          <h5 className="card-title">{item.name}</h5>
+                          <button
+                            onClick={() => deleteItem(item)}
+                            type="button"
+                            className="btn btn-secondary btn-sm mb-4 mt-0"
+                          >
+                            <i class="bi bi-trash3"></i>
+                          </button>
+                        </div>
                         <div className="d-flex justify-content-start align-items-center">
                           <p className="card-text mt-3">
                             <button
