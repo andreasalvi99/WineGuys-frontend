@@ -166,10 +166,13 @@ export default function Navbar() {
             })}
           </div>
           <nav className="navbar sticky-bottom bg-body-tertiary">
-            <div className="container-fluid justify-content-end">
+            <div className="container-fluid justify-content-between align-items-center">
               <a className="navbar-brand" href="#">
                 Totale: &euro;{calcTotalAmount(cart)}
               </a>
+              <button type="button" class="btn btn-success m-0">
+                Checkout
+              </button>
             </div>
           </nav>
         </div>
