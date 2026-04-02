@@ -14,7 +14,6 @@ export default function WinesPage() {
 
   function fetchWines() {
     axios.get("http://localhost:3000/vini").then((response) => {
-      console.log(response.data);
       setWines(response.data);
     });
   }

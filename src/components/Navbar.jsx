@@ -91,9 +91,9 @@ export default function Navbar() {
             ></button>
           </div>
           <div className="offcanvas-body">
-            {cart.map((item) => {
+            {cart.map((item, index) => {
               return (
-                <div className="card mb-3">
+                <div key={index} className="card mb-3">
                   <div className="row g-0">
                     <div className="col-md-4">
                       <img
@@ -104,7 +104,7 @@ export default function Navbar() {
                     </div>
                     <div className="col-md-8">
                       <div className="card-body">
-                        <h5 className="card-title">Card title</h5>
+                        <h5 className="card-title">{item.name}</h5>
                         <p className="card-text">
                           This is a wider card with supporting text below as a
                           natural lead-in to additional content. This content is
