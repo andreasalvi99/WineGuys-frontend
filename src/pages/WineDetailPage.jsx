@@ -280,8 +280,8 @@ function WineDetailPage() {
         style={{
           marginTop: "auto",
           padding: "20px 0",
-          backgroundColor: "#f8f8f8",
-          borderTop: "1px solid #ddd",
+          backgroundColor: "#ffffff",
+          borderTop: "1px solid #ffffff",
           textAlign: "center"
         }}
       >
