@@ -219,7 +219,7 @@ function WineDetailPage() {
           
 
         {/* RELATED */}
-        <div style={{ backgroundColor: "#ffffff", padding: "40px 0" }}>
+        <div style={{ backgroundColor: "#ffffff", padding: "80px 0" }}>
 
          <h4 className="text-center mb-4">Potrebbero piacerti</h4>
 
@@ -255,7 +255,7 @@ function WineDetailPage() {
       {/*PHILOSOPHY*/}
       <div
       style={{
-      marginTop: "15px",
+      marginTop: "5px",
       padding: "60px 20px",
       textAlign: "center",
       maxWidth: "700px",
