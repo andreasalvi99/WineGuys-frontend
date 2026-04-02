@@ -6,12 +6,15 @@ function WineDetailPage() {
   const [quantity, setQuantity] = useState(1);
   const { slug } = useParams(); // qui è lo SLUG
   const navigate = useNavigate();
+  
 
   const [wine, setWine] = useState(null);
   const [relatedWines, setRelatedWines] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const isAvailable = wine?.stock_quantity > 0; // esempio di disponibilità
+  
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -192,15 +195,13 @@ function WineDetailPage() {
           </div>
          
          
-        
-        
-
         {/* ADD TO CART */}
           <button
           className="btn btn-dark mt-3"
+          disabled={!isAvailable}
           onClick={() => addToCart(wine)}
           >
-          Aggiungi al carrello
+          {isAvailable ? "Aggiungi al carrello" : "Non disponibile"}
           </button>
         </div>
       </div>
