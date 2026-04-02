@@ -26,7 +26,38 @@ export default function WinesPage() {
               return (
                 <div key={wine.id} className="col">
                   <div className="card h-100 p-3 wine-card bg-body-tertiary">
-                    <Link to={"/vini/" + wine.slug}>
+                    <Link
+                      to={"/vini/" + wine.slug}
+                      className="text-black text-decoration-none"
+                    >
+                      <div className="d-flex justify-content-between">
+                        <div>
+                          {wine.promotion_price !== null &&
+                          wine.promotion_price !== undefined ? (
+                            <span className="badge text-bg-danger">
+                              -{calcDiscount(wine.price, wine.promotion_price)}%
+                            </span>
+                          ) : (
+                            <span> </span>
+                          )}
+                        </div>
+                        <div>
+                          {wine.promotion_price !== null &&
+                          wine.promotion_price !== undefined ? (
+                            <>
+                              <p className="text-danger m-1">
+                                &euro;{wine.promotion_price}
+                              </p>
+                              <p className="text-decoration-line-through">
+                                &euro;
+                                {wine.price}
+                              </p>
+                            </>
+                          ) : (
+                            <p>&euro;{wine.price}</p>
+                          )}
+                        </div>
+                      </div>
                       <img
                         src={`http://localhost:3000/wines/${wine.img}`}
                         className="card-img-top"
@@ -35,7 +66,7 @@ export default function WinesPage() {
                     </Link>
                     <div className="card-body text-center">
                       <p className="card-text">{wine.product_name}</p>
-                      {wine.promotion_price !== null &&
+                      {/* {wine.promotion_price !== null &&
                       wine.promotion_price !== undefined ? (
                         <>
                           <span className="text-decoration-line-through position-relative">
@@ -49,7 +80,7 @@ export default function WinesPage() {
                         </>
                       ) : (
                         <span>{wine.price}&euro;</span>
-                      )}
+                      )} */}
                       <div className="">
                         <button
                           type="button"
