@@ -26,7 +26,7 @@ export default function AllWinesCard({
               )}
 
               {quantity > 0 && quantity <= 6 && (
-                <span className="text-danger">Ne rimangono {quantity}</span>
+                <span className="text-danger blink"> {quantity} rimamenti</span>
               )}
 
               {quantity === 0 && <span className="text-danger">Esaurito</span>}
