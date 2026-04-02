@@ -130,7 +130,7 @@ export default function Navbar() {
                           </button>
                         </div>
                         <div className="d-flex justify-content-start align-items-center">
-                          <p className="card-text mt-3">
+                          <p className="card-text mt-3 d-flex align-items-center">
                             <button
                               onClick={() => minusOne(item)}
                               type="button"
