@@ -25,11 +25,11 @@ export default function WinesPage() {
             {wines.map((wine) => {
               return (
                 <div key={wine.id} className="col">
-                  <div className="card h-100 p-3 wine-card bg-body-tertiary">
-                    <Link
-                      to={"/vini/" + wine.slug}
-                      className="text-black text-decoration-none"
-                    >
+                  <Link
+                    to={"/vini/" + wine.slug}
+                    className="text-black text-decoration-none"
+                  >
+                    <div className="card h-100 p-3 wine-card bg-body-tertiary">
                       <div className="d-flex justify-content-between">
                         <div>
                           {wine.promotion_price !== null &&
@@ -63,34 +63,20 @@ export default function WinesPage() {
                         className="card-img-top"
                         alt={wine.product_name}
                       />
-                    </Link>
-                    <div className="card-body text-center">
-                      <p className="card-text">{wine.product_name}</p>
-                      {/* {wine.promotion_price !== null &&
-                      wine.promotion_price !== undefined ? (
-                        <>
-                          <span className="text-decoration-line-through position-relative">
-                            {wine.price}&euro;
-                            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                              {calcDiscount(wine.price, wine.promotion_price)}%
-                            </span>
-                          </span>
 
-                          <span className="">{wine.promotion_price}&euro;</span>
-                        </>
-                      ) : (
-                        <span>{wine.price}&euro;</span>
-                      )} */}
-                      <div className="">
+                      <div className="card-body text-center d-flex flex-column justify-content-between">
+                        <p className="card-text">{wine.product_name}</p>
+                        {/* <div className=""> */}
                         <button
                           type="button"
-                          className="btn btn-outline-danger me-auto"
+                          className="btn btn-outline-danger"
                         >
                           Aggiungi al carrello
                         </button>
+                        {/* </div> */}
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 </div>
               );
             })}
