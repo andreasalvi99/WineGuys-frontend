@@ -45,10 +45,10 @@ export default function WinesPage() {
                           {wine.promotion_price !== null &&
                           wine.promotion_price !== undefined ? (
                             <>
-                              <p className="text-danger m-1">
+                              <p className="text-danger m-0">
                                 &euro;{wine.promotion_price}
                               </p>
-                              <p className="text-decoration-line-through">
+                              <p className="text-decoration-line-through m-0">
                                 &euro;
                                 {wine.price}
                               </p>
@@ -63,17 +63,14 @@ export default function WinesPage() {
                         className="card-img-top"
                         alt={wine.product_name}
                       />
-
                       <div className="card-body text-center d-flex flex-column justify-content-between">
                         <p className="card-text">{wine.product_name}</p>
-                        {/* <div className=""> */}
                         <button
                           type="button"
                           className="btn btn-outline-danger"
                         >
                           Aggiungi al carrello
                         </button>
-                        {/* </div> */}
                       </div>
                     </div>
                   </Link>
