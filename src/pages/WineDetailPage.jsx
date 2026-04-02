@@ -120,7 +120,7 @@ function WineDetailPage() {
       
       <div style={{ backgroundColor: "#dbc392", padding: "40px 0" }}>
 
-  <div className="container">
+      <div className="container">
 
     <div className="row align-items-center">
 
