@@ -1,9 +1,18 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { CartContext } from "../context/CartContextObject";
 
 export default function Navbar() {
   const { cart } = useContext(CartContext);
+  const [quantity, setQuantity] = useState(1);
+
+  function plusOne(item) {
+    return setQuantity((item.quantity = item.quantity + 1));
+  }
+
+  function minusOne(item) {
+    return setQuantity((item.quantity = item.quantity - 1));
+  }
 
   console.log(cart);
 
@@ -93,7 +102,7 @@ export default function Navbar() {
           <div className="offcanvas-body">
             {cart.map((item, index) => {
               return (
-                <div key={index} className="card mb-3">
+                <div key={index} className="card mb-3 p-3">
                   <div className="row g-0">
                     <div className="col-md-4">
                       <img
@@ -103,16 +112,36 @@ export default function Navbar() {
                       />
                     </div>
                     <div className="col-md-8">
-                      <div className="card-body">
+                      <div className="card-body py-0">
                         <h5 className="card-title">{item.name}</h5>
+                        <div className="d-flex justify-content-start align-items-center">
+                          <p className="card-text mt-3">
+                            <button
+                              onClick={() => minusOne(item)}
+                              type="button"
+                              className="btn btn-light m-0"
+                              disabled={quantity === 0}
+                            >
+                              -
+                            </button>
+                            <span className="border border-dark p-1 mx-2">
+                              {quantity}
+                            </span>
+                            <button
+                              onClick={() => plusOne(item)}
+                              type="button"
+                              className="btn btn-light m-0"
+                            >
+                              +
+                            </button>
+                          </p>
+                        </div>
                         <p className="card-text">
-                          This is a wider card with supporting text below as a
-                          natural lead-in to additional content. This content is
-                          a little bit longer.
-                        </p>
-                        <p className="card-text">
-                          <small className="text-body-secondary">
-                            Last updated 3 mins ago
+                          <small className="text-black">
+                            &euro;{item.price}
+                          </small>
+                          <small className="text-black d-block mt-4 text-end">
+                            Total: &euro;{item.price * item.quantity}
                           </small>
                         </p>
                       </div>
