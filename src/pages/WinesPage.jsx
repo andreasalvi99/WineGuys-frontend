@@ -6,7 +6,6 @@ import AllWinesCard from "../components/AllWinesCard";
 
 export default function WinesPage() {
   const [wines, setWines] = useState([]);
-  const { addToCart } = useContext(CartContext);
 
   function calcDiscount(original, discount) {
     return Math.ceil(((original - discount) / original) * 100);
