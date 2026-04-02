@@ -1,14 +1,16 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 export default function Navbar() {
   return (
     <>
       <div className="container-fluid text-center">
-        <img
-          src="../src/assets/img/wineguys2.png"
-          alt="navbar-logo"
-          className="navbar-logo"
-        />
+        <Link to={"/"}>
+          <img
+            src="../src/assets/img/wineguys2.png"
+            alt="navbar-logo"
+            className="navbar-logo"
+          />
+        </Link>
       </div>
       <nav className="navbar navbar-expand-lg bg-body-tertiary sticky-top">
         <div className="container-fluid">
