@@ -52,7 +52,7 @@ function WineDetailPage() {
   if (!wine) return <p>Nessun vino trovato</p>;
 
  
-
+  {/* funzione per aggiungere al carrello */}
   function addToCart(wine) {
   const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
@@ -78,10 +78,14 @@ function WineDetailPage() {
   console.log("CARRELLO:", cart);
 }
 
+  {/* funzione per calcolare lo sconto in percentuale */}
   function calcDiscount(original, discount) {
     return Math.ceil(((original - discount) / original) * 100);
   }
   
+
+
+  {/* RENDER PRINCIPALE */}
   return (
   <section
     className="py-5 playfair-display_special w-100"
