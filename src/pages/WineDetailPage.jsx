@@ -285,7 +285,7 @@ function WineDetailPage() {
           textAlign: "center"
         }}
       >
-        <p style={{ margin: 0, fontSize: "14px", color: "#666" }}>
+        <p style={{ margin: 0, fontSize: "14px", color: "#000000" }}>
           © 2026 – Made with WineGuys🍷
         </p>
       </footer>
