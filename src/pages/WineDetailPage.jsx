@@ -1,11 +1,15 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import WineCard from "../components/WineCard";  
+import WineCard from "../components/WineCard.jsx";  
+import { useContext } from "react";
+import { CartContext } from "../context/CartContextObject";
 
 function WineDetailPage() { 
   const [quantity, setQuantity] = useState(1);
   const { slug } = useParams(); // qui è lo SLUG
   const navigate = useNavigate();
+  const { addToCart } = useContext(CartContext);
+ 
   
 
   const [wine, setWine] = useState(null);
@@ -13,7 +17,9 @@ function WineDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const isAvailable = wine?.stock_quantity > 0; // esempio di disponibilità
+  
+
+  
   
   useEffect(() => {
     const loadData = async () => {
@@ -24,7 +30,7 @@ function WineDetailPage() {
         const res = await fetch(`http://localhost:3000/vini/${slug}`);
         const data = await res.json();
 
-        console.log(data); // debug
+        console.log(data.result); // debug
 
         setWine(data.result);
         const relatedRes = await fetch("http://localhost:3000/vini");
@@ -53,33 +59,11 @@ function WineDetailPage() {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
   if (!wine) return <p>Nessun vino trovato</p>;
-
- 
-  {/* funzione per aggiungere al carrello */}
-  function addToCart(wine) {
-  const cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-  const existing = cart.find(item => item.id === wine.id);
-
-  if (existing) {
-    existing.quantity += quantity;
-  } else {
-    cart.push({
-      id: wine.id,
-      name: wine.product_name,
-      price: Number(wine.price),
-      promotion_price: wine.promotion_price
-        ? Number(wine.promotion_price)
-        : null,
-      quantity: quantity,
-      img: wine.img
-    });
-  }
-
-  localStorage.setItem("cart", JSON.stringify(cart));
-
-  console.log("CARRELLO:", cart);
-}
+  
+  
+  const isAvailable = wine.stock_quantity > 0;
+  
+  
 
   {/* funzione per calcolare lo sconto in percentuale */}
   function calcDiscount(original, discount) {
@@ -197,10 +181,10 @@ function WineDetailPage() {
          
         {/* ADD TO CART */}
           <button
-          className="btn btn-dark mt-3"
+          className={`btn mt-3 ${isAvailable ? "btn-outline-dark" : "btn-secondary"}`}
+          onClick={() => addToCart(wine, quantity)}
           disabled={!isAvailable}
-          onClick={() => addToCart(wine)}
-          >
+         >
           {isAvailable ? "Aggiungi al carrello" : "Non disponibile"}
           </button>
         </div>
