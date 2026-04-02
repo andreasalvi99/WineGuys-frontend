@@ -1,3 +1,3 @@
-export default function WinePage() {
-  return <></>;
+export default function WinesPage() {
+  return <>Ciaoo</>;
 }
