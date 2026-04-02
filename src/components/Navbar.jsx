@@ -17,6 +17,7 @@ export default function Navbar() {
 
   function deleteItem(item) {
     const prevCart = cart.filter((cartItem) => cartItem.id !== item.id);
+    setQuantity(1);
 
     return setCart(prevCart);
   }
@@ -24,6 +25,8 @@ export default function Navbar() {
   function calcDiscount(original, discount) {
     return Math.ceil(((original - discount) / original) * 100);
   }
+
+  console.log(cart);
 
   return (
     <>
@@ -130,7 +133,7 @@ export default function Navbar() {
           <nav className="navbar sticky-bottom bg-body-tertiary">
             <div className="container-fluid justify-content-end">
               <a className="navbar-brand" href="#">
-                Totale:
+                Totale: {}
               </a>
             </div>
           </nav>
