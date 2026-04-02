@@ -187,9 +187,6 @@ export default function Navbar() {
                               Total: &euro;{item.price * item.quantity}
                             </small>
                           )}
-                          {/* <small className="text-black d-block mt-4 text-end">
-                            Total: &euro;{item.price * item.quantity}
-                          </small> */}
                         </p>
                       </div>
                     </div>
