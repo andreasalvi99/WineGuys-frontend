@@ -173,27 +173,28 @@ function WineDetailPage() {
             <strong>Anno:</strong> {wine.vintage}
           </p>
 
+          
           {/* QUANTITY */}
           <div className="d-flex align-items-center gap-2 mt-3">
            <button
           className="btn btn-outline-dark"
           onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
-         >
-          -
-          </button>
-
-         <span style={{ minWidth: "30px", textAlign: "center" }}>
+           >-</button>
+          
+          <span style={{ minWidth: "30px", textAlign: "center" }}>
           {quantity}
-        </span>
+          </span>
 
-         <button
-         className="btn btn-outline-dark"
-         onClick={() => setQuantity(prev => prev + 1)}
-        >
-         +
-        </button>
-        </div>
+          <button
+          className="btn btn-outline-dark"
+          onClick={() => setQuantity(prev => prev + 1)}
+          >+</button>
+          </div>
+         
+         
         
+        
+
         {/* ADD TO CART */}
           <button
           className="btn btn-dark mt-3"
