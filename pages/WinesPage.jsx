@@ -37,13 +37,21 @@ export default function WinesPage() {
                     <div className="card h-100 p-3 wine-card bg-body-tertiary">
                       <div className="d-flex justify-content-between">
                         <div>
-                          {wine.promotion_price !== null &&
-                          wine.promotion_price !== undefined ? (
+                          {wine.promotion_price != null && (
                             <span className="badge text-bg-danger fs-6">
                               -{calcDiscount(wine.price, wine.promotion_price)}%
                             </span>
-                          ) : (
-                            <span> </span>
+                          )}
+
+                          {wine.stock_quantity > 0 &&
+                            wine.stock_quantity <= 6 && (
+                              <span className="text-danger">
+                                Ne rimangono {wine.stock_quantity}
+                              </span>
+                            )}
+
+                          {wine.stock_quantity === 0 && (
+                            <span className="text-danger">Esaurito</span>
                           )}
                         </div>
                         <div>
@@ -68,6 +76,7 @@ export default function WinesPage() {
                         className="card-img-top"
                         alt={wine.product_name}
                       />
+
                       <div className="card-body text-center d-flex flex-column justify-content-between">
                         <p className="card-text">{wine.product_name}</p>
                         <button
