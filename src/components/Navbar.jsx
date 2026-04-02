@@ -8,11 +8,23 @@ export default function Navbar() {
   const [quantity, setQuantity] = useState(1);
 
   function plusOne(item) {
-    return setQuantity((item.quantity = item.quantity + 1));
+    setCart((prevCart) =>
+      prevCart.map((cartItem) =>
+        cartItem.id === item.id
+          ? { ...cartItem, quantity: cartItem.quantity + 1 }
+          : cartItem,
+      ),
+    );
   }
 
   function minusOne(item) {
-    return setQuantity((item.quantity = item.quantity - 1));
+    setCart((prevCart) =>
+      prevCart.map((cartItem) =>
+        cartItem.id === item.id
+          ? { ...cartItem, quantity: cartItem.quantity - 1 }
+          : cartItem,
+      ),
+    );
   }
 
   function deleteItem(item) {
@@ -121,7 +133,7 @@ export default function Navbar() {
                   name={item.name}
                   promotion={item.promotion_price}
                   price={item.price}
-                  quantity={quantity}
+                  quantity={item.quantity}
                   deleteItem={deleteItem}
                   plusOne={plusOne}
                   minusOne={minusOne}
