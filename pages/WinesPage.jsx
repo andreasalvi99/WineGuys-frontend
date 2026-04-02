@@ -27,14 +27,6 @@ export default function WinesPage() {
                 <div key={wine.id} className="col">
                   <div className="card h-100 p-3 wine-card bg-body-tertiary">
                     <Link to={"/vini/" + wine.slug}>
-                      {/* <div className="layover">
-                        <button
-                          type="button"
-                          className="btn btn-outline-danger"
-                        >
-                          Aggiungi al carrello
-                        </button>
-                      </div> */}
                       <img
                         src={`http://localhost:3000/wines/${wine.img}`}
                         className="card-img-top"
@@ -53,13 +45,19 @@ export default function WinesPage() {
                             </span>
                           </span>
 
-                          <span className="d-block">
-                            {wine.promotion_price}&euro;
-                          </span>
+                          <span className="">{wine.promotion_price}&euro;</span>
                         </>
                       ) : (
                         <span>{wine.price}&euro;</span>
                       )}
+                      <div className="">
+                        <button
+                          type="button"
+                          className="btn btn-outline-danger me-auto"
+                        >
+                          Aggiungi al carrello
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>

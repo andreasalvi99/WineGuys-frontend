@@ -87,21 +87,3 @@
   max-width: 500px;
   max-height: 350px;
 }
-
-/* .layover {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: none;
-  justify-content: center;
-  align-items: center;
-}
-
-.wine-card:hover .layover {
-  height: 100%;
-  width: 100%;
-  background-color: rgba(255, 255, 255, 0.783);
-  backdrop-filter: blur(3px);
-  display: flex;
-  z-index: 10;
-} */
