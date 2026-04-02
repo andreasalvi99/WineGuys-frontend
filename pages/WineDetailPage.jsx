@@ -50,6 +50,31 @@ function WineDetailPage() {
   if (error) return <p>{error}</p>;
   if (!wine) return <p>Nessun vino trovato</p>;
 
+  function addToCart(wine) {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  const existing = cart.find(item => item.id === wine.id);
+
+  if (existing) {
+    existing.quantity += 1;
+  } else {
+    cart.push({
+      id: wine.id,
+      name: wine.product_name,
+      price: Number(wine.price),
+      promotion_price: wine.promotion_price
+        ? Number(wine.promotion_price)
+        : null,
+      quantity: 1,
+      img: wine.img
+    });
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+
+  console.log("CARRELLO:", cart);
+}
+
   function calcDiscount(original, discount) {
     return Math.ceil(((original - discount) / original) * 100);
   }
@@ -141,8 +166,11 @@ function WineDetailPage() {
             <strong>Anno:</strong> {wine.vintage}
           </p>
 
-          <button className="btn btn-dark mt-3">
-            Aggiungi al carrello
+          <button
+          className="btn btn-dark mt-3"
+          onClick={() => addToCart(wine)}
+          >
+          Aggiungi al carrello
           </button>
         </div>
       </div>
