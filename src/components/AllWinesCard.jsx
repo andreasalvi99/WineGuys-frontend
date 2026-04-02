@@ -49,19 +49,14 @@ export default function AllWinesCard({
         </Link>
         <div className="card-body text-center d-flex flex-column justify-content-between">
           <p className="card-text">{name}</p>
-          {quantity > 0 ? (
-            <button
-              onClick={() => addToCart(wine, 1)}
-              type="button"
-              className="btn btn-outline-danger"
-            >
-              Aggiungi al carrello
-            </button>
-          ) : (
-            <button type="button" className="btn btn-outline-danger" disabled>
-              Aggiungi al carrello
-            </button>
-          )}
+          <button
+            onClick={() => addToCart(wine, 1)}
+            type="button"
+            className="btn btn-outline-danger"
+            disabled={quantity <= 0}
+          >
+            Aggiungi al carrello
+          </button>
         </div>
       </div>
     </div>
