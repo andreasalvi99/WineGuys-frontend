@@ -8,7 +8,7 @@ export default function Navbar() {
           <img
             src="../src/assets/img/wineguys2.png"
             alt="navbar-logo"
-            className="navbar-logo"
+            className="navbar-logo p-2"
           />
         </Link>
       </div>
