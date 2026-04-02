@@ -1,9 +1,67 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { CartContext } from "../context/CartContextObject";
+import CartCard from "./CartCard";
 
 export default function Navbar() {
-  const { cart, addToCart } = useContext(CartContext);
+  const { cart, setCart } = useContext(CartContext);
+  const [quantity, setQuantity] = useState(1);
+
+  function plusOne(item) {
+    setCart((prevCart) =>
+      prevCart.map((cartItem) =>
+        cartItem.id === item.id
+          ? { ...cartItem, quantity: cartItem.quantity + 1 }
+          : cartItem,
+      ),
+    );
+  }
+
+  function minusOne(item) {
+    setCart((prevCart) =>
+      prevCart.map((cartItem) =>
+        cartItem.id === item.id
+          ? { ...cartItem, quantity: cartItem.quantity - 1 }
+          : cartItem,
+      ),
+    );
+  }
+
+  function deleteItem(item) {
+    const prevCart = cart.filter((cartItem) => cartItem.id !== item.id);
+    setQuantity(1);
+
+    return setCart(prevCart);
+  }
+
+  function calcDiscount(original, discount) {
+    return Math.ceil(((original - discount) / original) * 100);
+  }
+
+  function calcTotalAmount(cart) {
+    let totalPrice = 0;
+
+    for (let i = 0; i < cart.length; i++) {
+      const currentItem = cart[i];
+
+      let currentItemPrice = 0;
+
+      if (
+        currentItem.promotion_price !== null &&
+        currentItem.promotion_price !== undefined
+      ) {
+        currentItemPrice = currentItem.promotion_price * currentItem.quantity;
+      } else {
+        currentItemPrice = currentItem.price * currentItem.quantity;
+      }
+
+      totalPrice += currentItemPrice;
+    }
+
+    return totalPrice.toFixed(2);
+  }
+
+  console.log(cart);
 
   return (
     <>
@@ -72,7 +130,7 @@ export default function Navbar() {
           </i>
         </button>
         <div
-          className="offcanvas offcanvas-end"
+          className="offcanvas offcanvas-end playfair-display_special"
           tabIndex={-1}
           id="offcanvasRight"
           aria-labelledby="offcanvasRightLabel"
@@ -88,7 +146,35 @@ export default function Navbar() {
               aria-label="Close"
             ></button>
           </div>
-          <div className="offcanvas-body">...</div>
+          <div className="offcanvas-body">
+            {cart.map((item, index) => {
+              return (
+                <CartCard
+                  item={item}
+                  key={index}
+                  img={item.img}
+                  name={item.name}
+                  promotion={item.promotion_price}
+                  price={item.price}
+                  quantity={item.quantity}
+                  deleteItem={deleteItem}
+                  plusOne={plusOne}
+                  minusOne={minusOne}
+                  calcDiscount={calcDiscount}
+                />
+              );
+            })}
+          </div>
+          <nav className="navbar sticky-bottom bg-body-tertiary">
+            <div className="container-fluid justify-content-between align-items-center">
+              <a className="navbar-brand" href="#">
+                Totale: &euro;{calcTotalAmount(cart)}
+              </a>
+              <button type="button" class="btn btn-success m-0">
+                Checkout
+              </button>
+            </div>
+          </nav>
         </div>
       </div>
     </>
