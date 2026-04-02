@@ -127,6 +127,13 @@ export default function Navbar() {
               );
             })}
           </div>
+          <nav className="navbar sticky-bottom bg-body-tertiary">
+            <div className="container-fluid justify-content-end">
+              <a className="navbar-brand" href="#">
+                Totale:
+              </a>
+            </div>
+          </nav>
         </div>
       </div>
     </>

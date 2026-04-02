@@ -68,11 +68,11 @@ export default function CartCard({
               )}
               {promotion !== null && promotion !== undefined ? (
                 <small className="text-black d-block text-end">
-                  Total: &euro;{promotion * quantity}
+                  Totale: &euro;{promotion * quantity}
                 </small>
               ) : (
                 <small className="text-black d-block mt-4 text-end">
-                  Total: &euro;{price * quantity}
+                  Totale: &euro;{price * quantity}
                 </small>
               )}
             </p>
