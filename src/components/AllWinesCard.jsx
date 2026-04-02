@@ -26,7 +26,10 @@ export default function AllWinesCard({
               )}
 
               {quantity > 0 && quantity <= 6 && (
-                <span className="text-danger blink"> {quantity} rimamenti</span>
+                <span className="text-danger blink">
+                  <div className="red-pin bg-danger"></div>
+                  {quantity} rimamenti
+                </span>
               )}
 
               {quantity === 0 && <span className="text-danger">Esaurito</span>}
