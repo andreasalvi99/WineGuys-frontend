@@ -117,7 +117,7 @@ function WineDetailPage() {
         </button>
       </div>
 
-      {/* 🔥 WRAPPER */}
+      {/* WRAPPER */}
       <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
 
       {/* CARD DETTAGLIO */}
@@ -260,7 +260,7 @@ function WineDetailPage() {
       textAlign: "center",
       maxWidth: "700px",
       marginInline: "auto",
-      color: "#333"
+      color: "#000000"
       }}
       >
      <h3 style={{ marginBottom: "20px", fontStyle: "italic" }}>
