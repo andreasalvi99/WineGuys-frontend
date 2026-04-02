@@ -72,7 +72,7 @@ export default function WinesPage() {
                         </div>
                       </div>
                       <img
-                        src={`http://localhost:3000/wines/${wine.img}`}
+                        src={wine.img_url}
                         className="card-img-top"
                         alt={wine.product_name}
                       />
