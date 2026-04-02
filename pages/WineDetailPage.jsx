@@ -2,7 +2,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import WineCard from "../components/WineCard";  
 
-function WineDetailPage() {
+function WineDetailPage() { 
+  const [quantity, setQuantity] = useState(1);
   const { slug } = useParams(); // qui è lo SLUG
   const navigate = useNavigate();
 
@@ -50,13 +51,15 @@ function WineDetailPage() {
   if (error) return <p>{error}</p>;
   if (!wine) return <p>Nessun vino trovato</p>;
 
+ 
+
   function addToCart(wine) {
   const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
   const existing = cart.find(item => item.id === wine.id);
 
   if (existing) {
-    existing.quantity += 1;
+    existing.quantity += quantity;
   } else {
     cart.push({
       id: wine.id,
@@ -65,7 +68,7 @@ function WineDetailPage() {
       promotion_price: wine.promotion_price
         ? Number(wine.promotion_price)
         : null,
-      quantity: 1,
+      quantity: quantity,
       img: wine.img
     });
   }
@@ -165,6 +168,26 @@ function WineDetailPage() {
           <p className="mt-3 fs-5">
             <strong>Anno:</strong> {wine.vintage}
           </p>
+
+          <div className="d-flex align-items-center gap-2 mt-3">
+           <button
+          className="btn btn-outline-dark"
+          onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
+         >
+          -
+          </button>
+
+         <span style={{ minWidth: "30px", textAlign: "center" }}>
+          {quantity}
+        </span>
+
+         <button
+         className="btn btn-outline-dark"
+         onClick={() => setQuantity(prev => prev + 1)}
+        >
+         +
+        </button>
+        </div>
 
           <button
           className="btn btn-dark mt-3"
