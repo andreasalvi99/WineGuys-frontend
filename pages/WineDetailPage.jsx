@@ -173,6 +173,7 @@ function WineDetailPage() {
             <strong>Anno:</strong> {wine.vintage}
           </p>
 
+          {/* QUANTITY */}
           <div className="d-flex align-items-center gap-2 mt-3">
            <button
           className="btn btn-outline-dark"
@@ -192,7 +193,8 @@ function WineDetailPage() {
          +
         </button>
         </div>
-
+        
+        {/* ADD TO CART */}
           <button
           className="btn btn-dark mt-3"
           onClick={() => addToCart(wine)}
