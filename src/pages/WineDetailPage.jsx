@@ -75,11 +75,13 @@ function WineDetailPage() {
   {/* RENDER PRINCIPALE */}
   return (
   <section
-    className="py-5 playfair-display_special w-100"
+    className="playfair-display_special w-100"
     style={{
       minHeight: "100vh",
       display: "flex",
-      flexDirection: "column"
+      flexDirection: "column",
+      backgroundColor: "#ffffff",
+    
     }}
   >
     <div
@@ -92,7 +94,14 @@ function WineDetailPage() {
     >
 
       {/* NAV */}
-      <div className="d-flex justify-content-between mb-4 px-4 px-md-5">
+     <div
+     className="d-flex justify-content-between mb-4 px-4 px-md-5"
+     style={{
+     backgroundColor:"#ffffff",
+     paddingTop: "15px",
+     paddingBottom: "15px"
+     }}
+     >
         <button
           className="btn btn-outline-dark"
           onClick={() => navigate("/")}
@@ -108,28 +117,38 @@ function WineDetailPage() {
         </button>
       </div>
 
-      {/* CARD DETTAGLIO */}
-      <div className="row align-items-center">
+      {/* WRAPPER */}
+      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
 
-        {/* IMG */}
-        <div className="col-md-6 text-center">
-          <img
-            src={
-              wine.img
-                ? `http://localhost:3000/wines/${wine.img}`
-                : ""
-            }
-            alt={wine.product_name}
-            className="img-fluid"
-            style={{
-              maxHeight: "400px",
-              objectFit: "contain"
-            }}
-          />
-        </div>
+      {/* CARD DETTAGLIO */}
+      
+      <div style={{ backgroundColor: "#ffffff", padding: "40px 0" }}>
+
+      <div className="container">
+
+    <div className="row align-items-center">
+
+      {/* IMG */}
+      <div className="col-md-6 text-center">
+        <img
+          src={
+            wine.img
+              ? `http://localhost:3000/wines/${wine.img}`
+              : ""
+          }
+          alt={wine.product_name}
+          className="img-fluid"
+          style={{
+            maxHeight: "400px",
+            objectFit: "contain"
+          }}
+        />
+      </div>
+
+     
 
         {/* INFO */}
-        <div className="col-md-6">
+        <div className="col-md-6 text-center text-md-start">
           <h1 className="mb-3">{wine.product_name}</h1>
 
           <h3 className="mb-3">
@@ -162,21 +181,27 @@ function WineDetailPage() {
 
           
           {/* QUANTITY */}
-          <div className="d-flex align-items-center gap-2 mt-3">
-           <button
-          className="btn btn-outline-dark"
+         <div className="d-flex align-items-center justify-content-center justify-content-md-start gap-2 mt-3">
+  
+         <button
+         className="btn btn-outline-dark"
           onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
-           >-</button>
-          
-          <span style={{ minWidth: "30px", textAlign: "center" }}>
-          {quantity}
-          </span>
+         >
+          -
+         </button>
 
-          <button
+         <span style={{ minWidth: "30px", textAlign: "center" }}>
+          {quantity}
+         </span>
+
+         <button
           className="btn btn-outline-dark"
           onClick={() => setQuantity(prev => prev + 1)}
-          >+</button>
-          </div>
+         >
+         +
+         </button>
+
+         </div>
          
          
         {/* ADD TO CART */}
@@ -187,46 +212,55 @@ function WineDetailPage() {
          >
           {isAvailable ? "Aggiungi al carrello" : "Non disponibile"}
           </button>
-        </div>
-      </div>
-
-      <hr className="my-5" />
-
-      {/* RELATED */}
-      <h4 className="text-center mb-4">Potrebbero piacerti</h4>
-
-      <div className="row justify-content-center">
-        {relatedWines.map((w) => (
-          <div
-            className="col-md-4 text-center mb-4"
-            key={w.id}
-          >
-            <div style={{ maxWidth: "200px", margin: "0 auto" }}>
-              <WineCard
-                img={
-                  w.img
-                    ? `http://localhost:3000/wines/${w.img}`
-                    : ""
-                }
-                name={w.product_name}
-                price={w.price}
-                discounted={w.promotion_price}
-                slug={w.slug}
-              />
-            </div>
           </div>
-        ))}
-      </div>
+          </div>
+          </div>
+
+          
+
+        {/* RELATED */}
+        <div style={{ backgroundColor: "#ffffff", padding: "80px 0" }}>
+
+         <h4 className="text-center mb-4">Potrebbero piacerti</h4>
+
+          <div className="container">
+          <div className="row justify-content-center">
+
+      {relatedWines.map((w) => (
+        <div
+          className="col-md-4 text-center mb-4"
+          key={w.id}
+        >
+          <div style={{ maxWidth: "200px", margin: "0 auto" }}>
+            <WineCard
+              img={
+                w.img
+                  ? `http://localhost:3000/wines/${w.img}`
+                  : ""
+              }
+              name={w.product_name}
+              price={w.price}
+              discounted={w.promotion_price}
+              slug={w.slug}
+            />
+          </div>
+        </div>
+      ))}
+
+    </div>
+  </div>
+
+</div>
 
       {/*PHILOSOPHY*/}
       <div
       style={{
-      marginTop: "60px",
+      marginTop: "5px",
       padding: "60px 20px",
       textAlign: "center",
       maxWidth: "700px",
       marginInline: "auto",
-      color: "#333"
+      color: "#000000"
       }}
       >
      <h3 style={{ marginBottom: "20px", fontStyle: "italic" }}>
@@ -239,22 +273,24 @@ function WineDetailPage() {
      etichette, pensate per accompagnare ogni momento speciale.
      </p>
      </div>
+     </div>
 
       {/* FOOTER */}
       <footer
         style={{
           marginTop: "auto",
           padding: "20px 0",
-          backgroundColor: "#f8f8f8",
-          borderTop: "1px solid #ddd",
+          backgroundColor: "#ffffff",
+          borderTop: "1px solid #000000",
           textAlign: "center"
         }}
       >
-        <p style={{ margin: 0, fontSize: "14px", color: "#666" }}>
-          © 2026 WineGuys – Made with 🍷
+        <p style={{ margin: 0, fontSize: "14px", color: "#000000" }}>
+          © 2026 – Made with WineGuys🍷
         </p>
       </footer>
 
+    </div>
     </div>
   </section>
 );
