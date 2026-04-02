@@ -30,11 +30,11 @@ export default function WinesPage() {
             {wines.map((wine) => {
               return (
                 <div key={wine.id} className="col">
-                  <Link
-                    to={"/vini/" + wine.slug}
-                    className="text-black text-decoration-none"
-                  >
-                    <div className="card h-100 p-3 wine-card bg-body-tertiary">
+                  <div className="card h-100 p-3 wine-card bg-body-tertiary">
+                    <Link
+                      to={"/vini/" + wine.slug}
+                      className="text-black text-decoration-none"
+                    >
                       <div className="d-flex justify-content-between">
                         <div>
                           {wine.promotion_price != null && (
@@ -76,28 +76,27 @@ export default function WinesPage() {
                         className="card-img-top"
                         alt={wine.product_name}
                       />
-
-                      <div className="card-body text-center d-flex flex-column justify-content-between">
-                        <p className="card-text">{wine.product_name}</p>
-                        {wine.stock_quantity > 0 ? (
-                          <button
-                            type="button"
-                            className="btn btn-outline-danger"
-                          >
-                            Aggiungi al carrello
-                          </button>
-                        ) : (
-                          <button
-                            type="button"
-                            className="btn btn-outline-danger"
-                            disabled
-                          >
-                            Aggiungi al carrello
-                          </button>
-                        )}
-                      </div>
+                    </Link>
+                    <div className="card-body text-center d-flex flex-column justify-content-between">
+                      <p className="card-text">{wine.product_name}</p>
+                      {wine.stock_quantity > 0 ? (
+                        <button
+                          type="button"
+                          className="btn btn-outline-danger"
+                        >
+                          Aggiungi al carrello
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          className="btn btn-outline-danger"
+                          disabled
+                        >
+                          Aggiungi al carrello
+                        </button>
+                      )}
                     </div>
-                  </Link>
+                  </div>
                 </div>
               );
             })}
