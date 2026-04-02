@@ -327,7 +327,7 @@ export default function HomePage() {
             <div className="d-none d-xl-block">
               <div className="d-flex">
                 <div>
-                  <h1 className="border-bottom border-black">CHI SIAMO</h1>
+                  <h1 className="border-bottom border-black my-3">CHI SIAMO</h1>
                 </div>
               </div>
               <p className="fs-5 my-3">
