@@ -122,7 +122,7 @@ function WineDetailPage() {
 
       {/* CARD DETTAGLIO */}
       
-      <div style={{ backgroundColor: "#dbc392", padding: "40px 0" }}>
+      <div style={{ backgroundColor: "#ffffff", padding: "40px 0" }}>
 
       <div className="container">
 
@@ -219,7 +219,7 @@ function WineDetailPage() {
           
 
         {/* RELATED */}
-        <div style={{ backgroundColor: "#dfd1ae", padding: "40px 0" }}>
+        <div style={{ backgroundColor: "#ffffff", padding: "40px 0" }}>
 
          <h4 className="text-center mb-4">Potrebbero piacerti</h4>
 
@@ -281,7 +281,7 @@ function WineDetailPage() {
           marginTop: "auto",
           padding: "20px 0",
           backgroundColor: "#ffffff",
-          borderTop: "1px solid #ffffff",
+          borderTop: "1px solid #000000",
           textAlign: "center"
         }}
       >
