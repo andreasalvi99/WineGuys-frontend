@@ -34,7 +34,7 @@ export default function WinesPage() {
                         <div>
                           {wine.promotion_price !== null &&
                           wine.promotion_price !== undefined ? (
-                            <span className="badge text-bg-danger">
+                            <span className="badge text-bg-danger fs-6">
                               -{calcDiscount(wine.price, wine.promotion_price)}%
                             </span>
                           ) : (
