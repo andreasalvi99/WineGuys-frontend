@@ -184,7 +184,7 @@ export default function Navbar() {
               </a>
               <button
                 type="button"
-                class="btn btn-success m-0"
+                className="btn btn-success m-0"
                 disabled={cart.length === 0}
               >
                 Checkout
