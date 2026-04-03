@@ -47,6 +47,7 @@ export default function CartCard({
                   onClick={() => plusOne(item)}
                   type="button"
                   className="btn btn-light m-0"
+                  disabled={quantity >= item.stock_quantity}
                 >
                   +
                 </button>
