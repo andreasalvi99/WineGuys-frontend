@@ -171,6 +171,12 @@ function WineDetailPage() {
           )}
            </h3>
 
+           {wine && wine.stock_quantity <= 5 && (
+           <p style={{ color: "red", fontSize: "0.9rem" }}>
+           Solo {wine.stock_quantity} rimasti!
+           </p>
+           )}
+
           <p className="mt-3 fs-5" style={{ color: "#000000" }}>
             {wine.description}
           </p>
@@ -195,11 +201,16 @@ function WineDetailPage() {
          </span>
 
          <button
-          className="btn btn-outline-dark"
-          onClick={() => setQuantity(prev => prev + 1)}
+         className="btn btn-outline-dark"
+         onClick={() =>
+         setQuantity(prev =>
+         prev < wine.stock_quantity ? prev + 1 : prev
+         )
+         }
+         disabled={quantity >= wine.stock_quantity}
          >
          +
-         </button>
+        </button>
 
          </div>
          
