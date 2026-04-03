@@ -2,13 +2,33 @@ import { useContext, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { CartContext } from "../context/CartContextObject";
 import CartCard from "./CartCard";
+import axios from "axios";
 
 export default function Navbar() {
   const { cart, setCart } = useContext(CartContext);
   const [quantity, setQuantity] = useState(1);
 
-  function plusOne(item) {
-    setCart((prevCart) => prevCart.map((cartItem) => (cartItem.id === item.id ? { ...cartItem, quantity: cartItem.quantity + 1 } : cartItem)));
+  async function plusOne(item) {
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/vini/${item.slug}`,
+      );
+
+      const wine = response.data?.result;
+      if (!wine) return;
+
+      if (item.quantity >= wine.stock_quantity) return;
+
+      setCart((prevCart) =>
+        prevCart.map((cartItem) =>
+          cartItem.id === item.id
+            ? { ...cartItem, quantity: cartItem.quantity + 1 }
+            : cartItem,
+        ),
+      );
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   function minusOne(item) {
@@ -57,8 +77,6 @@ export default function Navbar() {
 
     return totalQuantity;
   }
-
-  console.log(cart);
 
   return (
     <>
