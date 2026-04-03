@@ -141,7 +141,7 @@ export default function Navbar() {
           </div>
         </nav>
         <button
-          className="btn m-0"
+          className="btn shopping-cart-btn"
           type="button"
           data-bs-toggle="offcanvas"
           data-bs-target="#offcanvasRight"
