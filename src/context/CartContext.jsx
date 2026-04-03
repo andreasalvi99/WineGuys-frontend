@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 import { CartContext } from "./CartContextObject";
+import axios from "axios";
 
 export function CartProvider({ children }) {
   const [cart, setCart] = useState(() => {
@@ -13,8 +14,15 @@ export function CartProvider({ children }) {
   }, [cart]);
 
   // funzione aggiunta al carrello
-  const addToCart = (wine, quantity) => {
+  const addToCart = async (wine, quantity) => {
+    const response = await axios(`http://localhost:3000/vini/${wine.slug}`);
+
+    const vino = response.data.result;
+
     const existing = cart.find((item) => item.slug === wine.slug);
+    const currentQty = existing ? existing.quantity : 0;
+
+    if (quantity + currentQty > vino.stock_quantity) return;
 
     if (existing) {
       setCart(
