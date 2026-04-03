@@ -1,9 +1,11 @@
 import axios from "axios";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { CartContext } from "../context/CartContextObject";
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
+  const { cart, setCart } = useContext(CartContext);
 
   //dati spedizione
   const shippingFee = 7.9;
@@ -26,11 +28,6 @@ export default function CheckoutPage() {
       shpping_country: "Italia",
     },
     discount_code: "",
-
-    cart_items: [
-      { product_id: 1, product_name: "Brunello di Montalcino", quantity: 1, price: 40.0 },
-      { product_id: 2, product_name: "Chianti Classico", quantity: 1, price: 15.5 },
-    ],
   });
 
   //stato per checkbox indirizzo spedizione diverso
@@ -39,10 +36,13 @@ export default function CheckoutPage() {
   //stato per loading
   const [isLoading, setIsLoading] = useState(false);
 
-  //calcolo il subtotale della somma dei prezzi dei prodotti considerando le quantità (useMemo serve per memorizzare il calcolo e farlo dipendere solo da cart_items)
+  //calcolo il prezzo da usare, se promo o meno
+  const getItemPrice = (item) => (item.promotion_price !== null ? item.promotion_price : item.price);
+
+  //calcolo il subtotale della somma dei prezzi dei prodotti considerando le quantità (useMemo serve per memorizzare il calcolo e farlo dipendere solo da cart)
   const subtotal = useMemo(() => {
-    return formData.cart_items.reduce((acc, item) => acc + item.price * item.quantity, 0);
-  }, [formData.cart_items]); //array delle dipendenze di useMemo
+    return cart.reduce((acc, item) => acc + getItemPrice(item) * item.quantity, 0);
+  }, [cart]); //array delle dipendenze di useMemo
 
   //definiamo costi di spedizione
   const shippingCost = subtotal >= shippingFreeSpend ? 0 : shippingFee;
@@ -73,11 +73,20 @@ export default function CheckoutPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+
+    //normalizzazione dati per backend
+    const orderCartItems = cart.map((item) => ({
+      product_id: item.id,
+      product_name: item.name,
+      quantity: item.quantity,
+      price: getItemPrice(item), //prezzo finale effettivo considerando possibili promo
+    }));
+
     // creiamo il payload da inviare al server
     const payload = {
       customer: formData.customer,
       total_price: subtotal, // invio il prezzo base perchè il calcolo coupon e spedizione lo fa il backend
-      cart_items: formData.cart_items,
+      cart_items: orderCartItems,
       discount_code: formData.discount_code || null,
     };
 
@@ -87,8 +96,11 @@ export default function CheckoutPage() {
 
       // se la chiamata è andata a buon fine
       if (response.data.success) {
+        //svuoto il carrello
+        setCart([]);
         console.log("Ordine creato con successo!", response.data.order_summary);
 
+        navigate("/");
         //  navigate('/ordine-confermato', {
         //   state: {
         //     orderInfo: response.data.order_summary,
@@ -97,15 +109,19 @@ export default function CheckoutPage() {
         // });
       }
     } catch (error) {
-      const message = error.response?.data?.message || "Errore durante l'invio dell'ordine";
-      alert("Attenzione: " + message);
+      console.error("ERRORE:", {
+        status: error.response?.status,
+        data: error.response?.data,
+        message: error.message,
+      });
+    } finally {
       setIsLoading(false);
     }
   };
 
   return (
     <>
-      {/* LOADING OVERLAY */}
+      {/* LOADING */}
       {isLoading && (
         <div className="position-fixed top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center bg-white bg-opacity-75" style={{ zIndex: 9999 }}>
           <div className="spinner-border text-dark" role="status" style={{ width: "3rem", height: "3rem" }}>
@@ -116,10 +132,10 @@ export default function CheckoutPage() {
       )}
 
       <div className="container py-5" style={{ maxWidth: "1100px" }}>
-        {/* Il FORM avvolge tutto per permettere al bottone a destra di inviare i dati a sinistra */}
+        {/* FORM */}
         <form onSubmit={handleSubmit}>
           <div className="row g-5">
-            {/* COLONNA SINISTRA: DATI CLIENTE */}
+            {/* DATI CLIENTE */}
             <div className="col-lg-7">
               <h2 className="h4 mb-4 fw-bold">Informazioni di Consegna</h2>
 
@@ -162,7 +178,7 @@ export default function CheckoutPage() {
                   L'indirizzo di spedizione è lo stesso di fatturazione
                 </label>
               </div>
-
+              {/* INPUT INDIRIZZO DI SPEZIONE A SCOMPARSA */}
               {!sameAsBilling && (
                 <section className="mb-5 p-3 border rounded bg-white shadow-sm animate__animated animate__fadeIn">
                   <h6 className="text-uppercase small fw-bold text-muted mb-3">Indirizzo di Spedizione</h6>
@@ -181,22 +197,20 @@ export default function CheckoutPage() {
               )}
             </div>
 
-            {/* COLONNA DESTRA: RIEPILOGO + BOTTONE */}
+            {/* RIEPILOGO */}
             <div className="col-lg-5">
               <div className="sticky-top" style={{ top: "100px" }}>
-                {/* Card con sfondo leggero (bg-light) e angoli leggermente arrotondati */}
                 <div className="card border-0 bg-light p-4 rounded-0">
                   <h5 className="mb-4 fw-bold text-dark">Il tuo ordine</h5>
-
-                  {/* Lista Prodotti */}
+                  {/* PRODOTTI */}
                   <div className="cart-items mb-4">
-                    {formData.cart_items.map((item) => (
-                      <div key={item.product_id} className="d-flex justify-content-between mb-3 align-items-center">
+                    {cart.map((item) => (
+                      <div key={item.id} className="d-flex justify-content-between mb-3 align-items-center">
                         <div className="d-flex align-items-center">
                           <span className="badge bg-secondary me-2">{item.quantity}</span>
-                          <span className="small text-dark">{item.product_name}</span>
+                          <span className="small text-dark">{item.name}</span>
                         </div>
-                        <span className="small fw-bold text-dark">{(item.price * item.quantity).toFixed(2)}€</span>
+                        <span className="small fw-bold text-dark">{(getItemPrice(item) * item.quantity).toFixed(2)}€</span>
                       </div>
                     ))}
                   </div>

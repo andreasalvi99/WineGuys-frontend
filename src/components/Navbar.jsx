@@ -8,23 +8,11 @@ export default function Navbar() {
   const [quantity, setQuantity] = useState(1);
 
   function plusOne(item) {
-    setCart((prevCart) =>
-      prevCart.map((cartItem) =>
-        cartItem.id === item.id
-          ? { ...cartItem, quantity: cartItem.quantity + 1 }
-          : cartItem,
-      ),
-    );
+    setCart((prevCart) => prevCart.map((cartItem) => (cartItem.id === item.id ? { ...cartItem, quantity: cartItem.quantity + 1 } : cartItem)));
   }
 
   function minusOne(item) {
-    setCart((prevCart) =>
-      prevCart.map((cartItem) =>
-        cartItem.id === item.id
-          ? { ...cartItem, quantity: cartItem.quantity - 1 }
-          : cartItem,
-      ),
-    );
+    setCart((prevCart) => prevCart.map((cartItem) => (cartItem.id === item.id ? { ...cartItem, quantity: cartItem.quantity - 1 } : cartItem)));
   }
 
   function deleteItem(item) {
@@ -46,10 +34,7 @@ export default function Navbar() {
 
       let currentItemPrice = 0;
 
-      if (
-        currentItem.promotion_price !== null &&
-        currentItem.promotion_price !== undefined
-      ) {
+      if (currentItem.promotion_price !== null && currentItem.promotion_price !== undefined) {
         currentItemPrice = currentItem.promotion_price * currentItem.quantity;
       } else {
         currentItemPrice = currentItem.price * currentItem.quantity;
@@ -79,11 +64,7 @@ export default function Navbar() {
     <>
       <div className="container-fluid text-center">
         <Link to={"/"}>
-          <img
-            src="../src/assets/img/wineguys2.png"
-            alt="navbar-logo"
-            className="navbar-logo p-2"
-          />
+          <img src="../src/assets/img/wineguys2.png" alt="navbar-logo" className="navbar-logo p-2" />
         </Link>
       </div>
       <div className="d-flex justify-content-between bg-body-tertiary align-items-center sticky-top">
@@ -103,10 +84,7 @@ export default function Navbar() {
               <span className="navbar-toggler-icon"></span>
             </button>
 
-            <div
-              className="collapse navbar-collapse justify-content-lg-between align-items-center"
-              id="navbarSupportedContent"
-            >
+            <div className="collapse navbar-collapse justify-content-lg-between align-items-center" id="navbarSupportedContent">
               <div></div>
               <ul className="navbar-nav mb-2 mb-lg-0">
                 <li className="nav-item">
@@ -128,35 +106,19 @@ export default function Navbar() {
             </div>
           </div>
         </nav>
-        <button
-          className="btn m-0"
-          type="button"
-          data-bs-toggle="offcanvas"
-          data-bs-target="#offcanvasRight"
-          aria-controls="offcanvasRight"
-        >
+        <button className="btn m-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
           <i className="bi bi-cart shopping-cart position-relative">
             <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
               <span className="fw-light">{calcTotalQuantity(cart)}</span>
             </span>
           </i>
         </button>
-        <div
-          className="offcanvas offcanvas-end playfair-display_special"
-          tabIndex={-1}
-          id="offcanvasRight"
-          aria-labelledby="offcanvasRightLabel"
-        >
+        <div className="offcanvas offcanvas-end playfair-display_special" tabIndex={-1} id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
           <div className="offcanvas-header">
             <h5 className="offcanvas-title" id="offcanvasRightLabel">
               Carrello
             </h5>
-            <button
-              type="button"
-              className="btn-close"
-              data-bs-dismiss="offcanvas"
-              aria-label="Close"
-            ></button>
+            <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
           </div>
           <div className="offcanvas-body">
             {cart.map((item, index) => {
@@ -179,16 +141,10 @@ export default function Navbar() {
           </div>
           <nav className="navbar sticky-bottom bg-body-tertiary">
             <div className="container-fluid justify-content-between align-items-center">
-              <a className="navbar-brand" href="#">
-                Totale: &euro;{calcTotalAmount(cart)}
-              </a>
-              <button
-                type="button"
-                className="btn btn-success m-0"
-                disabled={cart.length === 0}
-              >
+              <span className="navbar-brand">Totale: &euro;{calcTotalAmount(cart)}</span>
+              <Link to="/checkout" className={`btn btn-success m-0 ${cart.length === 0 ? "disabled" : ""}`}>
                 Checkout
-              </button>
+              </Link>
             </div>
           </nav>
         </div>
