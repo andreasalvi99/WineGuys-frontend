@@ -37,7 +37,7 @@ export default function SearchBar() {
         <input
           type="text"
           className="form-control form-control-sm border-secondary-subtle"
-          placeholder="Cerca vino per nome, anno..."
+          placeholder="Cerca per nome, anno..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
@@ -55,6 +55,7 @@ export default function SearchBar() {
             >
               <strong>{wine.product_name}</strong>
               <div className="text-muted small">{wine.type}</div>
+              <div className="text-muted small">{wine.vintage}</div>
             </li>
           ))}
         </ul>
