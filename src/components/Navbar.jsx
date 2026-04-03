@@ -6,7 +6,6 @@ import axios from "axios";
 
 export default function Navbar() {
   const { cart, setCart } = useContext(CartContext);
-  const [quantity, setQuantity] = useState(1);
 
   async function plusOne(item) {
     try {
@@ -39,15 +38,10 @@ export default function Navbar() {
           : cartItem,
       ),
     );
-
-    if (quantity === 1) {
-      deleteItem(item);
-    }
   }
 
   function deleteItem(item) {
     const prevCart = cart.filter((cartItem) => cartItem.id !== item.id);
-    setQuantity(1);
 
     return setCart(prevCart);
   }
