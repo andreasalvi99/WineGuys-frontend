@@ -345,7 +345,7 @@ function WineDetailPage() {
             </p>
           </footer>
         </div>
-      </div>
+      
     </section>
   );
 }
