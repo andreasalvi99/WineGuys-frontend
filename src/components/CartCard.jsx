@@ -59,20 +59,20 @@ export default function CartCard({
                     <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                       -{calcDiscount(price, promotion)}%
                     </span>
-                    &euro;{price}
+                    &euro;{price.toFixed(2)}
                   </span>
-                  <span className="d-block">&euro;{promotion}</span>
+                  <span className="d-block">&euro;{promotion.toFixed(2)}</span>
                 </small>
               ) : (
-                <small>&euro;{price}</small>
+                <small>&euro;{price.toFixed(2)}</small>
               )}
               {promotion !== null && promotion !== undefined ? (
                 <small className="text-black d-block text-end">
-                  Totale: &euro;{promotion * quantity}
+                  Totale: &euro;{(promotion * quantity).toFixed(2)}
                 </small>
               ) : (
                 <small className="text-black d-block mt-4 text-end">
-                  Totale: &euro;{price * quantity}
+                  Totale: &euro;{(price * quantity).toFixed(2)}
                 </small>
               )}
             </p>
