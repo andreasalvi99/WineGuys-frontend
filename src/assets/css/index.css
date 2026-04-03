@@ -92,6 +92,10 @@
   font-size: 20px;
 }
 
+.shipping-icon {
+  font-size: 18px;
+}
+
 .red-pin {
   display: inline-block;
   width: 7px;
