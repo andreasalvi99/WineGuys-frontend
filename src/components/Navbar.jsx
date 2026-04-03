@@ -120,7 +120,7 @@ export default function Navbar() {
               id="navbarSupportedContent"
             >
               <div></div>
-              <ul className="navbar-nav mb-2 mb-lg-0">
+              <ul className="navbar-nav mb-2 mb-lg-0 navbar-links-list">
                 <li className="nav-item">
                   <NavLink to={"/"} className="nav-link">
                     Home

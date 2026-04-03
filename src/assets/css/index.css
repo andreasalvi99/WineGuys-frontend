@@ -108,6 +108,10 @@
   margin-right: 5px;
 }
 
+.navbar-links-list {
+  margin-left: 20px;
+}
+
 .blink {
   animation: blink 2s infinite;
 }
