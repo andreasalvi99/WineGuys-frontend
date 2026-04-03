@@ -182,7 +182,11 @@ export default function Navbar() {
               <a className="navbar-brand" href="#">
                 Totale: &euro;{calcTotalAmount(cart)}
               </a>
-              <button type="button" class="btn btn-success m-0">
+              <button
+                type="button"
+                class="btn btn-success m-0"
+                disabled={cart.length === 0}
+              >
                 Checkout
               </button>
             </div>
