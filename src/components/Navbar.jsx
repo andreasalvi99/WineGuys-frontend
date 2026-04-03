@@ -7,25 +7,28 @@ import axios from "axios";
 export default function Navbar() {
   const { cart, setCart } = useContext(CartContext);
   const [quantity, setQuantity] = useState(1);
-  const [isDisabled, setIsDisabled] = useState(false);
 
   async function plusOne(item) {
-    const response = await axios.get(`http://localhost:3000/vini/${item.slug}`);
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/vini/${item.slug}`,
+      );
 
-    const wine = response.data.result;
-    console.log(wine);
-    console.log("quantity:", item.quantity);
-    console.log("stock quantity:", wine.stock_quantity);
+      const wine = response.data?.result;
+      if (!wine) return;
 
-    if (item.quantity >= wine.stock_quantity) return setIsDisabled(true);
+      if (item.quantity >= wine.stock_quantity) return;
 
-    setCart((prevCart) =>
-      prevCart.map((cartItem) =>
-        cartItem.id === item.id
-          ? { ...cartItem, quantity: cartItem.quantity + 1 }
-          : cartItem,
-      ),
-    );
+      setCart((prevCart) =>
+        prevCart.map((cartItem) =>
+          cartItem.id === item.id
+            ? { ...cartItem, quantity: cartItem.quantity + 1 }
+            : cartItem,
+        ),
+      );
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   function minusOne(item) {
@@ -184,7 +187,6 @@ export default function Navbar() {
                   plusOne={plusOne}
                   minusOne={minusOne}
                   calcDiscount={calcDiscount}
-                  isDisabled={isDisabled}
                 />
               );
             })}

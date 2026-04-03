@@ -9,7 +9,6 @@ export default function CartCard({
   plusOne,
   minusOne,
   calcDiscount,
-  isDisabled,
 }) {
   return (
     <div className="card mb-3 p-3">
@@ -48,7 +47,7 @@ export default function CartCard({
                   onClick={() => plusOne(item)}
                   type="button"
                   className="btn btn-light m-0"
-                  disabled={isDisabled}
+                  disabled={quantity >= item.stock_quantity}
                 >
                   +
                 </button>
