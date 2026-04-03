@@ -11,16 +11,21 @@ export default function SearchBar() {
     axios.get("http://localhost:3000/vini")
       .then((res) => setWines(res.data))
       .catch((err) => console.error("Errore:", err));
-  }, []);
+    }, []);
 
   // Filtriamo i vini in tempo reale
-  const suggestions = query.length >= 2 
-    ? wines.filter(w => 
-        w.product_name.toLowerCase().includes(query.toLowerCase()) ||
-        (w.type && w.type.toLowerCase().includes(query.toLowerCase()))
-      ).slice(0, 3)
+  const suggestions =
+  query.length >= 2
+    ? wines
+        .filter((w) => {
+          const q = query.toLowerCase();
+          const searchableKeys = ["product_name", "type", "region", "grape", "vintage"];
+          return searchableKeys.some((key) =>
+            w[key]?.toString().toLowerCase().includes(q)
+          );
+        })
+        .slice(0, 5)
     : [];
-
   const handleSelect = (slug) => {
     navigate(`/vini/${slug}`);
     setQuery("");
@@ -32,16 +37,18 @@ export default function SearchBar() {
         <input
           type="text"
           className="form-control form-control-sm border-secondary-subtle"
-          placeholder="Cerca vino..."
+          placeholder="Cerca vino per nome, anno..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
       </form>
-
       {suggestions.length > 0 && (
-        <ul className="list-group position-absolute w-100 shadow-sm" style={{ zIndex: 1000, fontSize: '0.85rem' }}>
+        <ul
+          className="list-group position-absolute w-100 shadow-sm"
+          style={{ zIndex: 1000, fontSize: "0.85rem" }}
+        >
           {suggestions.map((wine) => (
-            <li 
+            <li
               key={wine.id}
               className="list-group-item list-group-item-action py-1 cursor-pointer"
               onClick={() => handleSelect(wine.slug)}
