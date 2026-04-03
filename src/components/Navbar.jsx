@@ -61,6 +61,18 @@ export default function Navbar() {
     return totalPrice.toFixed(2);
   }
 
+  function calcTotalQuantity(cart) {
+    let totalQuantity = 0;
+
+    for (let i = 0; i < cart.length; i++) {
+      const currentItem = cart[i];
+
+      totalQuantity += currentItem.quantity;
+    }
+
+    return totalQuantity;
+  }
+
   console.log(cart);
 
   return (
@@ -125,7 +137,7 @@ export default function Navbar() {
         >
           <i className="bi bi-cart shopping-cart position-relative">
             <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
-              <span className="fw-light">{cart.length}</span>
+              <span className="fw-light">{calcTotalQuantity(cart)}</span>
             </span>
           </i>
         </button>
