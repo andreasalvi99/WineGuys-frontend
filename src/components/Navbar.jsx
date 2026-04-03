@@ -2,12 +2,23 @@ import { useContext, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { CartContext } from "../context/CartContextObject";
 import CartCard from "./CartCard";
+import axios from "axios";
 
 export default function Navbar() {
   const { cart, setCart } = useContext(CartContext);
   const [quantity, setQuantity] = useState(1);
+  const [isDisabled, setIsDisabled] = useState(false);
 
-  function plusOne(item) {
+  async function plusOne(item) {
+    const response = await axios.get(`http://localhost:3000/vini/${item.slug}`);
+
+    const wine = response.data.result;
+    console.log(wine);
+    console.log("quantity:", item.quantity);
+    console.log("stock quantity:", wine.stock_quantity);
+
+    if (item.quantity >= wine.stock_quantity) return setIsDisabled(true);
+
     setCart((prevCart) =>
       prevCart.map((cartItem) =>
         cartItem.id === item.id
@@ -173,6 +184,7 @@ export default function Navbar() {
                   plusOne={plusOne}
                   minusOne={minusOne}
                   calcDiscount={calcDiscount}
+                  isDisabled={isDisabled}
                 />
               );
             })}
