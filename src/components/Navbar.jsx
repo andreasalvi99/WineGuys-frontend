@@ -39,6 +39,10 @@ export default function Navbar() {
           : cartItem,
       ),
     );
+
+    if (quantity === 1) {
+      deleteItem(item);
+    }
   }
 
   function deleteItem(item) {
