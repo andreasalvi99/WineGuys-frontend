@@ -18,7 +18,6 @@ export function CartProvider({ children }) {
     const response = await axios(`http://localhost:3000/vini/${wine.slug}`);
 
     const vino = response.data.result;
-    console.log("vino:", vino);
 
     const existing = cart.find((item) => item.slug === wine.slug);
     const currentQty = existing ? existing.quantity : 0;

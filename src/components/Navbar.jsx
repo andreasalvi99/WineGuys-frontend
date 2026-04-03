@@ -87,8 +87,6 @@ export default function Navbar() {
     return totalQuantity;
   }
 
-  console.log(cart);
-
   return (
     <>
       <div className="container-fluid text-center">

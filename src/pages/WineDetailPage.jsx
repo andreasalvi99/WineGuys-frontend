@@ -62,6 +62,9 @@ function WineDetailPage() {
   {
     /* RENDER PRINCIPALE */
   }
+
+  console.log(wine);
+
   return (
     <section
       className="playfair-display_special w-100"
@@ -125,6 +128,12 @@ function WineDetailPage() {
 
                 {/* INFO */}
                 <div className="col-md-6 text-center text-md-start">
+                  {wine.stock_quantity > 0 && wine.stock_quantity <= 6 && (
+                    <span className="text-danger blink fs-5">
+                      <div className="red-pin bg-danger"></div>
+                      {wine.stock_quantity} rimamenti
+                    </span>
+                  )}
                   <h1 className="mb-3">{wine.product_name}</h1>
 
                   <h3 className="mb-3">
