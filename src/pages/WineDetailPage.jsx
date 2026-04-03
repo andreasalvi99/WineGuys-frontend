@@ -91,7 +91,80 @@ function WineDetailPage() {
             paddingTop: "15px",
             paddingBottom: "15px",
           }}
-        >
+        />
+      </div>
+
+     
+
+        {/* INFO */}
+        <div className="col-md-6 text-center text-md-start">
+          <h1 className="mb-3">{wine.product_name}</h1>
+
+          <h3 className="mb-3">
+          {wine?.promotion_price ? (
+           <>
+            <span style={{ textDecoration: "line-through", color: "#999" }}>
+             {Number(wine.price).toFixed(2)} €
+            </span>{" "}
+          <span style={{ color: "#800020", fontWeight: "bold" }}>
+          {Number(wine.promotion_price).toFixed(2)} €
+          </span>{" "}
+           <span style={{ color: "red", fontSize: "0.9rem" }}>
+            -{calcDiscount(wine.price, wine.promotion_price)}%
+          </span>
+          </>
+          ) : (
+          <span style={{ color: "#800020" }}>
+           {Number(wine.price).toFixed(2)} €
+          </span>
+          )}
+           </h3>
+
+           {wine && wine.stock_quantity <= 5 && (
+           <p style={{ color: "red", fontSize: "0.9rem" }}>
+           Solo {wine.stock_quantity} rimasti!
+           </p>
+           )}
+
+          <p className="mt-3 fs-5" style={{ color: "#000000" }}>
+            {wine.description}
+          </p>
+
+          <p className="mt-3 fs-5">
+            <strong>Anno:</strong> {wine.vintage}
+          </p>
+
+          
+          {/* QUANTITY */}
+         <div className="d-flex align-items-center justify-content-center justify-content-md-start gap-2 mt-3">
+  
+         <button
+         className="btn btn-outline-dark"
+          onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
+         >
+          -
+         </button>
+
+         <span style={{ minWidth: "30px", textAlign: "center" }}>
+          {quantity}
+         </span>
+
+         <button
+         className="btn btn-outline-dark"
+         onClick={() =>
+         setQuantity(prev =>
+         prev < wine.stock_quantity ? prev + 1 : prev
+         )
+         }
+         disabled={quantity >= wine.stock_quantity}
+         >
+         +
+        </button>
+
+         </div>
+         
+         
+        {/* ADD TO CART */}
           <button
             className="btn btn-outline-dark"
             onClick={() => navigate("/")}
