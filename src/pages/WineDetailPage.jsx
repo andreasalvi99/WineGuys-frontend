@@ -3,10 +3,12 @@ import { useEffect, useState } from "react";
 import WineCard from "../components/WineCard.jsx";
 import { useContext } from "react";
 import { CartContext } from "../context/CartContextObject";
+import { useNavigate } from "react-router-dom";
 
 function WineDetailPage() {
   const [quantity, setQuantity] = useState(1);
   const { slug } = useParams(); // qui è lo SLUG
+  const navigate = useNavigate();
   
   const { addToCart, cart } = useContext(CartContext);
 
@@ -91,7 +93,21 @@ function WineDetailPage() {
             paddingTop: "15px",
             paddingBottom: "15px",
           }}
-        />
+        >
+        <button
+        className="btn btn-outline-dark"
+        onClick={() => navigate("/")}
+        >
+        Home
+       </button>
+
+       <button
+        className="btn btn-outline-dark"
+        onClick={() => navigate(-1)}
+       >
+       Indietro
+       </button>
+
       </div>
 
      
@@ -266,7 +282,7 @@ function WineDetailPage() {
             </p>
           </footer>
         </div>
-      
+      </div>
     </section>
   );
 }
