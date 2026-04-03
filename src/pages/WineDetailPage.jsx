@@ -87,7 +87,7 @@ function WineDetailPage() {
       }}
     >
       
-    /* CONTAINER PRINCIPALE */
+    {/* CONTAINER PRINCIPALE */}
     <div
       className="container-fluid px-0"
         style={{
@@ -96,7 +96,7 @@ function WineDetailPage() {
           flexDirection: "column",
         }}
     >
-    /* NAVIGATION */
+    {/* NAVIGATION */}
     <div
       className="d-flex justify-content-between mb-4 px-4 px-md-5"
       style={{
@@ -105,7 +105,7 @@ function WineDetailPage() {
         paddingBottom: "15px",
         }}
     >
-    /*NAVIGATION BUTTONS*/
+    {/*NAVIGATION BUTTONS*/}
     <button
       className="btn btn-outline-dark"
       onClick={() => navigate("/")}
@@ -121,15 +121,15 @@ function WineDetailPage() {
     </button>
     </div>
 
-    /* WRAPPER PRINCIPALE PER GESTIONE LAYOUT VERTICALE DELLA PAGINA */
+    {/* WRAPPER PRINCIPALE PER GESTIONE LAYOUT VERTICALE DELLA PAGINA */}
     <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
 
-    /* CARD DETTAGLIO IMMAGINE + INFO VINO */
+    {/* CARD DETTAGLIO IMMAGINE + INFO VINO */}
     <div style={{ backgroundColor: "#ffffff", padding: "40px 0" }}>
     <div className="container">
     <div className="row align-items-center">
                 
-    /* IMG */
+    {/* IMG */}
     <div className="col-md-6 text-center">
     <img 
       src={wine.img ? `http://localhost:3000/wines/${wine.img}` : ""}
@@ -142,10 +142,10 @@ function WineDetailPage() {
      />
      </div>
 
-    /* INFO PRODOTTO */
+    {/* INFO PRODOTTO */}
     <div className="col-md-6 text-center text-md-start">
       
-      /*STOCK (LOW QUANTITY WARNING)*/
+      {/*STOCK (LOW QUANTITY WARNING)*/}
       {wine.stock_quantity > 0 && wine.stock_quantity <= 6 && (
       <span className="text-danger blink fs-5">
       <div className="red-pin bg-danger"></div>
@@ -153,14 +153,14 @@ function WineDetailPage() {
       </span>
       )}
 
-      /*NOME PRODOTTO*/
+      {/*NOME PRODOTTO*/}
       <h1 className="mb-3">{wine.product_name}</h1>
         
-        /*PREZZO CON o SENZA SCONTO*/
+        {/*PREZZO CON o SENZA SCONTO*/}
         <h3 className="mb-3">
           {wine?.promotion_price ? (
         <>
-        /*PREZZO ORIGINALE SCONTATO*/
+        {/*PREZZO ORIGINALE SCONTATO*/}
         <span
          style={{
           textDecoration: "line-through",                  
@@ -170,39 +170,39 @@ function WineDetailPage() {
           {Number(wine.price).toFixed(2)} €
         </span>{" "}
 
-        /*PREZZO SCONTATO*/
+        {/*PREZZO SCONTATO*/}
         <span style={{ color: "#800020", fontWeight: "bold" }}>                
          {Number(wine.promotion_price).toFixed(2)} €                 
         </span>{" "}
 
-        /*PERCENTUALE DI SCONTO*/               
+        {/*PERCENTUALE DI SCONTO*/}               
         <span style={{ color: "red", fontSize: "0.9rem" }}>
          -{calcDiscount(wine.price, wine.promotion_price)}%              
         </span>                  
         </>                
         ) : (   
           
-        /*PREZZO NORMALE SE NON C'E' SCONTO*/
+        
         <span style={{ color: "#800020" }}>            
           {Number(wine.price).toFixed(2)} €            
          </span>                
         )}             
         </h3>
 
-        /*DESCRIZIONE PRODOTTO*/          
+        {/*DESCRIZIONE PRODOTTO*/}          
         <p className="mt-3 fs-5" style={{ color: "#000000" }}>
          {wine.description}         
         </p>
 
-        /*ANNATA*/            
+        {/*ANNATA*/}            
         <p className="mt-3 fs-5">         
         <strong>Anno:</strong> {wine.vintage}
         </p>          
                     
-      /* SELEZIONE QUANTITA */
+      {/* SELEZIONE QUANTITA */}
       <div className="d-flex align-items-center justify-content-center justify-content-md-start gap-2 mt-3">
 
-        /*BOTTONE DECREMENTO*/            
+        {/*BOTTONE DECREMENTO*/}            
         <button            
           className="btn btn-outline-dark"            
           onClick={() =>            
@@ -212,12 +212,12 @@ function WineDetailPage() {
           -
         </button>
 
-        /*QUANTITA SELEZIONATA*/
+        {/*QUANTITA SELEZIONATA*/}
         <span style={{ minWidth: "30px", textAlign: "center" }}>
           {quantity}            
         </span> 
 
-        /*BOTTONE INCREMENTO*/           
+        {/*BOTTONE INCREMENTO*/}           
         <button
           className="btn btn-outline-dark"
           onClick={() => setQuantity((prev) => prev < wine.stock_quantity ? prev + 1 : prev)}
@@ -226,7 +226,7 @@ function WineDetailPage() {
         </button>
         </div>
 
-      /* ADD TO CART */
+      {/* ADD TO CART */}
       <button
         className={`btn mt-3 ${isAvailable ? "btn-outline-dark" : "btn-secondary"}`}
         onClick={() => addToCart(wine, quantity)}
@@ -242,7 +242,7 @@ function WineDetailPage() {
       </div>
       </div>
 
-      /* RELATED */
+      {/* RELATED */}
       <div style={{ backgroundColor: "#ffffff", padding: "80px 0" }}>
 
       <h4 className="text-center mb-4">Potrebbero piacerti</h4>
@@ -266,7 +266,7 @@ function WineDetailPage() {
       </div>
       </div>
 
-      /*PHILOSOPHY*/
+      {/*PHILOSOPHY*/}
       <div
         style={{
         marginTop: "5px",
@@ -290,7 +290,7 @@ function WineDetailPage() {
       </div>
       </div>
 
-      /* FOOTER */
+      {/* FOOTER */}
       <footer
         style={{
         marginTop: "auto",
