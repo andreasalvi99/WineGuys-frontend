@@ -56,10 +56,11 @@ export default function WinesPage() {
             {/* filtro per annata - prende i valori unici dal database */}
             <select
               className="btn btn-outline-dark"
+              style={{ width: "150px" }}
               value={filterAnnata}
               onChange={(e) => setFilterAnnata(e.target.value)}
             >
-              <option value="">Annata v</option>
+              <option value="">Annata</option>
               {[...new Set(wines.map((w) => w.vintage))].sort().map((v) => (
                 <option key={v} value={v}>
                   {v}
@@ -69,10 +70,11 @@ export default function WinesPage() {
             {/* filtro per tipologia - prende i valori unic dal database */}
             <select
               className="btn btn-outline-dark"
+              style={{ width: "150px" }}
               value={filterTipo}
               onChange={(e) => setFilterTipo(e.target.value)}
             >
-              <option value="">Tipologia v</option>
+              <option value="">Tipologia</option>
               {[...new Set(wines.map((w) => w.type))].map((t) => (
                 <option key={t} value={t}>
                   {t}
@@ -82,10 +84,11 @@ export default function WinesPage() {
             {/* filtro per vitigno - prende i valori unici dal database */}
             <select
               className="btn btn-outline-dark"
+              style={{ width: "150px" }}
               value={filterVitigno}
               onChange={(e) => setFilterVitigno(e.target.value)}
             >
-              <option value="">Vitigno v</option>
+              <option value="">Vitigno</option>
               {[...new Set(wines.map((w) => w.grape))].map((g) => (
                 <option key={g} value={g}>
                   {g}
@@ -95,10 +98,11 @@ export default function WinesPage() {
             {/*filtro per fascia di prezzo - valori fissi */}
             <select
               className="btn btn-outline-dark"
+              style={{ width: "150px" }}
               value={filterPrezzo}
               onChange={(e) => setFilterPrezzo(e.target.value)}
             >
-              <option value="">Prezzo v</option>
+              <option value="">Prezzo</option>
               <option value="0-20">Fino a €20</option>
               <option value="20-50">€20 - €50</option>
               <option value="50+">Oltre €50</option>
@@ -106,6 +110,7 @@ export default function WinesPage() {
             {/* bottone per resettare tutti i filtri */}
             <button
               className="btn btn-dark"
+              style={{ width: "106px" }}
               onClick={() => {
                 setFilterAnnata("");
                 setFilterTipo("");
