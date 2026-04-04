@@ -113,7 +113,7 @@ export default function CheckoutPage() {
           customer: formData.customer,
           cart_items: orderCartItems,
           total_price: subtotal,
-          shipping_free: shippingCost,
+          shipping_fee: shippingCost,
         });
 
         navigate("/");
