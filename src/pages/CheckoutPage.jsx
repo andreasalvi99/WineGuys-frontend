@@ -37,11 +37,15 @@ export default function CheckoutPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   //calcolo il prezzo da usare, se promo o meno
-  const getItemPrice = (item) => (item.promotion_price !== null ? item.promotion_price : item.price);
+  const getItemPrice = (item) =>
+    item.promotion_price !== null ? item.promotion_price : item.price;
 
   //calcolo il subtotale della somma dei prezzi dei prodotti considerando le quantità (useMemo serve per memorizzare il calcolo e farlo dipendere solo da cart)
   const subtotal = useMemo(() => {
-    return cart.reduce((acc, item) => acc + getItemPrice(item) * item.quantity, 0);
+    return cart.reduce(
+      (acc, item) => acc + getItemPrice(item) * item.quantity,
+      0
+    );
   }, [cart]); //array delle dipendenze di useMemo
 
   //definiamo costi di spedizione
@@ -92,13 +96,25 @@ export default function CheckoutPage() {
 
     //chiamata axios per inviare i dati al server
     try {
-      const response = await axios.post("http://localhost:3000/ordini", payload);
+      const response = await axios.post(
+        "http://localhost:3000/ordini",
+        payload
+      );
 
       // se la chiamata è andata a buon fine
       if (response.data.success) {
         //svuoto il carrello
         setCart([]);
         console.log("Ordine creato con successo!", response.data.order_summary);
+
+        // faccio chiamata axios per mandare email di conferam ordine
+        /* dopo que l'ordine è stato salvato con successo nel database, chiamo il nostro endpoint /email/send-confirmation per mandare una email di conferma al cliente. passimao i dati del cliente (nome, email, indirizzo di spedizione), i prodotti del carrello con quantità e prezzi, il totale e le spese di spedizione.L'email viene generata e inviata tramite Nodemailer con Maltrap come servizio di test. In produzione si può sostituire Mailtrap con un servizio reale come Gmail. Il cliente receverà una email col riepilogo completo dell'ordine, così sa esattamente cosa ha comprato e quanto ha pagato. */
+        await axios.post("http://localhost:3000/email/send-confirmation", {
+          customer: formData.customer,
+          cart_items: orderCartItems,
+          total_price: subtotal,
+          shipping_free: shippingCost,
+        });
 
         navigate("/");
         //  navigate('/ordine-confermato', {
@@ -123,11 +139,20 @@ export default function CheckoutPage() {
     <>
       {/* LOADING */}
       {isLoading && (
-        <div className="position-fixed top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center bg-white bg-opacity-75" style={{ zIndex: 9999 }}>
-          <div className="spinner-border text-dark" role="status" style={{ width: "3rem", height: "3rem" }}>
+        <div
+          className="position-fixed top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center bg-white bg-opacity-75"
+          style={{ zIndex: 9999 }}
+        >
+          <div
+            className="spinner-border text-dark"
+            role="status"
+            style={{ width: "3rem", height: "3rem" }}
+          >
             <span className="visually-hidden">Caricamento...</span>
           </div>
-          <h5 className="mt-3 fw-bold text-uppercase">Conferma ordine WineGuys in corso...</h5>
+          <h5 className="mt-3 fw-bold text-uppercase">
+            Conferma ordine WineGuys in corso...
+          </h5>
         </div>
       )}
 
@@ -140,40 +165,98 @@ export default function CheckoutPage() {
               <h2 className="h4 mb-4 fw-bold">Informazioni di Consegna</h2>
 
               <section className="mb-5">
-                <h6 className="text-uppercase small fw-bold text-muted mb-3">Contatti</h6>
+                <h6 className="text-uppercase small fw-bold text-muted mb-3">
+                  Contatti
+                </h6>
                 <div className="row g-3">
                   <div className="col-md-6">
-                    <input type="text" name="first_name" placeholder="Nome" className="form-control form-control-lg border-0 bg-light" onChange={handleChange} required />
+                    <input
+                      type="text"
+                      name="first_name"
+                      placeholder="Nome"
+                      className="form-control form-control-lg border-0 bg-light"
+                      onChange={handleChange}
+                      required
+                    />
                   </div>
                   <div className="col-md-6">
-                    <input type="text" name="second_name" placeholder="Cognome" className="form-control form-control-lg border-0 bg-light" onChange={handleChange} required />
+                    <input
+                      type="text"
+                      name="second_name"
+                      placeholder="Cognome"
+                      className="form-control form-control-lg border-0 bg-light"
+                      onChange={handleChange}
+                      required
+                    />
                   </div>
                   <div className="col-md-8">
-                    <input type="email" name="email" placeholder="Email" className="form-control form-control-lg border-0 bg-light" onChange={handleChange} required />
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="Email"
+                      className="form-control form-control-lg border-0 bg-light"
+                      onChange={handleChange}
+                      required
+                    />
                   </div>
                   <div className="col-md-4">
-                    <input type="tel" name="cellphone" placeholder="Cellulare" className="form-control form-control-lg border-0 bg-light" onChange={handleChange} />
+                    <input
+                      type="tel"
+                      name="cellphone"
+                      placeholder="Cellulare"
+                      className="form-control form-control-lg border-0 bg-light"
+                      onChange={handleChange}
+                    />
                   </div>
                 </div>
               </section>
 
               <section className="mb-4">
-                <h6 className="text-uppercase small fw-bold text-muted mb-3">Indirizzo di Fatturazione</h6>
+                <h6 className="text-uppercase small fw-bold text-muted mb-3">
+                  Indirizzo di Fatturazione
+                </h6>
                 <div className="row g-3">
                   <div className="col-12">
-                    <input type="text" name="billing_street" placeholder="Via e Numero Civico" className="form-control form-control-lg border-0 bg-light" onChange={handleChange} required />
+                    <input
+                      type="text"
+                      name="billing_street"
+                      placeholder="Via e Numero Civico"
+                      className="form-control form-control-lg border-0 bg-light"
+                      onChange={handleChange}
+                      required
+                    />
                   </div>
                   <div className="col-md-6">
-                    <input type="text" name="billing_city" placeholder="Città" className="form-control form-control-lg border-0 bg-light" onChange={handleChange} required />
+                    <input
+                      type="text"
+                      name="billing_city"
+                      placeholder="Città"
+                      className="form-control form-control-lg border-0 bg-light"
+                      onChange={handleChange}
+                      required
+                    />
                   </div>
                   <div className="col-md-6">
-                    <input type="text" name="billing_postal_code" placeholder="CAP" className="form-control form-control-lg border-0 bg-light" onChange={handleChange} required />
+                    <input
+                      type="text"
+                      name="billing_postal_code"
+                      placeholder="CAP"
+                      className="form-control form-control-lg border-0 bg-light"
+                      onChange={handleChange}
+                      required
+                    />
                   </div>
                 </div>
               </section>
 
               <div className="form-check mb-5">
-                <input className="form-check-input" type="checkbox" id="same" checked={sameAsBilling} onChange={() => setSameAsBilling(!sameAsBilling)} />
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id="same"
+                  checked={sameAsBilling}
+                  onChange={() => setSameAsBilling(!sameAsBilling)}
+                />
                 <label className="form-check-label small" htmlFor="same">
                   L'indirizzo di spedizione è lo stesso di fatturazione
                 </label>
@@ -181,16 +264,36 @@ export default function CheckoutPage() {
               {/* INPUT INDIRIZZO DI SPEZIONE A SCOMPARSA */}
               {!sameAsBilling && (
                 <section className="mb-5 p-3 border rounded bg-white shadow-sm animate__animated animate__fadeIn">
-                  <h6 className="text-uppercase small fw-bold text-muted mb-3">Indirizzo di Spedizione</h6>
+                  <h6 className="text-uppercase small fw-bold text-muted mb-3">
+                    Indirizzo di Spedizione
+                  </h6>
                   <div className="row g-3">
                     <div className="col-12">
-                      <input type="text" name="shipping_street" placeholder="Via e Numero Civico" className="form-control form-control-lg border-0 bg-light" onChange={handleChange} />
+                      <input
+                        type="text"
+                        name="shipping_street"
+                        placeholder="Via e Numero Civico"
+                        className="form-control form-control-lg border-0 bg-light"
+                        onChange={handleChange}
+                      />
                     </div>
                     <div className="col-md-6">
-                      <input type="text" name="shipping_city" placeholder="Città" className="form-control form-control-lg border-0 bg-light" onChange={handleChange} />
+                      <input
+                        type="text"
+                        name="shipping_city"
+                        placeholder="Città"
+                        className="form-control form-control-lg border-0 bg-light"
+                        onChange={handleChange}
+                      />
                     </div>
                     <div className="col-md-6">
-                      <input type="text" name="shipping_postal_code" placeholder="CAP" className="form-control form-control-lg border-0 bg-light" onChange={handleChange} />
+                      <input
+                        type="text"
+                        name="shipping_postal_code"
+                        placeholder="CAP"
+                        className="form-control form-control-lg border-0 bg-light"
+                        onChange={handleChange}
+                      />
                     </div>
                   </div>
                 </section>
@@ -205,12 +308,19 @@ export default function CheckoutPage() {
                   {/* PRODOTTI */}
                   <div className="cart-items mb-4">
                     {cart.map((item) => (
-                      <div key={item.id} className="d-flex justify-content-between mb-3 align-items-center">
+                      <div
+                        key={item.id}
+                        className="d-flex justify-content-between mb-3 align-items-center"
+                      >
                         <div className="d-flex align-items-center">
-                          <span className="badge bg-secondary me-2">{item.quantity}</span>
+                          <span className="badge bg-secondary me-2">
+                            {item.quantity}
+                          </span>
                           <span className="small text-dark">{item.name}</span>
                         </div>
-                        <span className="small fw-bold text-dark">{(getItemPrice(item) * item.quantity).toFixed(2)}€</span>
+                        <span className="small fw-bold text-dark">
+                          {(getItemPrice(item) * item.quantity).toFixed(2)}€
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -225,14 +335,27 @@ export default function CheckoutPage() {
 
                   <div className="d-flex justify-content-between mb-3">
                     <span className="text-muted">Spedizione</span>
-                    <span className="text-dark">{shippingCost === 0 ? <strong className="text-success small">GRATIS</strong> : `${shippingCost.toFixed(2)}€`}</span>
+                    <span className="text-dark">
+                      {shippingCost === 0 ? (
+                        <strong className="text-success small">GRATIS</strong>
+                      ) : (
+                        `${shippingCost.toFixed(2)}€`
+                      )}
+                    </span>
                   </div>
 
                   {/* ALERT SPEDIZIONE GRATUITA: Esattamente come nello screenshot */}
                   {subtotal < shippingFreeSpend && (
-                    <div className="alert alert-info py-2 px-3 small border-0 rounded-0 mb-4 d-flex justify-content-center align-items-center" style={{ backgroundColor: "#d1f2fb", color: "#0c5460" }}>
+                    <div
+                      className="alert alert-info py-2 px-3 small border-0 rounded-0 mb-4 d-flex justify-content-center align-items-center"
+                      style={{ backgroundColor: "#d1f2fb", color: "#0c5460" }}
+                    >
                       <span>
-                        Aggiungi <strong>{(shippingFreeSpend - subtotal).toFixed(2)}€</strong> per la spedizione gratuita!
+                        Aggiungi{" "}
+                        <strong>
+                          {(shippingFreeSpend - subtotal).toFixed(2)}€
+                        </strong>{" "}
+                        per la spedizione gratuita!
                       </span>
                     </div>
                   )}
@@ -252,12 +375,21 @@ export default function CheckoutPage() {
                       className="form-control border-0 bg-white"
                       placeholder="Codice Sconto"
                       style={{ padding: "0.75rem" }}
-                      onChange={(e) => setFormData({ ...formData, discount_code: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          discount_code: e.target.value,
+                        })
+                      }
                     />
                   </div>
 
                   {/* Bottone Conferma (bg-body-tertiary come chiesto prima o btn-dark per contrasto) */}
-                  <button type="submit" className="btn bg-body-tertiary w-100 py-3 fw-bold text-uppercase border border-dark shadow-sm" style={{ color: "#4a4a4a" }}>
+                  <button
+                    type="submit"
+                    className="btn bg-body-tertiary w-100 py-3 fw-bold text-uppercase border border-dark shadow-sm"
+                    style={{ color: "#4a4a4a" }}
+                  >
                     Conferma e paga
                   </button>
 
