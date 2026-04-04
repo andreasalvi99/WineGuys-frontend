@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { CartContext } from "../context/CartContextObject";
 import CartCard from "./CartCard";
 import SearchBar from "./SearchBar";
@@ -7,6 +7,20 @@ import SearchBar from "./SearchBar";
 export default function Navbar() {
   const { cart, setCart } = useContext(CartContext);
   const [quantity, setQuantity] = useState(1);
+  const navigate = useNavigate();
+
+  //Funzione per forzare chiusure dell'offcanvas quando clicco sul checkout
+  const handleCheckoutNavigation = () => {
+    // click chiusura programmato che attiva la pulizia di Bootstrap delle classi che bloccano lo scorrimento
+    const closeButton = document.querySelector("#offcanvasRight .btn-close");
+    if (closeButton) {
+      closeButton.click();
+    }
+    // naviga alla pagina di checkout dando il tempo a Bootstrap di iniziare la transizione
+    setTimeout(() => {
+      navigate("/checkout");
+    }, 100);
+  };
 
   async function plusOne(item) {
     try {
@@ -154,9 +168,9 @@ export default function Navbar() {
             <nav className="navbar sticky-bottom bg-body-tertiary">
               <div className="container-fluid justify-content-between align-items-center">
                 <span className="navbar-brand">Totale: &euro;{calcTotalAmount(cart)}</span>
-                <Link to="/checkout" className={`btn btn-success m-0 ${cart.length === 0 ? "disabled" : ""}`}>
+                <button type="button" onClick={handleCheckoutNavigation} disabled={cart.length === 0} className={`btn btn-success m-0 ${cart.length === 0 ? "disabled" : ""}`}>
                   Checkout
-                </Link>
+                </button>
               </div>
             </nav>
           </div>
