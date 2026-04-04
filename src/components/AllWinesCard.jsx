@@ -12,7 +12,7 @@ export default function AllWinesCard({
   name,
   calcDiscount,
 }) {
-  const { addToCart } = useContext(CartContext);
+  const { addToCart, cart } = useContext(CartContext);
   return (
     <div className="col">
       <div className="card h-100 p-3 wine-card bg-body-tertiary">
@@ -56,7 +56,11 @@ export default function AllWinesCard({
             onClick={() => addToCart(wine, 1)}
             type="button"
             className="btn btn-outline-danger"
-            disabled={quantity <= 0}
+            disabled={
+              quantity <= 0 ||
+              (cart.find((item) => item.slug === wine.slug)?.quantity ?? 0) >=
+                wine.stock_quantity
+            }
           >
             Aggiungi al carrello
           </button>
