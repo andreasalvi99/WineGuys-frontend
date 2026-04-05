@@ -13,6 +13,39 @@ export default function CheckoutPage() {
   //stato carello da context
   const { cart, setCart } = useContext(CartContext);
 
+  //funzioni gestione quantità
+
+  async function plusOne(item) {
+    try {
+      // Controllo disponibilità a magazzino prima di incrementare
+      const response = await axios.get(`http://localhost:3000/vini/${item.slug}`);
+      const wine = response.data?.result;
+
+      if (!wine) return;
+      if (item.quantity >= wine.stock_quantity) {
+        alert("Scorte esaurite per questo prodotto");
+        return;
+      }
+
+      setCart((prevCart) => prevCart.map((cartItem) => (cartItem.id === item.id ? { ...cartItem, quantity: cartItem.quantity + 1 } : cartItem)));
+    } catch (err) {
+      console.error("Errore nel recupero dello stock:", err);
+    }
+  }
+
+  function minusOne(item) {
+    if (item.quantity <= 1) {
+      deleteItem(item);
+      return;
+    }
+    setCart((prevCart) => prevCart.map((cartItem) => (cartItem.id === item.id ? { ...cartItem, quantity: cartItem.quantity - 1 } : cartItem)));
+  }
+
+  function deleteItem(item) {
+    const updatedCart = cart.filter((cartItem) => cartItem.id !== item.id);
+    setCart(updatedCart);
+  }
+
   //stato dati da inviare al server
   const [formData, setFormData] = useState({
     customer: {
@@ -213,13 +246,15 @@ export default function CheckoutPage() {
           console.warn("Ordine creato, ma invio email fallito:", emailError);
         }
 
-        navigate("/");
-        //  navigate('/ordine-confermato', {
-        //   state: {
-        //     orderInfo: response.data.order_summary,
-        //     customerName: formData.customer.first_name
-        //   }
-        // });
+        //vado alla pagina di conferma ordine
+        navigate("/conferma-ordine", {
+          state: {
+            orderInfo: response.data.order_summary,
+            customerName: formData.customer.first_name,
+            customerData: formData.customer,
+            cartItems: [...cart],
+          },
+        });
       }
     } catch (error) {
       console.error("ERRORE:", {
@@ -391,16 +426,71 @@ export default function CheckoutPage() {
                   <h5 className="mb-4 fw-bold text-dark">Il tuo ordine</h5>
                   {/* Prodotti */}
                   <div className="cart-items mb-4">
+                    {cart.length === 0 ? (
+                      <p className="text-muted small">Il carrello è vuoto.</p>
+                    ) : (
+                      cart.map((item) => (
+                        <div key={item.id} className="card mb-3 p-3 border-0 shadow-sm bg-white rounded-3">
+                          <h6 className="fw-bold mb-3 text-dark" style={{ fontSize: "1rem" }}>
+                            {item.name}
+                          </h6>
+
+                          <div className="row g-0 align-items-center">
+                            <div className="col-3 text-center">
+                              <img src={`http://localhost:3000/wines/${item.img}`} className="img-fluid" alt={item.name} style={{ maxHeight: "70px", objectFit: "contain" }} />
+                            </div>
+
+                            <div className="col-5 d-flex align-items-center justify-content-center gap-2">
+                              <div className="d-flex align-items-center border rounded bg-light p-1">
+                                <button
+                                  onClick={() => (item.quantity > 1 ? minusOne(item) : deleteItem(item))}
+                                  type="button"
+                                  className="btn btn-sm btn-link text-dark p-0 px-2 text-decoration-none fw-bold"
+                                >
+                                  -
+                                </button>
+                                <span className="px-2 small fw-bold" style={{ minWidth: "20px", textAlign: "center" }}>
+                                  {item.quantity}
+                                </span>
+                                <button onClick={() => plusOne(item)} type="button" className="btn btn-sm btn-link text-dark p-0 px-2 text-decoration-none fw-bold">
+                                  +
+                                </button>
+                              </div>
+
+                              <button onClick={() => deleteItem(item)} type="button" className="btn btn-sm text-danger ms-2 p-0">
+                                <i className="bi bi-trash3 fs-5"></i>
+                              </button>
+                            </div>
+
+                            <div className="col-4 text-end">
+                              {item.promotion_price && (
+                                <div className="d-flex flex-column">
+                                  <span className="text-muted text-decoration-line-through small" style={{ fontSize: "0.7rem" }}>
+                                    {item.price.toFixed(2)}€
+                                  </span>
+                                </div>
+                              )}
+                              <div className="text-muted mt-1" style={{ fontSize: "0.75rem" }}>
+                                Totale: <span className="fw-bold text-dark">{(getItemPrice(item) * item.quantity).toFixed(2)}€</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                  {/* <div className="cart-items mb-4">
                     {cart.map((item) => (
                       <div key={item.id} className="d-flex justify-content-between mb-3 align-items-center">
                         <div className="d-flex align-items-center">
                           <span className="badge bg-secondary me-2">{item.quantity}</span>
+
                           <span className="small text-dark">{item.name}</span>
                         </div>
                         <span className="small fw-bold text-dark">{(getItemPrice(item) * item.quantity).toFixed(2)}€</span>
                       </div>
                     ))}
-                  </div>
+                  </div> */}
 
                   <hr className="text-muted opacity-25" />
 

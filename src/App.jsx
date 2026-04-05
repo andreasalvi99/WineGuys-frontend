@@ -6,6 +6,7 @@ import WinesPage from "./pages/WinesPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import DefaultLayout from "./layouts/DefaultLayout";
 import CheckoutLayout from "./layouts/CheckoutLayout";
+import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
         </Route>
         <Route element={<CheckoutLayout />}>
           <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/conferma-ordine" element={<OrderConfirmationPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
