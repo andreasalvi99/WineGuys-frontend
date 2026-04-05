@@ -144,11 +144,6 @@ export default function Navbar() {
                     Vini
                   </NavLink>
                 </li>
-                <li className="nav-item">
-                  <NavLink to={""} className="nav-link">
-                    Link
-                  </NavLink>
-                </li>
               </ul>
             </div>
           </div>
