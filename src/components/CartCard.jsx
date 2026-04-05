@@ -35,7 +35,9 @@ export default function CartCard({
             <div className="d-flex justify-content-start align-items-center">
               <p className="card-text mt-3 d-flex align-items-center">
                 <button
-                  onClick={() => minusOne(item)}
+                  onClick={
+                    quantity > 1 ? () => minusOne(item) : () => deleteItem(item)
+                  }
                   type="button"
                   className="btn btn-light m-0"
                   disabled={quantity === 0}
