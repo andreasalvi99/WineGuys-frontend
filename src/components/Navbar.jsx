@@ -127,10 +127,9 @@ export default function Navbar() {
             </button>
 
             <div
-              className="collapse navbar-collapse justify-content-lg-between align-items-center mt-3"
+              className="collapse navbar-collapse justify-content-lg-between align-items-center"
               id="navbarSupportedContent"
             >
-              <div></div>
               <ul className="navbar-nav mb-2 mb-lg-0 navbar-links-list">
                 <li className="nav-item">
                   <NavLink to={"/"} className="nav-link">
@@ -146,7 +145,7 @@ export default function Navbar() {
             </div>
           </div>
         </nav>
-        <div className="d-flex align-items-center">
+        <div className="d-flex align-items-center mx-3">
           <SearchBar />
           <button
             className="btn shopping-cart-btn"
@@ -214,7 +213,6 @@ export default function Navbar() {
             </div>
           </nav>
         </div>
-        {/* <div className="d-flex align-items-center gap-2"></div> */}
       </div>
     </>
   );
