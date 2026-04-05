@@ -3,12 +3,20 @@ import { useEffect, useState } from "react";
 import AllWinesCard from "../components/AllWinesCard";
 
 export default function WinesPage() {
+  // stato per tutti i vini dal database
   const [wines, setWines] = useState([]);
+
+  // stati per i filtri selezionati dall'utente
+  const [filterAnnata, setFilterAnnata] = useState("");
+  const [filterTipo, setFilterTipo] = useState("");
+  const [filterVitigno, setFilterVitigno] = useState("");
+  const [filterPrezzo, setFilterPrezzo] = useState("");
 
   function calcDiscount(original, discount) {
     return Math.ceil(((original - discount) / original) * 100);
   }
 
+  // chiama il backend e prende tutti i vini
   function fetchWines() {
     axios.get("http://localhost:3000/vini").then((response) => {
       setWines(response.data);
@@ -16,6 +24,23 @@ export default function WinesPage() {
   }
 
   useEffect(fetchWines, []);
+
+  // filtra i vini in basi ai filtri selezionati
+  const filteredWines = wines.filter((wine) => {
+    return (
+      // se il filtro è vuolto mostra tutto, altrimenti filtra per annata
+      (filterAnnata === "" || String(wine.vintage) === filterAnnata) &&
+      // filtra per tipologia
+      (filterTipo === "" || wine.type === filterTipo) &&
+      // filtra per vitigno
+      (filterVitigno === "" || wine.grape === filterVitigno) &&
+      // filtra per fascia di prezzo
+      (filterPrezzo === "" ||
+        (filterPrezzo === "0-20" && wine.price <= 20) ||
+        (filterPrezzo === "20-50" && wine.price > 20 && wine.price <= 50) ||
+        (filterPrezzo === "50+" && wine.price > 50))
+    );
+  });
 
   return (
     <>
@@ -26,8 +51,80 @@ export default function WinesPage() {
               LA NOSTRA CANTINA
             </h1>
           </div>
+          {/* barra dei filtri */}
+          <div className="d-flex flex-wrap gap-2 mb-4">
+            {/* filtro per annata - prende i valori unici dal database */}
+            <select
+              className="btn btn-outline-dark"
+              style={{ width: "150px" }}
+              value={filterAnnata}
+              onChange={(e) => setFilterAnnata(e.target.value)}
+            >
+              <option value="">Annata</option>
+              {[...new Set(wines.map((w) => w.vintage))].sort().map((v) => (
+                <option key={v} value={v}>
+                  {v}
+                </option>
+              ))}
+            </select>
+            {/* filtro per tipologia - prende i valori unic dal database */}
+            <select
+              className="btn btn-outline-dark"
+              style={{ width: "150px" }}
+              value={filterTipo}
+              onChange={(e) => setFilterTipo(e.target.value)}
+            >
+              <option value="">Tipologia</option>
+              {[...new Set(wines.map((w) => w.type))].map((t) => (
+                <option key={t} value={t}>
+                  {t}
+                </option>
+              ))}
+            </select>
+            {/* filtro per vitigno - prende i valori unici dal database */}
+            <select
+              className="btn btn-outline-dark"
+              style={{ width: "150px" }}
+              value={filterVitigno}
+              onChange={(e) => setFilterVitigno(e.target.value)}
+            >
+              <option value="">Vitigno</option>
+              {[...new Set(wines.map((w) => w.grape))].map((g) => (
+                <option key={g} value={g}>
+                  {g}
+                </option>
+              ))}
+            </select>
+            {/*filtro per fascia di prezzo - valori fissi */}
+            <select
+              className="btn btn-outline-dark"
+              style={{ width: "150px" }}
+              value={filterPrezzo}
+              onChange={(e) => setFilterPrezzo(e.target.value)}
+            >
+              <option value="">Prezzo</option>
+              <option value="0-20">Fino a €20</option>
+              <option value="20-50">€20 - €50</option>
+              <option value="50+">Oltre €50</option>
+            </select>
+            {/* bottone per resettare tutti i filtri */}
+            <button
+              className="btn btn-dark"
+              style={{ width: "106px" }}
+              onClick={() => {
+                setFilterAnnata("");
+                setFilterTipo("");
+                setFilterVitigno("");
+                setFilterPrezzo("");
+              }}
+            >
+              Reseta filtri
+            </button>
+          </div>
+
+          {/* griglia dei vini filtrati modifico e wines diventa filterwdWines */}
           <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
-            {wines.map((wine) => {
+            {filteredWines.map((wine) => {
               return (
                 <AllWinesCard
                   wine={wine}
