@@ -210,8 +210,9 @@ export default function Navbar() {
               </a>
               <button
                 type="button"
-                className="btn btn-success m-0"
+                onClick={handleCheckoutNavigation}
                 disabled={cart.length === 0}
+                className={`btn btn-success m-0 ${cart.length === 0 ? "disabled" : ""}`}
               >
                 Checkout
               </button>
