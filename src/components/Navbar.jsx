@@ -153,20 +153,22 @@ export default function Navbar() {
             </div>
           </div>
         </nav>
-        <SearchBar />
-        <button
-          className="btn shopping-cart-btn"
-          type="button"
-          data-bs-toggle="offcanvas"
-          data-bs-target="#offcanvasRight"
-          aria-controls="offcanvasRight"
-        >
-          <i className="bi bi-cart shopping-cart position-relative">
-            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
-              <span className="fw-light">{calcTotalQuantity(cart)}</span>
-            </span>
-          </i>
-        </button>
+        <div className="d-flex align-items-center">
+          <SearchBar />
+          <button
+            className="btn shopping-cart-btn"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasRight"
+            aria-controls="offcanvasRight"
+          >
+            <i className="bi bi-cart shopping-cart position-relative">
+              <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
+                <span className="fw-light">{calcTotalQuantity(cart)}</span>
+              </span>
+            </i>
+          </button>
+        </div>
         <div
           className="offcanvas offcanvas-end playfair-display_special"
           tabIndex={-1}
