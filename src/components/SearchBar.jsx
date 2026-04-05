@@ -8,24 +8,31 @@ export default function SearchBar() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get("http://localhost:3000/vini")
+    axios
+      .get("http://localhost:3000/vini")
       .then((res) => setWines(res.data))
       .catch((err) => console.error("Errore:", err));
-    }, []);
+  }, []);
 
   // Filtriamo i vini in tempo reale
   const suggestions =
-  query.length >= 2
-    ? wines
-        .filter((w) => {
-          const q = query.toLowerCase();
-          const searchableKeys = ["product_name", "type", "region", "grape", "vintage"];
-          return searchableKeys.some((key) =>
-            w[key]?.toString().toLowerCase().includes(q)
-          );
-        })
-        .slice(0, 5)
-    : [];
+    query.length >= 2
+      ? wines
+          .filter((w) => {
+            const q = query.toLowerCase();
+            const searchableKeys = [
+              "product_name",
+              "type",
+              "region",
+              "grape",
+              "vintage",
+            ];
+            return searchableKeys.some((key) =>
+              w[key]?.toString().toLowerCase().includes(q),
+            );
+          })
+          .slice(0, 5)
+      : [];
   const handleSelect = (slug) => {
     navigate(`/vini/${slug}`);
     setQuery("");
@@ -36,7 +43,7 @@ export default function SearchBar() {
       <form onSubmit={(e) => e.preventDefault()}>
         <input
           type="text"
-          className="form-control form-control-sm border-secondary-subtle"
+          className="form-control form-control-sm border-secondary-subtle rounded-pill"
           placeholder="Cerca per nome, anno..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
