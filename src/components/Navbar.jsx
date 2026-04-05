@@ -112,10 +112,8 @@ export default function Navbar() {
         </Link>
       </div>
       <div className="d-flex justify-content-between bg-body-tertiary align-items-center sticky-top">
-        <div></div>
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
           <div className="container-fluid">
-            <a className="navbar-brand" href="#"></a>
             <button
               className="navbar-toggler"
               type="button"
@@ -129,7 +127,7 @@ export default function Navbar() {
             </button>
 
             <div
-              className="collapse navbar-collapse justify-content-lg-between align-items-center"
+              className="collapse navbar-collapse justify-content-lg-between align-items-center mt-3"
               id="navbarSupportedContent"
             >
               <div></div>
@@ -216,7 +214,7 @@ export default function Navbar() {
             </div>
           </nav>
         </div>
-        <div className="d-flex align-items-center gap-2"></div>
+        {/* <div className="d-flex align-items-center gap-2"></div> */}
       </div>
     </>
   );
