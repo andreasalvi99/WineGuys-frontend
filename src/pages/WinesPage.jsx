@@ -52,7 +52,7 @@ export default function WinesPage() {
             </h1>
           </div>
           {/* barra dei filtri */}
-          <div className="d-flex flex-wrap gap-2 mb-4">
+          <div className="d-flex flex-wrap gap-3 mb-4">
             {/* filtro per annata - prende i valori unici dal database */}
             <select
               className="btn btn-outline-dark"
@@ -110,7 +110,7 @@ export default function WinesPage() {
             {/* bottone per resettare tutti i filtri */}
             <button
               className="btn btn-dark"
-              style={{ width: "106px" }}
+              style={{ width: "110px" }}
               onClick={() => {
                 setFilterAnnata("");
                 setFilterTipo("");
@@ -118,7 +118,7 @@ export default function WinesPage() {
                 setFilterPrezzo("");
               }}
             >
-              Reseta filtri
+              Resetta filtri
             </button>
           </div>
 
