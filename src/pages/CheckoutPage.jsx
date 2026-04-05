@@ -213,13 +213,15 @@ export default function CheckoutPage() {
           console.warn("Ordine creato, ma invio email fallito:", emailError);
         }
 
-        navigate("/");
-        //  navigate('/ordine-confermato', {
-        //   state: {
-        //     orderInfo: response.data.order_summary,
-        //     customerName: formData.customer.first_name
-        //   }
-        // });
+        //vado alla pagina di conferma ordine
+        navigate("/conferma-ordine", {
+          state: {
+            orderInfo: response.data.order_summary,
+            customerName: formData.customer.first_name,
+            customerData: formData.customer,
+            cartItems: [...cart],
+          },
+        });
       }
     } catch (error) {
       console.error("ERRORE:", {
@@ -395,6 +397,7 @@ export default function CheckoutPage() {
                       <div key={item.id} className="d-flex justify-content-between mb-3 align-items-center">
                         <div className="d-flex align-items-center">
                           <span className="badge bg-secondary me-2">{item.quantity}</span>
+
                           <span className="small text-dark">{item.name}</span>
                         </div>
                         <span className="small fw-bold text-dark">{(getItemPrice(item) * item.quantity).toFixed(2)}€</span>
