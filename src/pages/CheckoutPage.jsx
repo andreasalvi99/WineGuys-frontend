@@ -15,8 +15,7 @@ export default function CheckoutPage() {
   //stato carello da context
   const { cart, setCart } = useContext(CartContext);
 
-  //funzioni gestione quantità
-
+  //funzioni aumento quantità
   async function plusOne(item) {
     try {
       // Controllo disponibilità a magazzino prima di incrementare
@@ -24,6 +23,8 @@ export default function CheckoutPage() {
       const wine = response.data?.result;
 
       if (!wine) return;
+
+      //notifica quantità esaurite
       if (item.quantity >= wine.stock_quantity) {
         toast.warning("Scorte esaurite", {
           description: `Non ci sono altre bottiglie di ${item.name} disponibili.`,
@@ -37,6 +38,7 @@ export default function CheckoutPage() {
     }
   }
 
+  //funzione diminuzione quantità
   function minusOne(item) {
     if (item.quantity <= 1) {
       deleteItem(item);
@@ -45,6 +47,7 @@ export default function CheckoutPage() {
     setCart((prevCart) => prevCart.map((cartItem) => (cartItem.id === item.id ? { ...cartItem, quantity: cartItem.quantity - 1 } : cartItem)));
   }
 
+  //funzione per eliminare vino
   function deleteItem(item) {
     const updatedCart = cart.filter((cartItem) => cartItem.id !== item.id);
     setCart(updatedCart);
@@ -144,7 +147,8 @@ export default function CheckoutPage() {
     if (!/^\d{5}$/.test(formData.customer.billing_postal_code)) {
       newInvalid.billing_postal_code = { isInvalid: true, reason: "CAP non valido" };
     }
-    //validazione chipping se necessaria
+
+    //validazione shipping se necessaria
     if (!sameAsBilling) {
       if (!formData.customer.shipping_street.trim()) {
         newInvalid.shipping_street = { isInvalid: true, reason: "L'indirizzo è necessario" };
@@ -180,6 +184,13 @@ export default function CheckoutPage() {
   //FUNZIONE LETTURA FORM e gestione sincronizzazione dei cambi billing e shipping
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    if (name === "discount_code") {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
 
     setFormData((prev) => {
       //copio i dati del cliente
@@ -247,7 +258,8 @@ export default function CheckoutPage() {
         console.log("Ordine creato con successo!", response.data.order_summary);
 
         // faccio chiamata axios per mandare email di conferam ordine
-        /* dopo che l'ordine è stato salvato con successo nel database, chiamo il nostro endpoint /email/send-confirmation per mandare una email di conferma al cliente. passimao i dati del cliente (nome, email, indirizzo di spedizione), i prodotti del carrello con quantità e prezzi, il totale e le spese di spedizione.L'email viene generata e inviata tramite Nodemailer con Maltrap come servizio di test. In produzione si può sostituire Mailtrap con un servizio reale come Gmail. Il cliente receverà una email col riepilogo completo dell'ordine, così sa esattamente cosa ha comprato e quanto ha pagato. */
+        // dopo che l'ordine è stato salvato con successo nel database, chiamo il nostro endpoint /email/send-confirmation per mandare una email di conferma al cliente. passimao i dati del cliente (nome, email, indirizzo di spedizione), i prodotti del carrello con quantità e prezzi, il totale e le spese di spedizione.
+        //L'email viene generata e inviata tramite Nodemailer con Maltrap come servizio di test. In produzione si può sostituire Mailtrap con un servizio reale come Gmail. Il cliente receverà una email col riepilogo completo dell'ordine, così sa esattamente cosa ha comprato e quanto ha pagato. */
         try {
           axios.post("http://localhost:3000/email/send-confirmation", {
             customer: formData.customer,
@@ -461,11 +473,7 @@ export default function CheckoutPage() {
 
                             <div className="col-5 d-flex align-items-center justify-content-center gap-2">
                               <div className="d-flex align-items-center border rounded bg-light p-1">
-                                <button
-                                  onClick={() => (item.quantity > 1 ? minusOne(item) : deleteItem(item))}
-                                  type="button"
-                                  className="btn btn-sm btn-link text-dark p-0 px-2 text-decoration-none fw-bold"
-                                >
+                                <button onClick={() => minusOne(item)} type="button" className="btn btn-sm btn-link text-dark p-0 px-2 text-decoration-none fw-bold">
                                   -
                                 </button>
                                 <span className="px-2 small fw-bold" style={{ minWidth: "20px", textAlign: "center" }}>
@@ -498,18 +506,6 @@ export default function CheckoutPage() {
                       ))
                     )}
                   </div>
-                  {/* <div className="cart-items mb-4">
-                    {cart.map((item) => (
-                      <div key={item.id} className="d-flex justify-content-between mb-3 align-items-center">
-                        <div className="d-flex align-items-center">
-                          <span className="badge bg-secondary me-2">{item.quantity}</span>
-
-                          <span className="small text-dark">{item.name}</span>
-                        </div>
-                        <span className="small fw-bold text-dark">{(getItemPrice(item) * item.quantity).toFixed(2)}€</span>
-                      </div>
-                    ))}
-                  </div> */}
 
                   <hr className="text-muted opacity-25" />
 
@@ -545,15 +541,12 @@ export default function CheckoutPage() {
                   <div className="mb-3">
                     <input
                       type="text"
+                      name="discount_code"
+                      value={formData.discount_code}
                       className="form-control border-0 bg-white"
                       placeholder="Codice Sconto"
                       style={{ padding: "0.75rem" }}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          discount_code: e.target.value,
-                        })
-                      }
+                      onChange={handleChange}
                     />
                   </div>
 
