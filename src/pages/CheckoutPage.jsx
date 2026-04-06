@@ -1,4 +1,6 @@
 import axios from "axios";
+import { toast } from "sonner";
+
 import { useState, useMemo, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { CartContext } from "../context/CartContextObject";
@@ -23,7 +25,9 @@ export default function CheckoutPage() {
 
       if (!wine) return;
       if (item.quantity >= wine.stock_quantity) {
-        alert("Scorte esaurite per questo prodotto");
+        toast.warning("Scorte esaurite", {
+          description: `Non ci sono altre bottiglie di ${item.name} disponibili.`,
+        });
         return;
       }
 
@@ -199,6 +203,15 @@ export default function CheckoutPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    //notifica carrello vuoto
+    if (cart.length === 0) {
+      toast.error("Attenzione", {
+        description: "Il tuo carrello è vuoto. Aggiungi almeno un vino per procedere!",
+        duration: 4000,
+      });
+      return; // Blocca l'invio del form
+    }
+
     // validazione dati
     const isValid = validateForm();
 
@@ -261,6 +274,12 @@ export default function CheckoutPage() {
         status: error.response?.status,
         data: error.response?.data,
         message: error.message,
+      });
+      //notifiche per errori
+      const backendMessage = error.response?.data?.message || "Errore durante l'ordine";
+      toast.error("Attenzione", {
+        description: backendMessage,
+        duration: 5000,
       });
     } finally {
       setIsLoading(false);

@@ -7,10 +7,12 @@ import CheckoutPage from "./pages/CheckoutPage";
 import DefaultLayout from "./layouts/DefaultLayout";
 import CheckoutLayout from "./layouts/CheckoutLayout";
 import OrderConfirmationPage from "./pages/OrderConfirmationPage";
+import { Toaster } from "sonner";
 
 export default function App() {
   return (
     <BrowserRouter>
+      <Toaster position="top-right" richColors closeButton />
       <Routes>
         <Route element={<DefaultLayout />}>
           <Route index element={<HomePage />} />
