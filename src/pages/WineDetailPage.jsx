@@ -266,8 +266,8 @@ function WineDetailPage() {
       <div className="container">
       <div className="row justify-content-center">
         {relatedWines.map((w) => (
-      <div className="col-md-4 text-center mb-4" key={w.id}>
-      <div style={{ maxWidth: "200px", margin: "0 auto" }}>
+      <div className="col-md-4 text-center mb-4 d-flex" key={w.id}>
+      <div className="d-flex flex-column h-100" style={{ maxWidth: "200px", margin: "0 auto" }}>
       <WineCard
         img={ w.img ? `http://localhost:3000/wines/${w.img}` : ""}                  
              name={w.product_name}         
@@ -278,7 +278,7 @@ function WineDetailPage() {
 
       {/*BOTTONE CONFRONTO*/}   
       <button
-        className="btn btn-sm btn-outline-dark mt-2"
+        className="btn btn-sm btn-outline-dark mt-auto"
         onClick={() => toggleCompare(w)}
       >
         {compareList.find((c) => c.slug === w.slug)
@@ -295,8 +295,8 @@ function WineDetailPage() {
       
       {/* COMPARISON TABLE */}
       {compareList.length === 2 && (
-  <div className="container mt-5 text-center">
-    <h4 className="text-center mb-4" > Confronto vini </h4>
+      <div className="container mt-5 text-center">
+      <h4 className="text-center mb-4" > Confronto vini </h4>
 
       <table className="table table-bordered text-center mx-auto" style={{ maxWidth: "800px" }}>
       <thead>
@@ -323,9 +323,9 @@ function WineDetailPage() {
           <td>{compareList[1].stock_quantity}</td>
         </tr>
       </tbody>
-    </table>
-  </div>
-  )}
+      </table>
+      </div>
+     )}
 
       {/*PHILOSOPHY*/}
       <div
