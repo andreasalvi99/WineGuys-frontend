@@ -3,10 +3,10 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { CartContext } from "../context/CartContextObject";
 import CartCard from "./CartCard";
 import SearchBar from "./SearchBar";
+import axios from "axios";
 
 export default function Navbar() {
   const { cart, setCart } = useContext(CartContext);
-  const [quantity, setQuantity] = useState(1);
   const navigate = useNavigate();
 
   //Funzione per forzare chiusure dell'offcanvas quando clicco sul checkout
@@ -23,26 +23,21 @@ export default function Navbar() {
   };
 
   async function plusOne(item) {
-    try {
-      const response = await axios.get(
-        `http://localhost:3000/vini/${item.slug}`,
-      );
+    const response = await axios.get(`http://localhost:3000/vini/${item.slug}`);
 
-      const wine = response.data?.result;
-      if (!wine) return;
+    const wine = response.data?.result;
+    if (!wine) return;
 
-      if (item.quantity >= wine.stock_quantity) return;
+    if (item.quantity >= wine.stock_quantity) return;
 
-      setCart((prevCart) =>
-        prevCart.map((cartItem) =>
-          cartItem.id === item.id
-            ? { ...cartItem, quantity: cartItem.quantity + 1 }
-            : cartItem,
-        ),
-      );
-    } catch (err) {
-      console.error(err);
-    }
+    setCart((prevCart) =>
+      prevCart.map((cartItem) =>
+        cartItem.id === item.id
+          ? { ...cartItem, quantity: cartItem.quantity + 1 }
+          : cartItem,
+      ),
+    );
+    console.log("ciao");
   }
 
   function minusOne(item) {
