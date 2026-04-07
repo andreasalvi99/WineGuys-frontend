@@ -129,6 +129,14 @@
   color: white;
 }
 
+.not-search {
+  background-image: url("../img/searchwine.png");
+  height: 100%;
+  width: 100%;
+  height: 100vh;
+  width: 100%;
+}
+
 @keyframes blink {
   0% {
     opacity: 1;
