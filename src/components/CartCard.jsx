@@ -13,14 +13,14 @@ export default function CartCard({
   return (
     <div className="card mb-3 p-3">
       <div className="row g-0">
-        <div className="col-md-4 h-100">
+        <div className="col-4 h-100">
           <img
             src={`http://localhost:3000/wines/${img}`}
             className="img-fluid rounded-start"
             alt={name}
           />
         </div>
-        <div className="col-md-8">
+        <div className="col-8">
           <div className="card-body py-0">
             <div className="d-flex justify-content-between">
               <h5 className="card-title fs-6">{name}</h5>
