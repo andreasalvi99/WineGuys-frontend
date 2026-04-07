@@ -17,6 +17,7 @@ function WineDetailPage() {
   const [relatedWines, setRelatedWines] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [compareList, setCompareList] = useState([]);
 
   /*CONTEXT*/
   const { addToCart, cart } = useContext(CartContext);
@@ -68,6 +69,21 @@ function WineDetailPage() {
   /*Funzione per calcolare lo sconto in percentuale*/
   function calcDiscount(original, discount) {
     return Math.ceil(((original - discount) / original) * 100);
+  }
+
+  /* GESTIONE CONFRONTO */
+  function toggleCompare(wine) {
+  setCompareList((prev) => {
+    const exists = prev.find((w) => w.slug === wine.slug);
+
+    if (exists) {
+      return prev.filter((w) => w.slug !== wine.slug);
+    }
+
+    if (prev.length >= 2) return prev;
+
+    return [...prev, wine];
+  });
   }
 
   
@@ -250,21 +266,106 @@ function WineDetailPage() {
       <div className="container">
       <div className="row justify-content-center">
         {relatedWines.map((w) => (
-      <div className="col-md-4 text-center mb-4" key={w.id}>
-      <div style={{ maxWidth: "200px", margin: "0 auto" }}>
+      <div className="col-md-4 text-center mb-4 d-flex" key={w.id}>
+      <div className="d-flex flex-column h-100" style={{ maxWidth: "200px", margin: "0 auto" }}>
       <WineCard
         img={ w.img ? `http://localhost:3000/wines/${w.img}` : ""}                  
              name={w.product_name}         
              price={w.price}             
              discounted={w.promotion_price}              
              slug={w.slug}            
-      />                    
+      /> 
+
+      {/*BOTTONE CONFRONTO*/}   
+      <button
+        className="btn btn-sm btn-outline-dark mt-auto"
+        onClick={() => toggleCompare(w)}
+      >
+        {compareList.find((c) => c.slug === w.slug)
+          ? "Rimuovi confronto"
+          : "Confronta"}
+      </button>                
+      
       </div>                  
       </div>    
         ))}
       </div>
       </div>
       </div>
+      
+      {/* COMPARISON TABLE */}
+      {compareList.length === 2 && (
+      <div className="container mt-5">
+      <div style={{ maxWidth: "800px", margin: "0 auto" }}>
+      
+      <h4 className="text-center mb-4">Confronto vini</h4>
+
+      <table className="table table-bordered text-center">
+        
+        <thead>
+          {/* IMMAGINI */}
+          <tr>
+            <th
+            style={{
+            verticalAlign: "middle",
+            textAlign: "center",
+            fontWeight: "700",
+            letterSpacing: "1px"
+            }}
+            >WineGuys</th>
+  
+
+
+            <th>
+              <img
+                src={`http://localhost:3000/wines/${compareList[0].img}`}
+                alt={compareList[0].product_name}
+                style={{ height: "120px", objectFit: "contain", marginBottom: "10px" }}
+              />
+            </th>
+
+            <th>
+              <img
+                src={`http://localhost:3000/wines/${compareList[1].img}`}
+                alt={compareList[1].product_name}
+                style={{ height: "120px", objectFit: "contain", marginBottom: "10px" }}
+              />
+            </th>
+          </tr>
+
+          {/* NOMI */}
+          <tr>
+            <th>Caratteristica</th>
+            <th>{compareList[0].product_name}</th>
+            <th>{compareList[1].product_name}</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>Prezzo</td>
+            <td>{compareList[0].price}€</td>
+            <td>{compareList[1].price}€</td>
+          </tr>
+
+          <tr>
+            <td>Annata</td>
+            <td>{compareList[0].vintage}</td>
+            <td>{compareList[1].vintage}</td>
+          </tr>
+
+          <tr>
+            <td>Disponibilità</td>
+            <td>{compareList[0].stock_quantity}</td>
+            <td>{compareList[1].stock_quantity}</td>
+          </tr>
+        </tbody>
+
+      </table>
+
+      </div>
+      </div>
+      )}
 
       {/*PHILOSOPHY*/}
       <div
