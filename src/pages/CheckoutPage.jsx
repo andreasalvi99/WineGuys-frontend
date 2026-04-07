@@ -1,7 +1,6 @@
 import axios from "axios";
 import { toast } from "sonner";
-
-import { useState, useMemo, useContext } from "react";
+import { useState, useMemo, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { CartContext } from "../context/CartContextObject";
 
@@ -78,6 +77,14 @@ export default function CheckoutPage() {
   //stato per loading
   const [isLoading, setIsLoading] = useState(false);
 
+  //stati per coupon
+  const [couponDetails, setCouponDetails] = useState({
+    isValid: false,
+    discountValue: 0,
+    message: "",
+  });
+  const [isCheckingCoupon, setIsCheckingCoupon] = useState(false);
+
   //VALIDAZIONE INPUT
   //stato per validazione input
   const [invalidFields, setInvalidFields] = useState({
@@ -93,40 +100,65 @@ export default function CheckoutPage() {
     shipping_postal_code: { isInvalid: false, reason: "" },
   });
 
+  //funzione checkbox indirizzo di spedizione
+  const handleCheckboxChange = () => {
+    const nextValue = !sameAsBilling;
+    setSameAsBilling(nextValue);
+
+    if (!nextValue) {
+      // Se apro la tendina, svuoto i campi di spedizione così la validazione li "vede" come errori
+      setFormData((prev) => ({
+        ...prev,
+        customer: {
+          ...prev.customer,
+          shipping_street: "",
+          shipping_city: "",
+          shipping_postal_code: "",
+        },
+      }));
+    } else {
+      // Se la chiudo, risincronizzo
+      setFormData((prev) => ({
+        ...prev,
+        customer: {
+          ...prev.customer,
+          shipping_street: prev.customer.billing_street,
+          shipping_city: prev.customer.billing_city,
+          shipping_postal_code: prev.customer.billing_postal_code,
+        },
+      }));
+    }
+  };
+
   //funzione di validazione
   function validateForm() {
-    const newInvalid = {
-      first_name: { isInvalid: false, reason: "" },
-      second_name: { isInvalid: false, reason: "" },
-      email: { isInvalid: false, reason: "" },
-      cellphone: { isInvalid: false, reason: "" },
-      billing_street: { isInvalid: false, reason: "" },
-      billing_city: { isInvalid: false, reason: "" },
-      billing_postal_code: { isInvalid: false, reason: "" },
-      shipping_street: { isInvalid: false, reason: "" },
-      shipping_city: { isInvalid: false, reason: "" },
-      shipping_postal_code: { isInvalid: false, reason: "" },
-    };
+    const newInvalid = { ...invalidFields };
+
+    Object.keys(newInvalid).forEach((key) => {
+      newInvalid[key] = { isInvalid: false, reason: "" };
+    });
+
+    const { customer } = formData;
 
     // validazione Nome
-    if (!formData.customer.first_name.trim()) {
+    if (!customer.first_name.trim()) {
       newInvalid.first_name = { isInvalid: true, reason: "Il nome è necessario" };
     }
 
     // validazione Cognome
-    if (!formData.customer.second_name.trim()) {
+    if (!customer.second_name.trim()) {
       newInvalid.second_name = { isInvalid: true, reason: "Il cognome è necessario" };
     }
 
     // validazione Email (Regex base)
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.customer.email)) {
+    if (!emailRegex.test(customer.email)) {
       newInvalid.email = { isInvalid: true, reason: "Inserisci un'email valida" };
     }
 
     // validazione Cellulare
     const phoneRegex = /^\+?[\d\s]{9,15}$/;
-    const phoneValue = formData.customer.cellphone.trim();
+    const phoneValue = customer.cellphone.trim();
 
     if (!phoneValue) {
       newInvalid.cellphone = { isInvalid: true, reason: "Il numero di cellulare è necessario" };
@@ -135,28 +167,28 @@ export default function CheckoutPage() {
     }
 
     // validazione Indirizzo
-    if (!formData.customer.billing_street.trim()) {
+    if (!customer.billing_street.trim()) {
       newInvalid.billing_street = { isInvalid: true, reason: "L'indirizzo è necessario" };
     }
     // validazione Città
-    if (!formData.customer.billing_city.trim()) {
+    if (!customer.billing_city.trim()) {
       newInvalid.billing_city = { isInvalid: true, reason: "La città è necessaria" };
     }
 
     // validazione CAP
-    if (!/^\d{5}$/.test(formData.customer.billing_postal_code)) {
+    if (!/^\d{5}$/.test(customer.billing_postal_code)) {
       newInvalid.billing_postal_code = { isInvalid: true, reason: "CAP non valido" };
     }
 
     //validazione shipping se necessaria
     if (!sameAsBilling) {
-      if (!formData.customer.shipping_street.trim()) {
+      if (!customer.shipping_street.trim()) {
         newInvalid.shipping_street = { isInvalid: true, reason: "L'indirizzo è necessario" };
       }
-      if (!formData.customer.shipping_city.trim()) {
+      if (!customer.shipping_city.trim()) {
         newInvalid.shipping_city = { isInvalid: true, reason: "La città è necessaria" };
       }
-      if (!/^\d{5}$/.test(formData.customer.shipping_postal_code)) {
+      if (!/^\d{5}$/.test(customer.shipping_postal_code)) {
         newInvalid.shipping_postal_code = { isInvalid: true, reason: "CAP non valido" };
       }
     }
@@ -164,37 +196,103 @@ export default function CheckoutPage() {
     setInvalidFields(newInvalid);
 
     // ritorna true se non ci sono campi invalidi - Object.values prende i valori di newInvalid e li mette in stringa + some ci dice se almeno un valore è invalido(true)
-    return !Object.values(newInvalid).some((f) => f.isInvalid);
+    return !Object.values(newInvalid).some((field) => field.isInvalid);
   }
 
-  //PREZZO TOTALE
+  //PREZZO TOTALE e COUPON
   //calcolo il prezzo da usare, se promo o meno
   const getItemPrice = (item) => (item.promotion_price !== null ? item.promotion_price : item.price);
+
+  // funzione per validare il coupon
+  const applyCoupon = async () => {
+    const code = formData.discount_code.trim();
+    if (!code) {
+      toast.error("Inserisci un codice prima di applicare");
+      return;
+    }
+
+    setIsCheckingCoupon(true);
+
+    try {
+      const response = await axios.post("http://localhost:3000/ordini/validate-coupon", {
+        discount_code: code,
+        total_amount: subtotal,
+      });
+
+      if (response.data.success) {
+        setCouponDetails({
+          isValid: true,
+          discountValue: parseFloat(response.data.coupon.discount_value),
+          message: response.data.message,
+        });
+      }
+    } catch (error) {
+      setCouponDetails({
+        isValid: false,
+        discountValue: 0,
+        message: error.response?.data?.message || "Codice non valido",
+      });
+    } finally {
+      setIsCheckingCoupon(false);
+    }
+  };
+  //controllo su cambio carrello con reset del campo coupon
+  useEffect(() => {
+    // Reset dello stato coupon (messaggi e valori)
+    setCouponDetails({
+      isValid: false,
+      discountValue: 0,
+      message: "", // Qui puliamo qualsiasi messaggio, sia di errore che di successo
+    });
+
+    // Reset del campo di testo dell'input nel formData
+    setFormData((prev) => ({
+      ...prev,
+      discount_code: "", // Questo cancella fisicamente il codice scritto dall'utente
+    }));
+
+    // Opzionale: se vuoi che il messaggio di "reset" appaia solo se c'era effettivamente qualcosa
+    // puoi aggiungere una logica, ma solitamente pulire tutto al cambio carrello è la scelta più sicura.
+  }, [cart]);
 
   //calcolo il subtotale della somma dei prezzi dei prodotti considerando le quantità (useMemo serve per memorizzare il calcolo e farlo dipendere solo da cart)
   const subtotal = useMemo(() => {
     return cart.reduce((acc, item) => acc + getItemPrice(item) * item.quantity, 0);
   }, [cart]); //array delle dipendenze di useMemo
 
+  // calcolo sconto
+  const discountAmount = useMemo(() => {
+    return couponDetails.isValid ? subtotal * couponDetails.discountValue : 0;
+  }, [subtotal, couponDetails]);
+
   //COSTI SPEDIZIONE
   //definiamo costi di spedizione
-  const shippingCost = subtotal >= shippingFreeSpend ? 0 : shippingFee;
-  const totalWithShipping = subtotal + shippingCost;
+  const shippingCost = subtotal - discountAmount >= shippingFreeSpend ? 0 : shippingFee;
+  const totalWithShipping = subtotal - discountAmount + shippingCost;
 
   //FUNZIONE LETTURA FORM e gestione sincronizzazione dei cambi billing e shipping
   const handleChange = (e) => {
     const { name, value } = e.target;
 
+    const sanitizedValue = value.trimStart(); //evita spazi iniziali vuoti
+
     if (name === "discount_code") {
       setFormData((prev) => ({
         ...prev,
-        [name]: value,
+        [name]: value.trim().toUpperCase(),
+      }));
+    }
+    //rimozione errore(bordo rosso) quando viene sistemato
+    if (invalidFields[name]?.isInvalid) {
+      setInvalidFields((prev) => ({
+        ...prev,
+        [name]: { isInvalid: false, reason: "" },
       }));
     }
 
     setFormData((prev) => {
       //copio i dati del cliente
-      const newCustomer = { ...prev.customer, [name]: value };
+      const newCustomer = { ...prev.customer, [name]: sanitizedValue };
 
       // Sincronizzazione automatica se la checkbox è attiva
       //se la checkbox 'stesso indirizzo' è attiva e il campo compilato inzia(startsWith) con billing (per escludere i campi da non sincronizzare)
@@ -202,8 +300,15 @@ export default function CheckoutPage() {
         //sostituisco billing con shipping per riempire entrambi i campi da inviare al server
         const shippingKey = name.replace("billing_", "shipping_");
 
+        //rimozione errore(bordo rosso) quando viene sistemato
+        if (invalidFields[shippingKey]?.isInvalid) {
+          setInvalidFields((prevErrors) => ({
+            ...prevErrors,
+            [shippingKey]: { isInvalid: false, reason: "" },
+          }));
+        }
         //inserisco i dati sull'indirizzo nei dati cliente
-        newCustomer[shippingKey] = value;
+        newCustomer[shippingKey] = sanitizedValue;
       }
       //ritorno i dati dell'ordine e i nuovi dati del cliente
       return { ...prev, customer: newCustomer };
@@ -223,26 +328,40 @@ export default function CheckoutPage() {
       return; // Blocca l'invio del form
     }
 
-    // validazione dati
+    // Validazione dati
     const isValid = validateForm();
 
-    // se il form non è valido fermo il submit
-    if (!isValid) return;
+    //se il form non è valido fermo il submit + notifica campi non validi
+    if (!isValid) {
+      toast.error("Dati incompleti", {
+        description: "Controlla i campi evidenziati in rosso tra le informazioni di consegna",
+        duration: 4000,
+      });
+      return;
+    }
 
     setIsLoading(true);
+
+    //Sanitizzazione dati
+    const sanitizedCustomer = {};
+
+    for (let key in formData.customer) {
+      // eliminiamo spazi iniziali e finali se sono stringhe
+      sanitizedCustomer[key] = typeof formData.customer[key] === "string" ? formData.customer[key].trim() : formData.customer[key];
+    }
 
     //normalizzazione dati per backend
     const orderCartItems = cart.map((item) => ({
       product_id: item.id,
       product_name: item.name,
       quantity: item.quantity,
-      price: getItemPrice(item), //prezzo finale effettivo considerando possibili promo
+      // price_frontend: getItemPrice(item), //prezzo finale effettivo considerando possibili promo
     }));
 
     // creiamo il payload da inviare al server
     const payload = {
-      customer: formData.customer,
-      total_price: subtotal, // invio il prezzo base perchè il calcolo coupon e spedizione lo fa il backend
+      customer: sanitizedCustomer,
+      // total_price: subtotal, // invio il prezzo base perchè il calcolo coupon e spedizione lo fa il backend
       cart_items: orderCartItems,
       discount_code: formData.discount_code || null,
     };
@@ -253,8 +372,8 @@ export default function CheckoutPage() {
 
       // se la chiamata è andata a buon fine
       if (response.data.success) {
-        //svuoto il carrello
-        setCart([]);
+        //prendo dati prezzo dal server
+        const orderSummary = response.data.order_summary;
         console.log("Ordine creato con successo!", response.data.order_summary);
 
         // faccio chiamata axios per mandare email di conferam ordine
@@ -264,35 +383,45 @@ export default function CheckoutPage() {
           axios.post("http://localhost:3000/email/send-confirmation", {
             customer: formData.customer,
             cart_items: orderCartItems,
-            total_price: subtotal,
-            shipping_fee: shippingCost,
+            total_price: orderSummary.total,
+            shipping_fee: orderSummary.shipping,
           });
         } catch (emailError) {
           console.warn("Ordine creato, ma invio email fallito:", emailError);
         }
+        //svuoto il carrello
+        setCart([]);
 
         //vado alla pagina di conferma ordine
         navigate("/conferma-ordine", {
           state: {
-            orderInfo: response.data.order_summary,
-            customerName: formData.customer.first_name,
-            customerData: formData.customer,
+            orderInfo: orderSummary,
+            customerName: sanitizedCustomer.first_name,
+            customerData: sanitizedCustomer,
             cartItems: [...cart],
           },
         });
       }
     } catch (error) {
-      console.error("ERRORE:", {
-        status: error.response?.status,
-        data: error.response?.data,
-        message: error.message,
-      });
-      //notifiche per errori
       const backendMessage = error.response?.data?.message || "Errore durante l'ordine";
-      toast.error("Attenzione", {
-        description: backendMessage,
-        duration: 5000,
-      });
+
+      //gestione errori coupon (no toast)
+      if (backendMessage.toLowerCase().includes("coupon") || backendMessage.toLowerCase().includes("sconto")) {
+        setCouponDetails((prev) => ({
+          ...prev,
+          isValid: false,
+          message: backendMessage,
+        }));
+      }
+
+      // gestione errori generici
+      else {
+        toast.error("Non è stato possibile completare l'ordine", {
+          description: backendMessage,
+          duration: 5000,
+        });
+      }
+      console.error("Dettaglio Errore:", error.response?.data);
     } finally {
       setIsLoading(false);
     }
@@ -310,8 +439,8 @@ export default function CheckoutPage() {
         </div>
       )}
       {/* BOTTONE TORNA INDIETRO */}
-      <div className="container py-2" style={{ maxWidth: "1100px" }}>
-        <div className="mb-4">
+      <div className="container py-3" style={{ maxWidth: "1100px" }}>
+        <div className="mb-3">
           <button onClick={() => navigate(-1)} className="btn btn-link text-decoration-none text-dark p-0 d-flex align-items-center" style={{ fontSize: "0.75rem" }} type="button">
             <i className="bi bi-arrow-left me-2"></i>
             Torna indietro
@@ -320,10 +449,10 @@ export default function CheckoutPage() {
         {/* FORM */}
         <form onSubmit={handleSubmit}>
           <div className="row g-5">
-            {/* DATI CLIENTE */}
+            {/* Dati cliente */}
             <div className="col-lg-7">
-              <h2 className="h4 mb-4 fw-bold">Informazioni di Consegna</h2>
-              <section className="mb-5">
+              <h2 className="h4 mb-3 fw-bold">Informazioni di Consegna</h2>
+              <section className="mb-4">
                 <h6 className="text-uppercase small fw-bold text-muted mb-3">Contatti</h6>
                 <div className="row g-3">
                   <div className="col-md-6">
@@ -404,13 +533,13 @@ export default function CheckoutPage() {
                 </div>
               </section>
 
-              <div className="form-check mb-5">
-                <input className="form-check-input" type="checkbox" id="same" checked={sameAsBilling} onChange={() => setSameAsBilling(!sameAsBilling)} />
+              <div className="form-check mb-4">
+                <input className="form-check-input" type="checkbox" id="same" checked={sameAsBilling} onChange={handleCheckboxChange} />
                 <label className="form-check-label small" htmlFor="same">
                   L'indirizzo di spedizione è lo stesso di fatturazione
                 </label>
               </div>
-              {/* INPUT INDIRIZZO DI SPEZIONE A SCOMPARSA */}
+              {/* Indirizzo di spedizione a scomparsa */}
               {!sameAsBilling && (
                 <section className="mb-5 p-3 border rounded bg-white shadow-sm animate__animated animate__fadeIn">
                   <h6 className="text-uppercase small fw-bold text-muted mb-3">Indirizzo di Spedizione</h6>
@@ -419,6 +548,7 @@ export default function CheckoutPage() {
                       <input
                         type="text"
                         name="shipping_street"
+                        value={formData.customer.shipping_street}
                         placeholder="Via e Numero Civico"
                         className={`form-control form-control-lg border-0 bg-light ${invalidFields.shipping_street.isInvalid ? "is-invalid" : ""}`}
                         onChange={handleChange}
@@ -429,6 +559,7 @@ export default function CheckoutPage() {
                       <input
                         type="text"
                         name="shipping_city"
+                        value={formData.customer.shipping_city}
                         placeholder="Città"
                         className={`form-control form-control-lg border-0 bg-light ${invalidFields.shipping_city.isInvalid ? "is-invalid" : ""}`}
                         onChange={handleChange}
@@ -439,6 +570,7 @@ export default function CheckoutPage() {
                       <input
                         type="text"
                         name="shipping_postal_code"
+                        value={formData.customer.shipping_postal_code}
                         placeholder="CAP"
                         className={`form-control form-control-lg border-0 bg-light ${invalidFields.shipping_postal_code.isInvalid ? "is-invalid" : ""}`}
                         onChange={handleChange}
@@ -492,7 +624,7 @@ export default function CheckoutPage() {
                             <div className="col-4 text-end">
                               {item.promotion_price && (
                                 <div className="d-flex flex-column">
-                                  <span className="text-muted text-decoration-line-through small" style={{ fontSize: "0.7rem" }}>
+                                  <span className="text-danger text-decoration-line-through small" style={{ fontSize: "0.7rem" }}>
                                     {item.price.toFixed(2)}€
                                   </span>
                                 </div>
@@ -509,25 +641,25 @@ export default function CheckoutPage() {
 
                   <hr className="text-muted opacity-25" />
 
-                  {/* Subtotale e Spedizione */}
+                  {/* Subtotale */}
                   <div className="d-flex justify-content-between mb-2">
                     <span className="text-muted">Subtotale</span>
                     <span className="text-dark">{subtotal.toFixed(2)}€</span>
                   </div>
 
+                  {/* SCONTO (Mostra solo se valido) */}
+                  {couponDetails.isValid && (
+                    <div className="d-flex justify-content-between mb-2 text-success fw-bold animate__animated animate__fadeIn">
+                      <span>Sconto Coupon ({(couponDetails.discountValue * 100).toFixed(0)}%)</span>
+                      <span>-{discountAmount.toFixed(2)}€</span>
+                    </div>
+                  )}
+
+                  {/* Spedizione */}
                   <div className="d-flex justify-content-between mb-3">
                     <span className="text-muted">Spedizione</span>
                     <span className="text-dark">{shippingCost === 0 ? <strong className="text-success small">GRATIS</strong> : `${shippingCost.toFixed(2)}€`}</span>
                   </div>
-
-                  {/* Alert spedizione gratuita*/}
-                  {subtotal < shippingFreeSpend && (
-                    <div className="alert alert-info py-2 px-3 small border-0 rounded-0 mb-4 d-flex justify-content-center align-items-center" style={{ backgroundColor: "#d1f2fb", color: "#0c5460" }}>
-                      <span>
-                        Aggiungi <strong>{(shippingFreeSpend - subtotal).toFixed(2)}€</strong> per la spedizione gratuita!
-                      </span>
-                    </div>
-                  )}
 
                   <hr className="text-muted opacity-25" />
 
@@ -539,15 +671,44 @@ export default function CheckoutPage() {
 
                   {/* Input Codice Sconto */}
                   <div className="mb-3">
-                    <input
-                      type="text"
-                      name="discount_code"
-                      value={formData.discount_code}
-                      className="form-control border-0 bg-white"
-                      placeholder="Codice Sconto"
-                      style={{ padding: "0.75rem" }}
-                      onChange={handleChange}
-                    />
+                    <div className="input-group shadow-sm" style={{ alignItems: "stretch" }}>
+                      <input
+                        type="text"
+                        name="discount_code"
+                        value={formData.discount_code}
+                        onChange={handleChange}
+                        className={`form-control border-0 bg-white ${couponDetails.isValid ? "border border-success" : ""}`}
+                        placeholder="Codice Sconto"
+                        style={{
+                          padding: "0.75rem",
+                          transition: "all 0.3s",
+                          borderTopRightRadius: 0,
+                          borderBottomRightRadius: 0,
+                        }}
+                      />
+                      <button
+                        className="btn btn-outline-dark bg-light text-dark fw-bold border-0"
+                        type="button"
+                        onClick={applyCoupon}
+                        disabled={isCheckingCoupon || !formData.discount_code.trim()}
+                        style={{
+                          padding: "0.75rem 1.5rem",
+
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        {isCheckingCoupon ? <span className="spinner-border spinner-border-sm"></span> : "Applica"}
+                      </button>
+                    </div>
+
+                    {/* Messaggio di feedback sotto l'input */}
+                    {couponDetails.message && (
+                      <div className={`small mt-2 ps-1 fw-medium ${couponDetails.isValid ? "text-success" : "text-danger"}`}>
+                        {couponDetails.isValid ? <i className="bi bi-check-circle-fill me-1"></i> : <i className="bi bi-exclamation-circle-fill me-1"></i>}
+                        {couponDetails.message}
+                      </div>
+                    )}
                   </div>
 
                   {/* Bottone Conferma*/}
