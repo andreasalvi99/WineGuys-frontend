@@ -117,6 +117,18 @@
   animation: blink 2s infinite;
 }
 
+.not-found {
+  background-image: url("../img/notwine.png");
+  background-size: cover;
+  height: 100vh;
+  width: 100%;
+  opacity: 1;
+}
+
+.search-outcome {
+  color: white;
+}
+
 @keyframes blink {
   0% {
     opacity: 1;
