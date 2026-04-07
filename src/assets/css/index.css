@@ -119,10 +119,19 @@
 
 .not-found {
   background-image: url("../img/notwine.png");
+  height: 600px;
+  width: 90%;
   background-size: cover;
-  height: 100vh;
-  width: 100%;
-  opacity: 1;
+  background-position: center;
+  box-shadow: 6px 6px rgba(59, 59, 59, 0.2);
+  height: 600px;
+  width: 90%;
+  border-radius: 10px;
+  transition: 0.3s all ease;
+}
+
+.not-found:hover {
+  transform: scale(1.03);
 }
 
 .search-outcome {
