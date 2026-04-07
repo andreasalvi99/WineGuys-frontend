@@ -295,39 +295,68 @@ function WineDetailPage() {
       
       {/* COMPARISON TABLE */}
       {compareList.length === 2 && (
-      <div className="container mt-5 ">
-        <div style={{ maxWidth: "800px", margin: "0 auto" }}>
-      <h4 className="text-center mb-4" > Confronto vini </h4>
+      <div className="container mt-5">
+      <div style={{ maxWidth: "800px", margin: "0 auto" }}>
+      
+      <h4 className="text-center mb-4">Confronto vini</h4>
 
-      <table className="table table-bordered text-center ">
-      <thead>
-        <tr>
-          <th>Caratteristica</th>
-          <th>{compareList[0].product_name}</th>
-          <th>{compareList[1].product_name}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Prezzo</td>
-          <td>{compareList[0].price}€</td>
-          <td>{compareList[1].price}€</td>
-        </tr>
-        <tr>
-          <td>Annata</td>
-          <td>{compareList[0].vintage}</td>
-          <td>{compareList[1].vintage}</td>
-        </tr>
-        <tr>
-          <td>Disponibilità</td>
-          <td>{compareList[0].stock_quantity}</td>
-          <td>{compareList[1].stock_quantity}</td>
-        </tr>
-      </tbody>
+      <table className="table table-bordered text-center">
+        
+        <thead>
+          {/* IMMAGINI */}
+          <tr>
+            <th></th>
+
+            <th>
+              <img
+                src={`http://localhost:3000/wines/${compareList[0].img}`}
+                alt={compareList[0].product_name}
+                style={{ height: "120px", objectFit: "contain", marginBottom: "10px" }}
+              />
+            </th>
+
+            <th>
+              <img
+                src={`http://localhost:3000/wines/${compareList[1].img}`}
+                alt={compareList[1].product_name}
+                style={{ height: "120px", objectFit: "contain", marginBottom: "10px" }}
+              />
+            </th>
+          </tr>
+
+          {/* NOMI */}
+          <tr>
+            <th>Caratteristica</th>
+            <th>{compareList[0].product_name}</th>
+            <th>{compareList[1].product_name}</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>Prezzo</td>
+            <td>{compareList[0].price}€</td>
+            <td>{compareList[1].price}€</td>
+          </tr>
+
+          <tr>
+            <td>Annata</td>
+            <td>{compareList[0].vintage}</td>
+            <td>{compareList[1].vintage}</td>
+          </tr>
+
+          <tr>
+            <td>Disponibilità</td>
+            <td>{compareList[0].stock_quantity}</td>
+            <td>{compareList[1].stock_quantity}</td>
+          </tr>
+        </tbody>
+
       </table>
+
       </div>
       </div>
-     )}
+      )}
 
       {/*PHILOSOPHY*/}
       <div
