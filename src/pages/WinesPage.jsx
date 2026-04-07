@@ -65,6 +65,110 @@ export default function WinesPage() {
     );
   });
 
+  if (filteredWines.length === 0)
+    return (
+      <>
+        <section id="wines-catalog" className="playfair-display_special">
+          <div className="container p-3">
+            <div className="d-flex justify-content-start">
+              <h1 className="my-5 border-bottom border-dark">
+                LA NOSTRA CANTINA
+              </h1>
+            </div>
+            {/* barra dei filtri */}
+            <div className="d-flex flex-wrap gap-3 mb-4">
+              {/* filtro per annata - prende i valori unici dal database */}
+              <select
+                className="btn btn-outline-dark"
+                style={{ width: "150px" }}
+                value={filterAnnata}
+                onChange={(e) => {
+                  setFilterAnnata(e.target.value);
+                  updateFilters("annata", e.target.value);
+                }}
+              >
+                <option value="">Annata</option>
+                {[...new Set(wines.map((w) => w.vintage))].sort().map((v) => (
+                  <option key={v} value={v}>
+                    {v}
+                  </option>
+                ))}
+              </select>
+              {/* filtro per tipologia - prende i valori unic dal database */}
+              <select
+                className="btn btn-outline-dark"
+                style={{ width: "150px" }}
+                value={filterTipo}
+                onChange={(e) => {
+                  setFilterTipo(e.target.value);
+                  updateFilters("tipo", e.target.value);
+                }}
+              >
+                <option value="">Tipologia</option>
+                {[...new Set(wines.map((w) => w.type))].map((t) => (
+                  <option key={t} value={t}>
+                    {t}
+                  </option>
+                ))}
+              </select>
+              {/* filtro per vitigno - prende i valori unici dal database */}
+              <select
+                className="btn btn-outline-dark"
+                style={{ width: "150px" }}
+                value={filterVitigno}
+                onChange={(e) => {
+                  setFilterVitigno(e.target.value);
+                  updateFilters("vitigno", e.target.value);
+                }}
+              >
+                <option value="">Vitigno</option>
+                {[...new Set(wines.map((w) => w.grape))].map((g) => (
+                  <option key={g} value={g}>
+                    {g}
+                  </option>
+                ))}
+              </select>
+              {/*filtro per fascia di prezzo - valori fissi */}
+              <select
+                className="btn btn-outline-dark"
+                style={{ width: "150px" }}
+                value={filterPrezzo}
+                onChange={(e) => {
+                  setFilterPrezzo(e.target.value);
+                  updateFilters("prezzo", e.target.value);
+                }}
+              >
+                <option value="">Prezzo</option>
+                <option value="0-20">Fino a €20</option>
+                <option value="20-50">€20 - €50</option>
+                <option value="50+">Oltre €50</option>
+              </select>
+              {/* bottone per resettare tutti i filtri */}
+              <button
+                className="btn btn-dark"
+                style={{ width: "110px" }}
+                onClick={() => {
+                  setFilterAnnata("");
+                  setFilterTipo("");
+                  setFilterVitigno("");
+                  setFilterPrezzo("");
+                  setSearchParams({});
+                }}
+              >
+                Resetta filtri
+              </button>
+            </div>
+            <div className="not-search d-flex justify-content-center align-items-center">
+              <p className="text-white h2">
+                Sembra che il vino che tu stia cercando sia più difficile da
+                trovare del previsto....
+              </p>
+            </div>
+          </div>
+        </section>
+      </>
+    );
+
   return (
     <>
       <section id="wines-catalog" className="playfair-display_special">
