@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import AllWinesCard from "../components/AllWinesCard";
 
 export default function WinesPage() {
@@ -11,6 +12,9 @@ export default function WinesPage() {
   const [filterTipo, setFilterTipo] = useState("");
   const [filterVitigno, setFilterVitigno] = useState("");
   const [filterPrezzo, setFilterPrezzo] = useState("");
+
+  // legge e aggiorna i paramentri nell'URL
+  const [searchParams, setSearchParams] = useSearchParams();
 
   function calcDiscount(original, discount) {
     return Math.ceil(((original - discount) / original) * 100);
@@ -24,6 +28,25 @@ export default function WinesPage() {
   }
 
   useEffect(fetchWines, []);
+
+  // al caricamento legge i filtri dall'URL
+  useEffect(() => {
+    setFilterAnnata(searchParams.get("annata") || "");
+    setFilterTipo(searchParams.get("tipo") || "");
+    setFilterVitigno(searchParams.get("vitigno") || "");
+    setFilterPrezzo(searchParams.get("prezzo") || "");
+  }, []);
+
+  // aggiorna l'URL quando cambiano i filtri
+  function updateFilters(key, value) {
+    const newParams = new URLSearchParams(searchParams);
+    if (value === "") {
+      newParams.delete(key);
+    } else {
+      newParams.set(key, value);
+    }
+    setSearchParams(newParams);
+  }
 
   // filtra i vini in basi ai filtri selezionati
   const filteredWines = wines.filter((wine) => {
@@ -58,7 +81,10 @@ export default function WinesPage() {
               className="btn btn-outline-dark"
               style={{ width: "150px" }}
               value={filterAnnata}
-              onChange={(e) => setFilterAnnata(e.target.value)}
+              onChange={(e) => {
+                setFilterAnnata(e.target.value);
+                updateFilters("annata", e.target.value);
+              }}
             >
               <option value="">Annata</option>
               {[...new Set(wines.map((w) => w.vintage))].sort().map((v) => (
@@ -72,7 +98,10 @@ export default function WinesPage() {
               className="btn btn-outline-dark"
               style={{ width: "150px" }}
               value={filterTipo}
-              onChange={(e) => setFilterTipo(e.target.value)}
+              onChange={(e) => {
+                setFilterTipo(e.target.value);
+                updateFilters("tipo", e.target.value);
+              }}
             >
               <option value="">Tipologia</option>
               {[...new Set(wines.map((w) => w.type))].map((t) => (
@@ -86,7 +115,10 @@ export default function WinesPage() {
               className="btn btn-outline-dark"
               style={{ width: "150px" }}
               value={filterVitigno}
-              onChange={(e) => setFilterVitigno(e.target.value)}
+              onChange={(e) => {
+                setFilterVitigno(e.target.value);
+                updateFilters("vitigno", e.target.value);
+              }}
             >
               <option value="">Vitigno</option>
               {[...new Set(wines.map((w) => w.grape))].map((g) => (
@@ -100,7 +132,10 @@ export default function WinesPage() {
               className="btn btn-outline-dark"
               style={{ width: "150px" }}
               value={filterPrezzo}
-              onChange={(e) => setFilterPrezzo(e.target.value)}
+              onChange={(e) => {
+                setFilterPrezzo(e.target.value);
+                updateFilters("prezzo", e.target.value);
+              }}
             >
               <option value="">Prezzo</option>
               <option value="0-20">Fino a €20</option>
@@ -116,6 +151,7 @@ export default function WinesPage() {
                 setFilterTipo("");
                 setFilterVitigno("");
                 setFilterPrezzo("");
+                setSearchParams({});
               }}
             >
               Resetta filtri
