@@ -185,16 +185,25 @@ export default function CheckoutPage() {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
+    const sanitizedValue = value.trimStart(); //evita spazi iniziali vuoti
+
     if (name === "discount_code") {
       setFormData((prev) => ({
         ...prev,
-        [name]: value,
+        [name]: value.trim().toUpperCase(),
+      }));
+    }
+    //rimozione errore(bordo rosso) quando viene sistemato
+    if (invalidFields[name]?.isInvalid) {
+      setInvalidFields((prev) => ({
+        ...prev,
+        [name]: { isInvalid: false, reason: "" },
       }));
     }
 
     setFormData((prev) => {
       //copio i dati del cliente
-      const newCustomer = { ...prev.customer, [name]: value };
+      const newCustomer = { ...prev.customer, [name]: sanitizedValue };
 
       // Sincronizzazione automatica se la checkbox è attiva
       //se la checkbox 'stesso indirizzo' è attiva e il campo compilato inzia(startsWith) con billing (per escludere i campi da non sincronizzare)
@@ -202,6 +211,13 @@ export default function CheckoutPage() {
         //sostituisco billing con shipping per riempire entrambi i campi da inviare al server
         const shippingKey = name.replace("billing_", "shipping_");
 
+        //rimozione errore(bordo rosso) quando viene sistemato
+        if (invalidFields[shippingKey]?.isInvalid) {
+          setInvalidFields((prevErrors) => ({
+            ...prevErrors,
+            [shippingKey]: { isInvalid: false, reason: "" },
+          }));
+        }
         //inserisco i dati sull'indirizzo nei dati cliente
         newCustomer[shippingKey] = value;
       }
@@ -223,26 +239,40 @@ export default function CheckoutPage() {
       return; // Blocca l'invio del form
     }
 
-    // validazione dati
+    // Validazione dati
     const isValid = validateForm();
 
-    // se il form non è valido fermo il submit
-    if (!isValid) return;
+    //se il form non è valido fermo il submit + notifica campi non validi
+    if (!isValid) {
+      toast.error("Dati incompleti", {
+        description: "Controlla i campi evidenziati in rosso tra le informazioni di consegna",
+        duration: 4000,
+      });
+      return;
+    }
 
     setIsLoading(true);
+
+    //Sanitizzazione dati
+    const sanitizedCustomer = {};
+
+    for (let key in formData.customer) {
+      // eliminiamo spazi iniziali e finali se sono stringhe
+      sanitizedCustomer[key] = typeof formData.customer[key] === "string" ? formData.customer[key].trim() : formData.customer[key];
+    }
 
     //normalizzazione dati per backend
     const orderCartItems = cart.map((item) => ({
       product_id: item.id,
       product_name: item.name,
       quantity: item.quantity,
-      price: getItemPrice(item), //prezzo finale effettivo considerando possibili promo
+      // price_frontend: getItemPrice(item), //prezzo finale effettivo considerando possibili promo
     }));
 
     // creiamo il payload da inviare al server
     const payload = {
-      customer: formData.customer,
-      total_price: subtotal, // invio il prezzo base perchè il calcolo coupon e spedizione lo fa il backend
+      customer: sanitizedCustomer,
+      // total_price: subtotal, // invio il prezzo base perchè il calcolo coupon e spedizione lo fa il backend
       cart_items: orderCartItems,
       discount_code: formData.discount_code || null,
     };
@@ -253,8 +283,8 @@ export default function CheckoutPage() {
 
       // se la chiamata è andata a buon fine
       if (response.data.success) {
-        //svuoto il carrello
-        setCart([]);
+        //prendo dati prezzo dal server
+        const orderSummary = response.data.order_summary;
         console.log("Ordine creato con successo!", response.data.order_summary);
 
         // faccio chiamata axios per mandare email di conferam ordine
@@ -264,19 +294,21 @@ export default function CheckoutPage() {
           axios.post("http://localhost:3000/email/send-confirmation", {
             customer: formData.customer,
             cart_items: orderCartItems,
-            total_price: subtotal,
-            shipping_fee: shippingCost,
+            total_price: orderSummary.total,
+            shipping_fee: orderSummary.shipping,
           });
         } catch (emailError) {
           console.warn("Ordine creato, ma invio email fallito:", emailError);
         }
+        //svuoto il carrello
+        setCart([]);
 
         //vado alla pagina di conferma ordine
         navigate("/conferma-ordine", {
           state: {
-            orderInfo: response.data.order_summary,
-            customerName: formData.customer.first_name,
-            customerData: formData.customer,
+            orderInfo: orderSummary,
+            customerName: sanitizedCustomer.first_name,
+            customerData: sanitizedCustomer,
             cartItems: [...cart],
           },
         });
