@@ -295,10 +295,11 @@ function WineDetailPage() {
       
       {/* COMPARISON TABLE */}
       {compareList.length === 2 && (
-      <div className="container mt-5 text-center">
+      <div className="container mt-5 ">
+        <div style={{ maxWidth: "800px", margin: "0 auto" }}>
       <h4 className="text-center mb-4" > Confronto vini </h4>
 
-      <table className="table table-bordered text-center mx-auto" style={{ maxWidth: "800px" }}>
+      <table className="table table-bordered text-center ">
       <thead>
         <tr>
           <th>Caratteristica</th>
@@ -324,6 +325,7 @@ function WineDetailPage() {
         </tr>
       </tbody>
       </table>
+      </div>
       </div>
      )}
 
