@@ -305,7 +305,16 @@ function WineDetailPage() {
         <thead>
           {/* IMMAGINI */}
           <tr>
-            <th></th>
+            <th
+            style={{
+            verticalAlign: "middle",
+            textAlign: "center",
+            fontWeight: "700",
+            letterSpacing: "1px"
+            }}
+            >WineGuys</th>
+  
+
 
             <th>
               <img
