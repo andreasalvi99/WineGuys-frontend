@@ -8,6 +8,7 @@ import DefaultLayout from "./layouts/DefaultLayout";
 import CheckoutLayout from "./layouts/CheckoutLayout";
 import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 import { Toaster } from "sonner";
+import NotFoundPage from "./pages/NotFoundPage";
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
           <Route index element={<HomePage />} />
           <Route path="/vini" element={<WinesPage />} />
           <Route path="/vini/:slug" element={<WineDetailPage />} />
+          <Route path="*" Component={NotFoundPage} />
         </Route>
         <Route element={<CheckoutLayout />}>
           <Route path="/checkout" element={<CheckoutPage />} />
