@@ -54,7 +54,8 @@ function WineDetailPage() {
 
     loadData();
   }, [slug]);
-
+  
+/* Quando il vino viene caricato, lo aggiungo automaticamente alla lista di confronto per facilitare l'utente */
   useEffect(() => {
   if (wine) {
     setCompareList([wine]);
