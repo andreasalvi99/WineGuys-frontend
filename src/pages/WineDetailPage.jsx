@@ -55,7 +55,11 @@ function WineDetailPage() {
     loadData();
   }, [slug]);
 
-  console.log(error);
+  useEffect(() => {
+  if (wine) {
+    setCompareList([wine]);
+  }
+}, [wine]);
 
   /* GESTIONE STATI */
   if (loading) return <p>Loading...</p>;
@@ -95,7 +99,7 @@ function WineDetailPage() {
         return prev.filter((w) => w.slug !== wine.slug);
       }
 
-      if (prev.length >= 2) return prev;
+      if (prev.length >= 3) return prev;
 
       return [...prev, wine];
     });
@@ -306,82 +310,65 @@ function WineDetailPage() {
             </div>
 
             {/* COMPARISON TABLE */}
-            {compareList.length === 2 && (
-              <div className="container mt-5">
-                <div style={{ maxWidth: "800px", margin: "0 auto" }}>
-                  <h4 className="text-center mb-4">Confronto vini</h4>
+         {compareList.length >= 2 && (
+  <div className="container mt-5" style={{ maxWidth: "900px", margin: "0 auto" }}>
+    <h4 className="text-center mb-4">Confronto vini</h4>
 
-                  <table className="table table-bordered text-center">
-                    <thead>
-                      {/* IMMAGINI */}
-                      <tr>
-                        <th
-                          style={{
-                            verticalAlign: "middle",
-                            textAlign: "center",
-                            fontWeight: "700",
-                            letterSpacing: "1px",
-                          }}
-                        >
-                          WineGuys
-                        </th>
+    <table className="table table-bordered text-center">
+      <thead>
+        {/* IMMAGINI */}
+        <tr>
+          <th style={{ textAlign: "center", verticalAlign: "middle" }}>WineGuys</th>
+  
 
-                        <th>
-                          <img
-                            src={`http://localhost:3000/wines/${compareList[0].img}`}
-                            alt={compareList[0].product_name}
-                            style={{
-                              height: "120px",
-                              objectFit: "contain",
-                              marginBottom: "10px",
-                            }}
-                          />
-                        </th>
+          {compareList.map((w) => (
+            <th key={w.slug}>
+              <img
+                src={`http://localhost:3000/wines/${w.img}`}
+                alt={w.product_name}
+                style={{ height: "120px", objectFit: "contain", marginBottom: "10px" }}
+              />
+            </th>
+          ))}
+        </tr>
 
-                        <th>
-                          <img
-                            src={`http://localhost:3000/wines/${compareList[1].img}`}
-                            alt={compareList[1].product_name}
-                            style={{
-                              height: "120px",
-                              objectFit: "contain",
-                              marginBottom: "10px",
-                            }}
-                          />
-                        </th>
-                      </tr>
+        {/* NOMI */}
+        <tr>
+          <th>Caratteristica</th>
+          {compareList.map((w) => (
+            <th key={w.slug}>{w.product_name}</th>
+          ))}
+        </tr>
+      </thead>
 
-                      {/* NOMI */}
-                      <tr>
-                        <th>Caratteristica</th>
-                        <th>{compareList[0].product_name}</th>
-                        <th>{compareList[1].product_name}</th>
-                      </tr>
-                    </thead>
+      <tbody>
+        {/* PREZZO */}
+        <tr>
+          <td>Prezzo</td>
+          {compareList.map((w) => (
+            <td key={w.slug}>{w.price}€</td>
+          ))}
+        </tr>
 
-                    <tbody>
-                      <tr>
-                        <td>Prezzo</td>
-                        <td>{compareList[0].price}€</td>
-                        <td>{compareList[1].price}€</td>
-                      </tr>
+        {/* ANNATA */}
+        <tr>
+          <td>Annata</td>
+          {compareList.map((w) => (
+            <td key={w.slug}>{w.vintage}</td>
+          ))}
+        </tr>
 
-                      <tr>
-                        <td>Annata</td>
-                        <td>{compareList[0].vintage}</td>
-                        <td>{compareList[1].vintage}</td>
-                      </tr>
-
-                      <tr>
-                        <td>Disponibilità</td>
-                        <td>{compareList[0].stock_quantity}</td>
-                        <td>{compareList[1].stock_quantity}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            )}
+        {/* DISPONIBILITÀ */}
+        <tr>
+          <td>Disponibilità</td>
+          {compareList.map((w) => (
+            <td key={w.slug}>{w.stock_quantity}</td>
+          ))}
+        </tr>
+      </tbody>
+    </table>
+  </div>
+)}
 
             {/*PHILOSOPHY*/}
             <div
