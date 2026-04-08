@@ -1,12 +1,11 @@
-import React, { useEffect } from "react";
-import { useLocation, Link, useNavigate } from "react-router-dom";
+import React from "react";
+import { useLocation, Link } from "react-router-dom";
 
 export default function OrderConfirmationPage() {
   const location = useLocation();
-  const navigate = useNavigate();
 
   // recupero i dati passati dal checkout
-  const { orderInfo, customerName, customerData, cartItems } = location.state || {};
+  const { orderInfo, customerName, customerData, cartItems, discountCode } = location.state || {};
 
   // genero un numero ordine random
   const orderNumber = React.useMemo(() => "WG-" + Math.floor(100000 + Math.random() * 900000), []);
@@ -51,6 +50,7 @@ export default function OrderConfirmationPage() {
               {/* Contatti */}
               <div className="col-md-6 mb-3">
                 <h6 className="fw-bold text-uppercase small text-muted">Contatti</h6>
+                <p className="mb-1">{customerName}</p>
                 <p className="mb-1">{customerData.email}</p>
                 <p className="mb-0">{customerData.cellphone}</p>
               </div>
@@ -82,25 +82,45 @@ export default function OrderConfirmationPage() {
 
             {/* Lista Prodotti */}
             <div className="order-items-list mb-4" style={{ maxHeight: "400px", overflowY: "auto" }}>
-              {cartItems.map((item, index) => (
-                <div key={index} className="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom border-2 border-white">
-                  <div className="d-flex align-items-center">
-                    <span className="badge bg-secondary me-2">{item.quantity}</span>
-                    <div>
-                      <h6 className="mb-0 fw-bold text-uppercase small" style={{ letterSpacing: "0.5px" }}>
-                        {item.name}
-                      </h6>
-                      <span className="text-muted extra-small">Prezzo unitario: &euro;{(item.promotion_price || item.price).toFixed(2)}</span>
+              {cartItems.map((item, index) => {
+                const hasPromo = item.promotion_price !== null;
+                const currentPrice = hasPromo ? item.promotion_price : item.price;
+                return (
+                  <div key={index} className="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom border-2 border-white">
+                    <div className="d-flex align-items-center">
+                      <span className="badge bg-secondary me-2">{item.quantity}</span>
+
+                      <div>
+                        <h6 className="mb-0 fw-bold text-uppercase small">{item.name}</h6>
+                        <div className="d-flex align-items-center gap-2">
+                          {hasPromo && (
+                            <span className="text-danger text-decoration-line-through extra-small" style={{ fontSize: "0.7rem" }}>
+                              &euro;{item.price.toFixed(2)}
+                            </span>
+                          )}
+                          <span className={`${hasPromo ? "text-muted fw-bold" : "text-muted"} extra-small`}>&euro;{currentPrice.toFixed(2)}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="text-end">
+                      <span className="fw-bold fw-bold">&euro;{(currentPrice * item.quantity).toFixed(2)}</span>
                     </div>
                   </div>
-                  <div className="text-end">
-                    <span className="fw-bold fw-bold">&euro;{((item.promotion_price || item.price) * item.quantity).toFixed(2)}</span>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             <hr />
+
+            {/* codice sconto */}
+            {discountCode && (
+              <div className="d-flex justify-content-between mb-2 text-success fw-bold">
+                <span>Coupon ({discountCode})</span>
+
+                <span>Applicato</span>
+              </div>
+            )}
 
             {/* Calcoli Finali */}
             <div className="d-flex justify-content-between mb-2">

@@ -396,9 +396,10 @@ export default function CheckoutPage() {
         navigate("/conferma-ordine", {
           state: {
             orderInfo: orderSummary,
-            customerName: sanitizedCustomer.first_name,
+            customerName: sanitizedCustomer.first_name + " " + sanitizedCustomer.second_name,
             customerData: sanitizedCustomer,
             cartItems: [...cart],
+            discountCode: formData.discount_code,
           },
         });
       }
