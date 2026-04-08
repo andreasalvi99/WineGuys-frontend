@@ -6,11 +6,10 @@ import { CartContext } from "../context/CartContextObject";
 import { useNavigate } from "react-router-dom";
 
 function WineDetailPage() {
-
   /*ROUTING e NAVIGATION*/
   const { slug } = useParams(); // qui è lo SLUG
   const navigate = useNavigate();
-  
+
   /*STATE UI*/
   const [quantity, setQuantity] = useState(1);
   const [wine, setWine] = useState(null);
@@ -37,7 +36,7 @@ function WineDetailPage() {
         // Fetch dei vini correlati
         const relatedRes = await fetch("http://localhost:3000/vini");
         const relatedData = await relatedRes.json();
-        
+
         // Filtra i vini correlati (stesso category_id ma slug diverso) e prendi solo i primi 3
         const filtered = (relatedData || [])
           .filter(
@@ -56,9 +55,25 @@ function WineDetailPage() {
     loadData();
   }, [slug]);
 
+  console.log(error);
+
   /* GESTIONE STATI */
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  if (error)
+    return (
+      <>
+        <section className="p-5">
+          <div className="container text-center d-flex justify-content-center mt-5 playfair-display_special">
+            <div className="not-search d-flex justify-content-center align-items-center">
+              <p className="text-white h2">
+                Sembra che il vino che tu stia cercando sia più difficile da
+                trovare del previsto....
+              </p>
+            </div>
+          </div>
+        </section>
+      </>
+    );
   if (!wine) return <p>Nessun vino trovato</p>;
 
   /* LOGICA DISPONIBILITA' */
@@ -91,7 +106,6 @@ function WineDetailPage() {
   /* RENDER PRINCIPALE */
 
   return (
-
     /* LAYOUT PRINCIPALE */
     <section
       className="playfair-display_special w-100"
@@ -102,144 +116,35 @@ function WineDetailPage() {
         backgroundColor: "#ffffff",
       }}
     >
-      
-    {/* CONTAINER PRINCIPALE */}
-    <div
-      className="container-fluid px-0"
+      {/* CONTAINER PRINCIPALE */}
+      <div
+        className="container-fluid px-0"
         style={{
           flex: 1,
           display: "flex",
           flexDirection: "column",
         }}
-    >
-    {/* NAVIGATION */}
-    <div
-      className="d-flex justify-content-between mb-4 px-4 px-md-5"
-      style={{
-        backgroundColor: "#ffffff",
-        paddingTop: "15px",
-        paddingBottom: "15px",
-        }}
-    >
-    {/*NAVIGATION BUTTONS*/}
-    <button
-      className="btn btn-outline-dark"
-      onClick={() => navigate("/")}
-    >
-      Home
-    </button>
-
-    <button
-      className="btn btn-outline-dark"
-      onClick={() => navigate(-1)}
-    >
-      Indietro
-    </button>
-    </div>
-
-    {/* WRAPPER PRINCIPALE PER GESTIONE LAYOUT VERTICALE DELLA PAGINA */}
-    <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-
-    {/* CARD DETTAGLIO IMMAGINE + INFO VINO */}
-    <div style={{ backgroundColor: "#ffffff", padding: "40px 0" }}>
-    <div className="container">
-    <div className="row align-items-center">
-                
-    {/* IMG */}
-    <div className="col-md-6 text-center">
-    <img 
-      src={wine.img ? `http://localhost:3000/wines/${wine.img}` : ""}
-      alt={wine.product_name}
-        className="img-fluid"
-        style={{
-          maxHeight: "400px",
-          objectFit: "contain",
+      >
+        {/* NAVIGATION */}
+        <div
+          className="d-flex justify-content-between mb-4 px-4 px-md-5"
+          style={{
+            backgroundColor: "#ffffff",
+            paddingTop: "15px",
+            paddingBottom: "15px",
           }}
-     />
-     </div>
-
-    {/* INFO PRODOTTO */}
-    <div className="col-md-6 text-center text-md-start">
-      
-      {/*STOCK (LOW QUANTITY WARNING)*/}
-      {wine.stock_quantity > 0 && wine.stock_quantity <= 6 && (
-      <span className="text-danger blink fs-5">
-      <div className="red-pin bg-danger"></div>
-        {wine.stock_quantity} rimamenti
-      </span>
-      )}
-
-      {/*NOME PRODOTTO*/}
-      <h1 className="mb-3">{wine.product_name}</h1>
-        
-        {/*PREZZO CON o SENZA SCONTO*/}
-        <h3 className="mb-3">
-          {wine?.promotion_price ? (
-        <>
-        {/*PREZZO ORIGINALE SCONTATO*/}
-        <span
-         style={{
-          textDecoration: "line-through",                  
-          color: "#999",                                   
-          }}                                
         >
-          {Number(wine.price).toFixed(2)} €
-        </span>{" "}
+          {/*NAVIGATION BUTTONS*/}
+          <button
+            className="btn btn-outline-dark"
+            onClick={() => navigate("/")}
+          >
+            Home
+          </button>
 
-        {/*PREZZO SCONTATO*/}
-        <span style={{ color: "#800020", fontWeight: "bold" }}>                
-         {Number(wine.promotion_price).toFixed(2)} €                 
-        </span>{" "}
-
-        {/*PERCENTUALE DI SCONTO*/}               
-        <span style={{ color: "red", fontSize: "0.9rem" }}>
-         -{calcDiscount(wine.price, wine.promotion_price)}%              
-        </span>                  
-        </>                
-        ) : (   
-          
-        
-        <span style={{ color: "#800020" }}>            
-          {Number(wine.price).toFixed(2)} €            
-         </span>                
-        )}             
-        </h3>
-
-        {/*DESCRIZIONE PRODOTTO*/}          
-        <p className="mt-3 fs-5" style={{ color: "#000000" }}>
-         {wine.description}         
-        </p>
-
-        {/*ANNATA*/}            
-        <p className="mt-3 fs-5">         
-        <strong>Anno:</strong> {wine.vintage}
-        </p>          
-                    
-      {/* SELEZIONE QUANTITA */}
-      <div className="d-flex align-items-center justify-content-center justify-content-md-start gap-2 mt-3">
-
-        {/*BOTTONE DECREMENTO*/}            
-        <button            
-          className="btn btn-outline-dark"            
-          onClick={() =>            
-          setQuantity((prev) => Math.max(1, prev - 1))              
-          }           
-        >
-          -
-        </button>
-
-        {/*QUANTITA SELEZIONATA*/}
-        <span style={{ minWidth: "30px", textAlign: "center" }}>
-          {quantity}            
-        </span> 
-
-        {/*BOTTONE INCREMENTO*/}           
-        <button
-          className="btn btn-outline-dark"
-          onClick={() => setQuantity((prev) => prev < wine.stock_quantity ? prev + 1 : prev)}
-        >
-          +
-        </button>
+          <button className="btn btn-outline-dark" onClick={() => navigate(-1)}>
+            Indietro
+          </button>
         </div>
 
       {/* ADD TO CART */}
