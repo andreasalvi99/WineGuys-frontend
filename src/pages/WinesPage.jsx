@@ -16,6 +16,7 @@ export default function WinesPage() {
   // legge e aggiorna i paramentri nell'URL
   const [searchParams, setSearchParams] = useSearchParams();
 
+  // funzione per calcolare il valore dello sconto, riceve due parametri, prezzo originale e prezzo scontato
   function calcDiscount(original, discount) {
     return Math.ceil(((original - discount) / original) * 100);
   }

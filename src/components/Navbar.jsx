@@ -21,7 +21,7 @@ export default function Navbar() {
       navigate("/checkout");
     }, 100);
   };
-
+  // funzione per fare +1 nel carrello, al click faccio chiamata a database per un check sulla quantity in stock, se la quantity che si aggiunge è maggiore di quella in stock allora non accade nulla(return)
   async function plusOne(item) {
     const response = await axios.get(`http://localhost:3000/vini/${item.slug}`);
 
@@ -37,9 +37,8 @@ export default function Navbar() {
           : cartItem,
       ),
     );
-    console.log("ciao");
   }
-
+  // funzione per il -1 ndel carrello
   function minusOne(item) {
     setCart((prevCart) =>
       prevCart.map((cartItem) =>
@@ -49,17 +48,17 @@ export default function Navbar() {
       ),
     );
   }
-
+  // funzione per cancellare elemento sul click del cestino
   function deleteItem(item) {
     const prevCart = cart.filter((cartItem) => cartItem.id !== item.id);
 
     return setCart(prevCart);
   }
-
+  // funzione per calcolare lo sconto
   function calcDiscount(original, discount) {
     return Math.ceil(((original - discount) / original) * 100);
   }
-
+  // funzione che prende per ogni elemento del carrello il suo prezzo e lo aggiunge al totale, riceve parametro cart che è l'array. Se chiave promotion ha valore non nullo si moltiplice il prezzo scontato per la quantità, altrimenti si moltiplica il prezzo originale
   function calcTotalAmount(cart) {
     let totalPrice = 0;
 
@@ -82,7 +81,7 @@ export default function Navbar() {
 
     return totalPrice.toFixed(2);
   }
-
+  // funzione per calcolare numero di oggetti nel carrello, riceve cart come parametro per fare ciclo for sugli elementi al suo interno
   function calcTotalQuantity(cart) {
     let totalQuantity = 0;
 
@@ -149,6 +148,7 @@ export default function Navbar() {
             data-bs-target="#offcanvasRight"
             aria-controls="offcanvasRight"
           >
+            {/* icona carrello con badge successo che mostra dinamicamente il numero di elementi nel cart */}
             <i className="bi bi-cart shopping-cart position-relative">
               <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
                 <span className="fw-light">{calcTotalQuantity(cart)}</span>
@@ -156,6 +156,7 @@ export default function Navbar() {
             </i>
           </button>
         </div>
+        {/* offcanvas per visualizzare carrello */}
         <div
           className="offcanvas offcanvas-end playfair-display_special"
           tabIndex={-1}
@@ -192,11 +193,14 @@ export default function Navbar() {
               );
             })}
           </div>
+          {/* navbar bottomo per pulsante checkout e totale carrello */}
           <nav className="navbar sticky-bottom bg-body-tertiary">
             <div className="container-fluid justify-content-between align-items-center">
+              {/* invoco funzione per calcolare il prezzo totale */}
               <a className="navbar-brand" href="#">
                 Totale: &euro;{calcTotalAmount(cart)}
               </a>
+              {/* doppio check per il disabled, se lungezza array cart = 0 */}
               <button
                 type="button"
                 onClick={handleCheckoutNavigation}
