@@ -318,7 +318,9 @@ function WineDetailPage() {
       <thead>
         {/* IMMAGINI */}
         <tr>
-          <th>WineGuys</th>
+          <th style={{ textAlign: "center", verticalAlign: "middle" }}>WineGuys</th>
+  
+
           {compareList.map((w) => (
             <th key={w.slug}>
               <img
