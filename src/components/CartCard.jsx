@@ -24,6 +24,7 @@ export default function CartCard({
           <div className="card-body py-0">
             <div className="d-flex justify-content-between">
               <h5 className="card-title fs-6">{name}</h5>
+              {/* onclick invoco funzione per cancellare item */}
               <button
                 onClick={() => deleteItem(item)}
                 type="button"
@@ -34,6 +35,7 @@ export default function CartCard({
             </div>
             <div className="d-flex justify-content-start align-items-center">
               <p className="card-text mt-3 d-flex align-items-center">
+                {/* onclick se quantity è maggiore di 1 invoco minus one, altimenti se quantity = 1 l'item viene cancellato. Il btn è disabilitato se quantity = 0 */}
                 <button
                   onClick={
                     quantity > 1 ? () => minusOne(item) : () => deleteItem(item)
@@ -45,6 +47,7 @@ export default function CartCard({
                   -
                 </button>
                 <span className="border border-dark p-1 mx-2">{quantity}</span>
+                {/* onclick invoco plusone, btn disabilitato se la quantity che si vuole aggiungere è >= alla quqntity in stock */}
                 <button
                   onClick={() => plusOne(item)}
                   type="button"
@@ -55,12 +58,14 @@ export default function CartCard({
                 </button>
               </p>
             </div>
+            {/* se promotion ha valore non nullo mostro il prezzo originale sbarrato e quello scontato sotto con due decimali, altrimenti mostro il prezzo originale */}
             <p className="card-text mt-3">
               {promotion !== null && promotion !== undefined ? (
                 <small className="text-danger">
                   <span className="text-dark text-decoration-line-through position-relative">
                     <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                      -{calcDiscount(price, promotion)}%
+                      {/* mostro anche la percentuale di sconto */}-
+                      {calcDiscount(price, promotion)}%
                     </span>
                     &euro;{price.toFixed(2)}
                   </span>
@@ -69,6 +74,7 @@ export default function CartCard({
               ) : (
                 <small>&euro;{price.toFixed(2)}</small>
               )}
+              {/* se  promotion ha valore non nullo mostro il prezzo totale dell'item moltiplicando il prezzo scontato per la quantity, altrimenti moltiplico il prezzo originale*/}
               {promotion !== null && promotion !== undefined ? (
                 <small className="text-black d-block text-end">
                   Totale: &euro;{(promotion * quantity).toFixed(2)}
