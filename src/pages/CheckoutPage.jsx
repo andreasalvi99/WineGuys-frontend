@@ -18,7 +18,9 @@ export default function CheckoutPage() {
   async function plusOne(item) {
     try {
       // Controllo disponibilità a magazzino prima di incrementare
-      const response = await axios.get(`http://localhost:3000/vini/${item.slug}`);
+      const response = await axios.get(
+        `http://localhost:3000/vini/${item.slug}`,
+      );
       const wine = response.data?.result;
 
       if (!wine) return;
@@ -31,7 +33,18 @@ export default function CheckoutPage() {
         return;
       }
 
-      setCart((prevCart) => prevCart.map((cartItem) => (cartItem.id === item.id ? { ...cartItem, quantity: cartItem.quantity + 1 } : cartItem)));
+      setCart((prevCart) =>
+        prevCart.map((cartItem) =>
+          cartItem.id === item.id
+            ? { ...cartItem, quantity: cartItem.quantity + 1 }
+            : cartItem,
+        ),
+      );
+      // Toast di aggiunta quantità vino
+      toast.success("Quantità aumentata", {
+        description: `Hai aggiunto un'altra bottiglia di ${item.name}`,
+        duration: 1500,
+      });
     } catch (err) {
       console.error("Errore nel recupero dello stock:", err);
     }
@@ -40,16 +53,43 @@ export default function CheckoutPage() {
   //funzione diminuzione quantità
   function minusOne(item) {
     if (item.quantity <= 1) {
-      deleteItem(item);
+      removeItem(item);
       return;
     }
-    setCart((prevCart) => prevCart.map((cartItem) => (cartItem.id === item.id ? { ...cartItem, quantity: cartItem.quantity - 1 } : cartItem)));
+    setCart((prevCart) =>
+      prevCart.map((cartItem) =>
+        cartItem.id === item.id
+          ? { ...cartItem, quantity: cartItem.quantity - 1 }
+          : cartItem,
+      ),
+    );
+    //Toast di riduzione quantità vino
+    toast.info("Quantità ridotta", {
+      description: `Hai ridotto a ${item.quantity - 1} unità di ${item.name}`,
+      duration: 1500,
+    });
   }
 
   //funzione per eliminare vino
-  function deleteItem(item) {
-    const updatedCart = cart.filter((cartItem) => cartItem.id !== item.id);
-    setCart(updatedCart);
+  function removeItem(item) {
+    setCart((prevCart) =>
+      prevCart.filter((cartItem) => cartItem.id !== item.id),
+    );
+
+    toast.error("Rimosso dal carrello", {
+      description: `${item.name} non è più nel carrello`,
+      duration: 5000,
+      action: {
+        label: "Annulla",
+        onClick: () => {
+          restoreItem(item);
+          toast.success("Ripristinato!", {
+            description: `${item.name} è di nuovo nel carrello`,
+            duration: 2000,
+          });
+        },
+      },
+    });
   }
 
   //stato dati da inviare al server
@@ -142,18 +182,27 @@ export default function CheckoutPage() {
 
     // validazione Nome
     if (!customer.first_name.trim()) {
-      newInvalid.first_name = { isInvalid: true, reason: "Il nome è necessario" };
+      newInvalid.first_name = {
+        isInvalid: true,
+        reason: "Il nome è necessario",
+      };
     }
 
     // validazione Cognome
     if (!customer.second_name.trim()) {
-      newInvalid.second_name = { isInvalid: true, reason: "Il cognome è necessario" };
+      newInvalid.second_name = {
+        isInvalid: true,
+        reason: "Il cognome è necessario",
+      };
     }
 
     // validazione Email (Regex base)
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(customer.email)) {
-      newInvalid.email = { isInvalid: true, reason: "Inserisci un'email valida" };
+      newInvalid.email = {
+        isInvalid: true,
+        reason: "Inserisci un'email valida",
+      };
     }
 
     // validazione Cellulare
@@ -161,35 +210,59 @@ export default function CheckoutPage() {
     const phoneValue = customer.cellphone.trim();
 
     if (!phoneValue) {
-      newInvalid.cellphone = { isInvalid: true, reason: "Il numero di cellulare è necessario" };
+      newInvalid.cellphone = {
+        isInvalid: true,
+        reason: "Il numero di cellulare è necessario",
+      };
     } else if (!phoneRegex.test(phoneValue)) {
-      newInvalid.cellphone = { isInvalid: true, reason: "Inserisci un numero valido" };
+      newInvalid.cellphone = {
+        isInvalid: true,
+        reason: "Inserisci un numero valido",
+      };
     }
 
     // validazione Indirizzo
     if (!customer.billing_street.trim()) {
-      newInvalid.billing_street = { isInvalid: true, reason: "L'indirizzo è necessario" };
+      newInvalid.billing_street = {
+        isInvalid: true,
+        reason: "L'indirizzo è necessario",
+      };
     }
     // validazione Città
     if (!customer.billing_city.trim()) {
-      newInvalid.billing_city = { isInvalid: true, reason: "La città è necessaria" };
+      newInvalid.billing_city = {
+        isInvalid: true,
+        reason: "La città è necessaria",
+      };
     }
 
     // validazione CAP
     if (!/^\d{5}$/.test(customer.billing_postal_code)) {
-      newInvalid.billing_postal_code = { isInvalid: true, reason: "CAP non valido" };
+      newInvalid.billing_postal_code = {
+        isInvalid: true,
+        reason: "CAP non valido",
+      };
     }
 
     //validazione shipping se necessaria
     if (!sameAsBilling) {
       if (!customer.shipping_street.trim()) {
-        newInvalid.shipping_street = { isInvalid: true, reason: "L'indirizzo è necessario" };
+        newInvalid.shipping_street = {
+          isInvalid: true,
+          reason: "L'indirizzo è necessario",
+        };
       }
       if (!customer.shipping_city.trim()) {
-        newInvalid.shipping_city = { isInvalid: true, reason: "La città è necessaria" };
+        newInvalid.shipping_city = {
+          isInvalid: true,
+          reason: "La città è necessaria",
+        };
       }
       if (!/^\d{5}$/.test(customer.shipping_postal_code)) {
-        newInvalid.shipping_postal_code = { isInvalid: true, reason: "CAP non valido" };
+        newInvalid.shipping_postal_code = {
+          isInvalid: true,
+          reason: "CAP non valido",
+        };
       }
     }
 
@@ -201,7 +274,8 @@ export default function CheckoutPage() {
 
   //PREZZO TOTALE e COUPON
   //calcolo il prezzo da usare, se promo o meno
-  const getItemPrice = (item) => (item.promotion_price !== null ? item.promotion_price : item.price);
+  const getItemPrice = (item) =>
+    item.promotion_price !== null ? item.promotion_price : item.price;
 
   // funzione per validare il coupon
   const applyCoupon = async () => {
@@ -214,10 +288,13 @@ export default function CheckoutPage() {
     setIsCheckingCoupon(true);
 
     try {
-      const response = await axios.post("http://localhost:3000/ordini/validate-coupon", {
-        discount_code: code,
-        total_amount: subtotal,
-      });
+      const response = await axios.post(
+        "http://localhost:3000/ordini/validate-coupon",
+        {
+          discount_code: code,
+          total_amount: subtotal,
+        },
+      );
 
       if (response.data.success) {
         setCouponDetails({
@@ -257,7 +334,10 @@ export default function CheckoutPage() {
 
   //calcolo il subtotale della somma dei prezzi dei prodotti considerando le quantità (useMemo serve per memorizzare il calcolo e farlo dipendere solo da cart)
   const subtotal = useMemo(() => {
-    return cart.reduce((acc, item) => acc + getItemPrice(item) * item.quantity, 0);
+    return cart.reduce(
+      (acc, item) => acc + getItemPrice(item) * item.quantity,
+      0,
+    );
   }, [cart]); //array delle dipendenze di useMemo
 
   // calcolo sconto
@@ -267,7 +347,8 @@ export default function CheckoutPage() {
 
   //COSTI SPEDIZIONE
   //definiamo costi di spedizione
-  const shippingCost = subtotal - discountAmount >= shippingFreeSpend ? 0 : shippingFee;
+  const shippingCost =
+    subtotal - discountAmount >= shippingFreeSpend ? 0 : shippingFee;
   const totalWithShipping = subtotal - discountAmount + shippingCost;
 
   //FUNZIONE LETTURA FORM e gestione sincronizzazione dei cambi billing e shipping
@@ -322,7 +403,8 @@ export default function CheckoutPage() {
     //notifica carrello vuoto
     if (cart.length === 0) {
       toast.error("Attenzione", {
-        description: "Il tuo carrello è vuoto. Aggiungi almeno un vino per procedere!",
+        description:
+          "Il tuo carrello è vuoto. Aggiungi almeno un vino per procedere!",
         duration: 4000,
       });
       return; // Blocca l'invio del form
@@ -334,7 +416,8 @@ export default function CheckoutPage() {
     //se il form non è valido fermo il submit + notifica campi non validi
     if (!isValid) {
       toast.error("Dati incompleti", {
-        description: "Controlla i campi evidenziati in rosso tra le informazioni di consegna",
+        description:
+          "Controlla i campi evidenziati in rosso tra le informazioni di consegna",
         duration: 4000,
       });
       return;
@@ -347,7 +430,10 @@ export default function CheckoutPage() {
 
     for (let key in formData.customer) {
       // eliminiamo spazi iniziali e finali se sono stringhe
-      sanitizedCustomer[key] = typeof formData.customer[key] === "string" ? formData.customer[key].trim() : formData.customer[key];
+      sanitizedCustomer[key] =
+        typeof formData.customer[key] === "string"
+          ? formData.customer[key].trim()
+          : formData.customer[key];
     }
 
     //normalizzazione dati per backend
@@ -368,7 +454,10 @@ export default function CheckoutPage() {
 
     //chiamata axios per inviare i dati al server
     try {
-      const response = await axios.post("http://localhost:3000/ordini", payload);
+      const response = await axios.post(
+        "http://localhost:3000/ordini",
+        payload,
+      );
 
       // se la chiamata è andata a buon fine
       if (response.data.success) {
@@ -383,7 +472,10 @@ export default function CheckoutPage() {
         navigate("/conferma-ordine", {
           state: {
             orderInfo: orderSummary,
-            customerName: sanitizedCustomer.first_name + " " + sanitizedCustomer.second_name,
+            customerName:
+              sanitizedCustomer.first_name +
+              " " +
+              sanitizedCustomer.second_name,
             customerData: sanitizedCustomer,
             cartItems: [...cart],
             discountCode: formData.discount_code,
@@ -391,10 +483,14 @@ export default function CheckoutPage() {
         });
       }
     } catch (error) {
-      const backendMessage = error.response?.data?.message || "Errore durante l'ordine";
+      const backendMessage =
+        error.response?.data?.message || "Errore durante l'ordine";
 
       //gestione errori coupon (no toast)
-      if (backendMessage.toLowerCase().includes("coupon") || backendMessage.toLowerCase().includes("sconto")) {
+      if (
+        backendMessage.toLowerCase().includes("coupon") ||
+        backendMessage.toLowerCase().includes("sconto")
+      ) {
         setCouponDetails((prev) => ({
           ...prev,
           isValid: false,
@@ -415,21 +511,39 @@ export default function CheckoutPage() {
     }
   };
 
+  // Ripristina l'item rimosso creando un nuovo array con gli elementi precedenti più l'item da ripristinare in fondo
+  function restoreItem(item) {
+    setCart((prevCart) => [...prevCart, item]);
+  }
   return (
     <>
       {/* LOADING */}
       {isLoading && (
-        <div className="position-fixed top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center bg-white bg-opacity-75" style={{ zIndex: 9999 }}>
-          <div className="spinner-border text-dark" role="status" style={{ width: "3rem", height: "3rem" }}>
+        <div
+          className="position-fixed top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center bg-white bg-opacity-75"
+          style={{ zIndex: 9999 }}
+        >
+          <div
+            className="spinner-border text-dark"
+            role="status"
+            style={{ width: "3rem", height: "3rem" }}
+          >
             <span className="visually-hidden">Caricamento...</span>
           </div>
-          <h5 className="mt-3 fw-bold text-uppercase">Conferma ordine WineGuys in corso...</h5>
+          <h5 className="mt-3 fw-bold text-uppercase">
+            Conferma ordine WineGuys in corso...
+          </h5>
         </div>
       )}
       {/* BOTTONE TORNA INDIETRO */}
       <div className="container py-3" style={{ maxWidth: "1100px" }}>
         <div className="mb-3">
-          <button onClick={() => navigate(-1)} className="btn btn-link text-decoration-none text-dark p-0 d-flex align-items-center" style={{ fontSize: "0.75rem" }} type="button">
+          <button
+            onClick={() => navigate(-1)}
+            className="btn btn-link text-decoration-none text-dark p-0 d-flex align-items-center"
+            style={{ fontSize: "0.75rem" }}
+            type="button"
+          >
             <i className="bi bi-arrow-left me-2"></i>
             Torna indietro
           </button>
@@ -441,7 +555,9 @@ export default function CheckoutPage() {
             <div className="col-lg-7">
               <h2 className="h4 mb-3 fw-bold">Informazioni di Consegna</h2>
               <section className="mb-4">
-                <h6 className="text-uppercase small fw-bold text-muted mb-3">Contatti</h6>
+                <h6 className="text-uppercase small fw-bold text-muted mb-3">
+                  Contatti
+                </h6>
                 <div className="row g-3">
                   <div className="col-md-6">
                     <input
@@ -451,7 +567,11 @@ export default function CheckoutPage() {
                       className={`form-control form-control-lg border-0 bg-light ${invalidFields.first_name.isInvalid ? "is-invalid" : ""}`}
                       onChange={handleChange}
                     />
-                    {invalidFields.first_name.isInvalid && <div className="invalid-feedback ps-2">{invalidFields.first_name.reason}</div>}
+                    {invalidFields.first_name.isInvalid && (
+                      <div className="invalid-feedback ps-2">
+                        {invalidFields.first_name.reason}
+                      </div>
+                    )}
                   </div>
                   <div className="col-md-6">
                     <input
@@ -461,7 +581,11 @@ export default function CheckoutPage() {
                       className={`form-control form-control-lg border-0 bg-light ${invalidFields.second_name.isInvalid ? "is-invalid" : ""}`}
                       onChange={handleChange}
                     />
-                    {invalidFields.second_name.isInvalid && <div className="invalid-feedback ps-2">{invalidFields.second_name.reason}</div>}
+                    {invalidFields.second_name.isInvalid && (
+                      <div className="invalid-feedback ps-2">
+                        {invalidFields.second_name.reason}
+                      </div>
+                    )}
                   </div>
                   <div className="col-md-8">
                     <input
@@ -471,7 +595,11 @@ export default function CheckoutPage() {
                       className={`form-control form-control-lg border-0 bg-light ${invalidFields.email.isInvalid ? "is-invalid" : ""}`}
                       onChange={handleChange}
                     />
-                    {invalidFields.email.isInvalid && <div className="invalid-feedback ps-2">{invalidFields.email.reason}</div>}
+                    {invalidFields.email.isInvalid && (
+                      <div className="invalid-feedback ps-2">
+                        {invalidFields.email.reason}
+                      </div>
+                    )}
                   </div>
                   <div className="col-md-4">
                     <input
@@ -481,12 +609,18 @@ export default function CheckoutPage() {
                       className={`form-control form-control-lg border-0 bg-light ${invalidFields.cellphone.isInvalid ? "is-invalid" : ""}`}
                       onChange={handleChange}
                     />
-                    {invalidFields.cellphone.isInvalid && <div className="invalid-feedback ps-2">{invalidFields.cellphone.reason}</div>}
+                    {invalidFields.cellphone.isInvalid && (
+                      <div className="invalid-feedback ps-2">
+                        {invalidFields.cellphone.reason}
+                      </div>
+                    )}
                   </div>
                 </div>
               </section>
               <section className="mb-4">
-                <h6 className="text-uppercase small fw-bold text-muted mb-3">Indirizzo di Fatturazione</h6>
+                <h6 className="text-uppercase small fw-bold text-muted mb-3">
+                  Indirizzo di Fatturazione
+                </h6>
                 <div className="row g-3">
                   <div className="col-12">
                     <input
@@ -496,7 +630,11 @@ export default function CheckoutPage() {
                       className={`form-control form-control-lg border-0 bg-light ${invalidFields.billing_street.isInvalid ? "is-invalid" : ""}`}
                       onChange={handleChange}
                     />
-                    {invalidFields.billing_street.isInvalid && <div className="invalid-feedback ps-2">{invalidFields.billing_street.reason}</div>}
+                    {invalidFields.billing_street.isInvalid && (
+                      <div className="invalid-feedback ps-2">
+                        {invalidFields.billing_street.reason}
+                      </div>
+                    )}
                   </div>
                   <div className="col-md-6">
                     <input
@@ -506,7 +644,11 @@ export default function CheckoutPage() {
                       className={`form-control form-control-lg border-0 bg-light ${invalidFields.billing_city.isInvalid ? "is-invalid" : ""}`}
                       onChange={handleChange}
                     />
-                    {invalidFields.billing_city.isInvalid && <div className="invalid-feedback ps-2">{invalidFields.billing_city.reason}</div>}
+                    {invalidFields.billing_city.isInvalid && (
+                      <div className="invalid-feedback ps-2">
+                        {invalidFields.billing_city.reason}
+                      </div>
+                    )}
                   </div>
                   <div className="col-md-6">
                     <input
@@ -516,13 +658,23 @@ export default function CheckoutPage() {
                       className={`form-control form-control-lg border-0 bg-light ${invalidFields.billing_postal_code.isInvalid ? "is-invalid" : ""}`}
                       onChange={handleChange}
                     />
-                    {invalidFields.billing_postal_code.isInvalid && <div className="invalid-feedback ps-2">{invalidFields.billing_postal_code.reason}</div>}
+                    {invalidFields.billing_postal_code.isInvalid && (
+                      <div className="invalid-feedback ps-2">
+                        {invalidFields.billing_postal_code.reason}
+                      </div>
+                    )}
                   </div>
                 </div>
               </section>
 
               <div className="form-check mb-4">
-                <input className="form-check-input" type="checkbox" id="same" checked={sameAsBilling} onChange={handleCheckboxChange} />
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id="same"
+                  checked={sameAsBilling}
+                  onChange={handleCheckboxChange}
+                />
                 <label className="form-check-label small" htmlFor="same">
                   L'indirizzo di spedizione è lo stesso di fatturazione
                 </label>
@@ -530,7 +682,9 @@ export default function CheckoutPage() {
               {/* Indirizzo di spedizione a scomparsa */}
               {!sameAsBilling && (
                 <section className="mb-5 p-3 border rounded bg-white shadow-sm animate__animated animate__fadeIn">
-                  <h6 className="text-uppercase small fw-bold text-muted mb-3">Indirizzo di Spedizione</h6>
+                  <h6 className="text-uppercase small fw-bold text-muted mb-3">
+                    Indirizzo di Spedizione
+                  </h6>
                   <div className="row g-3">
                     <div className="col-12">
                       <input
@@ -541,7 +695,11 @@ export default function CheckoutPage() {
                         className={`form-control form-control-lg border-0 bg-light ${invalidFields.shipping_street.isInvalid ? "is-invalid" : ""}`}
                         onChange={handleChange}
                       />
-                      {invalidFields.shipping_street.isInvalid && <div className="invalid-feedback ps-2">{invalidFields.shipping_street.reason}</div>}
+                      {invalidFields.shipping_street.isInvalid && (
+                        <div className="invalid-feedback ps-2">
+                          {invalidFields.shipping_street.reason}
+                        </div>
+                      )}
                     </div>
                     <div className="col-md-6">
                       <input
@@ -552,7 +710,11 @@ export default function CheckoutPage() {
                         className={`form-control form-control-lg border-0 bg-light ${invalidFields.shipping_city.isInvalid ? "is-invalid" : ""}`}
                         onChange={handleChange}
                       />
-                      {invalidFields.shipping_city.isInvalid && <div className="invalid-feedback ps-2">{invalidFields.shipping_city.reason}</div>}
+                      {invalidFields.shipping_city.isInvalid && (
+                        <div className="invalid-feedback ps-2">
+                          {invalidFields.shipping_city.reason}
+                        </div>
+                      )}
                     </div>
                     <div className="col-md-6">
                       <input
@@ -563,7 +725,11 @@ export default function CheckoutPage() {
                         className={`form-control form-control-lg border-0 bg-light ${invalidFields.shipping_postal_code.isInvalid ? "is-invalid" : ""}`}
                         onChange={handleChange}
                       />
-                      {invalidFields.shipping_postal_code.isInvalid && <div className="invalid-feedback ps-2">{invalidFields.shipping_postal_code.reason}</div>}
+                      {invalidFields.shipping_postal_code.isInvalid && (
+                        <div className="invalid-feedback ps-2">
+                          {invalidFields.shipping_postal_code.reason}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </section>
@@ -581,30 +747,62 @@ export default function CheckoutPage() {
                       <p className="text-muted small">Il carrello è vuoto.</p>
                     ) : (
                       cart.map((item) => (
-                        <div key={item.id} className="card mb-3 p-3 border-0 shadow-sm bg-white rounded-3">
-                          <h6 className="fw-bold mb-3 text-dark" style={{ fontSize: "1rem" }}>
+                        <div
+                          key={item.id}
+                          className="card mb-3 p-3 border-0 shadow-sm bg-white rounded-3"
+                        >
+                          <h6
+                            className="fw-bold mb-3 text-dark"
+                            style={{ fontSize: "1rem" }}
+                          >
                             {item.name}
                           </h6>
 
                           <div className="row g-0 align-items-center">
                             <div className="col-3 text-center">
-                              <img src={`http://localhost:3000/wines/${item.img}`} className="img-fluid" alt={item.name} style={{ maxHeight: "70px", objectFit: "contain" }} />
+                              <img
+                                src={`http://localhost:3000/wines/${item.img}`}
+                                className="img-fluid"
+                                alt={item.name}
+                                style={{
+                                  maxHeight: "70px",
+                                  objectFit: "contain",
+                                }}
+                              />
                             </div>
 
                             <div className="col-5 d-flex align-items-center justify-content-center gap-2">
                               <div className="d-flex align-items-center border rounded bg-light p-1">
-                                <button onClick={() => minusOne(item)} type="button" className="btn btn-sm btn-link text-dark p-0 px-2 text-decoration-none fw-bold">
+                                <button
+                                  onClick={() => minusOne(item)}
+                                  type="button"
+                                  className="btn btn-sm btn-link text-dark p-0 px-2 text-decoration-none fw-bold"
+                                >
                                   -
                                 </button>
-                                <span className="px-2 small fw-bold" style={{ minWidth: "20px", textAlign: "center" }}>
+                                <span
+                                  className="px-2 small fw-bold"
+                                  style={{
+                                    minWidth: "20px",
+                                    textAlign: "center",
+                                  }}
+                                >
                                   {item.quantity}
                                 </span>
-                                <button onClick={() => plusOne(item)} type="button" className="btn btn-sm btn-link text-dark p-0 px-2 text-decoration-none fw-bold">
+                                <button
+                                  onClick={() => plusOne(item)}
+                                  type="button"
+                                  className="btn btn-sm btn-link text-dark p-0 px-2 text-decoration-none fw-bold"
+                                >
                                   +
                                 </button>
                               </div>
 
-                              <button onClick={() => deleteItem(item)} type="button" className="btn btn-sm text-danger ms-2 p-0">
+                              <button
+                                onClick={() => removeItem(item)}
+                                type="button"
+                                className="btn btn-sm text-danger ms-2 p-0"
+                              >
                                 <i className="bi bi-trash3 fs-5"></i>
                               </button>
                             </div>
@@ -612,13 +810,25 @@ export default function CheckoutPage() {
                             <div className="col-4 text-end">
                               {item.promotion_price && (
                                 <div className="d-flex flex-column">
-                                  <span className="text-danger text-decoration-line-through small" style={{ fontSize: "0.7rem" }}>
+                                  <span
+                                    className="text-danger text-decoration-line-through small"
+                                    style={{ fontSize: "0.7rem" }}
+                                  >
                                     {item.price.toFixed(2)}€
                                   </span>
                                 </div>
                               )}
-                              <div className="text-muted mt-1" style={{ fontSize: "0.75rem" }}>
-                                Totale: <span className="fw-bold text-dark">{(getItemPrice(item) * item.quantity).toFixed(2)}€</span>
+                              <div
+                                className="text-muted mt-1"
+                                style={{ fontSize: "0.75rem" }}
+                              >
+                                Totale:{" "}
+                                <span className="fw-bold text-dark">
+                                  {(getItemPrice(item) * item.quantity).toFixed(
+                                    2,
+                                  )}
+                                  €
+                                </span>
                               </div>
                             </div>
                           </div>
@@ -638,28 +848,44 @@ export default function CheckoutPage() {
                   {/* SCONTO (Mostra solo se valido) */}
                   {couponDetails.isValid && (
                     <div className="d-flex justify-content-between mb-2 text-success fw-bold animate__animated animate__fadeIn">
-                      <span>Sconto Coupon ({(couponDetails.discountValue * 100).toFixed(0)}%)</span>
+                      <span>
+                        Sconto Coupon (
+                        {(couponDetails.discountValue * 100).toFixed(0)}%)
+                      </span>
                       <span>-{discountAmount.toFixed(2)}€</span>
                     </div>
                   )}
 
-                  {/* Spedizione */}
-                  <div className="d-flex justify-content-between mb-3">
-                    <span className="text-muted">Spedizione</span>
-                    <span className="text-dark">{shippingCost === 0 ? <strong className="text-success small">GRATIS</strong> : `${shippingCost.toFixed(2)}€`}</span>
-                  </div>
+                  {/* Spedizione - mostrata solo se il carrello non è vuoto */}
+                  {cart.length > 0 && (
+                    <div className="d-flex justify-content-between mb-3">
+                      <span className="text-muted">Spedizione</span>
+                      <span className="text-dark">
+                        {shippingCost === 0 ? (
+                          <strong className="text-success small">GRATIS</strong>
+                        ) : (
+                          `${shippingCost.toFixed(2)}€`
+                        )}
+                      </span>
+                    </div>
+                  )}
 
                   <hr className="text-muted opacity-25" />
 
-                  {/* Totale Finale */}
-                  <div className="d-flex justify-content-between h4 fw-bold mt-4 mb-4 text-dark">
-                    <span>Totale</span>
-                    <span>{totalWithShipping.toFixed(2)}€</span>
-                  </div>
+                  {/* Totale Finale mostra solo se c'è almeno un vino*/}
+                  {cart.length > 0 && (
+                    <div className="d-flex justify-content-between h4 fw-bold mt-4 mb-4 text-dark">
+                      <span>Totale</span>
+                      <span>{totalWithShipping.toFixed(2)}€</span>
+                    </div>
+                  )}
 
                   {/* Input Codice Sconto */}
                   <div className="mb-3">
-                    <div className="input-group shadow-sm" style={{ alignItems: "stretch" }}>
+                    <div
+                      className="input-group shadow-sm"
+                      style={{ alignItems: "stretch" }}
+                    >
                       <input
                         type="text"
                         name="discount_code"
@@ -678,7 +904,9 @@ export default function CheckoutPage() {
                         className="btn btn-outline-dark bg-light text-dark fw-bold border-0"
                         type="button"
                         onClick={applyCoupon}
-                        disabled={isCheckingCoupon || !formData.discount_code.trim()}
+                        disabled={
+                          isCheckingCoupon || !formData.discount_code.trim()
+                        }
                         style={{
                           padding: "0.75rem 1.5rem",
 
@@ -686,21 +914,35 @@ export default function CheckoutPage() {
                           alignItems: "center",
                         }}
                       >
-                        {isCheckingCoupon ? <span className="spinner-border spinner-border-sm"></span> : "Applica"}
+                        {isCheckingCoupon ? (
+                          <span className="spinner-border spinner-border-sm"></span>
+                        ) : (
+                          "Applica"
+                        )}
                       </button>
                     </div>
 
                     {/* Messaggio di feedback sotto l'input */}
                     {couponDetails.message && (
-                      <div className={`small mt-2 ps-1 fw-medium ${couponDetails.isValid ? "text-success" : "text-danger"}`}>
-                        {couponDetails.isValid ? <i className="bi bi-check-circle-fill me-1"></i> : <i className="bi bi-exclamation-circle-fill me-1"></i>}
+                      <div
+                        className={`small mt-2 ps-1 fw-medium ${couponDetails.isValid ? "text-success" : "text-danger"}`}
+                      >
+                        {couponDetails.isValid ? (
+                          <i className="bi bi-check-circle-fill me-1"></i>
+                        ) : (
+                          <i className="bi bi-exclamation-circle-fill me-1"></i>
+                        )}
                         {couponDetails.message}
                       </div>
                     )}
                   </div>
 
                   {/* Bottone Conferma*/}
-                  <button type="submit" className="btn bg-body-tertiary w-100 py-3 fw-bold text-uppercase border border-dark shadow-sm" style={{ color: "#4a4a4a" }}>
+                  <button
+                    type="submit"
+                    className="btn bg-body-tertiary w-100 py-3 fw-bold text-uppercase border border-dark shadow-sm"
+                    style={{ color: "#4a4a4a" }}
+                  >
                     Conferma e paga
                   </button>
                   <div className="text-center mt-3 text-muted small">

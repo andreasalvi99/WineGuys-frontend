@@ -50,10 +50,12 @@ export default function Navbar() {
   }
   // funzione per cancellare elemento sul click del cestino
   function deleteItem(item) {
-    const prevCart = cart.filter((cartItem) => cartItem.id !== item.id);
-
-    return setCart(prevCart);
-  }
+  setCart((prevCart) => prevCart.filter((cartItem) => cartItem.id !== item.id));
+}
+// Ripristina l'item rimosso creando un nuovo array con gli elementi precedenti più l'item da ripristinare in fondo
+function restoreItem(item) {
+  setCart((prevCart) => [...prevCart, item]);
+}
   // funzione per calcolare lo sconto
   function calcDiscount(original, discount) {
     return Math.ceil(((original - discount) / original) * 100);
@@ -186,6 +188,7 @@ export default function Navbar() {
                   price={item.price}
                   quantity={item.quantity}
                   deleteItem={deleteItem}
+                  restoreItem={restoreItem}
                   plusOne={plusOne}
                   minusOne={minusOne}
                   calcDiscount={calcDiscount}
