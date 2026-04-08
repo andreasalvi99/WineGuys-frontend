@@ -4,6 +4,11 @@ import { useState, useMemo, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { CartContext } from "../context/CartContextObject";
 
+import { validateFormLogic } from "../utils/checkoutValidation";
+import CheckoutInput from "../components/checkout/CheckoutInput";
+import CartItem from "../components/checkout/CartItem";
+import { prepareOrderPayload } from "../utils/checkoutUtils";
+
 export default function CheckoutPage() {
   const navigate = useNavigate();
 
@@ -14,7 +19,7 @@ export default function CheckoutPage() {
   //stato carello da context
   const { cart, setCart } = useContext(CartContext);
 
-  //funzioni aumento quantità
+  //funzione aumento quantità
   async function plusOne(item) {
     try {
       // Controllo disponibilità a magazzino prima di incrementare
@@ -132,70 +137,14 @@ export default function CheckoutPage() {
 
   //funzione di validazione
   function validateForm() {
-    const newInvalid = { ...invalidFields };
-
-    Object.keys(newInvalid).forEach((key) => {
-      newInvalid[key] = { isInvalid: false, reason: "" };
-    });
-
-    const { customer } = formData;
-
-    // validazione Nome
-    if (!customer.first_name.trim()) {
-      newInvalid.first_name = { isInvalid: true, reason: "Il nome è necessario" };
-    }
-
-    // validazione Cognome
-    if (!customer.second_name.trim()) {
-      newInvalid.second_name = { isInvalid: true, reason: "Il cognome è necessario" };
-    }
-
-    // validazione Email (Regex base)
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(customer.email)) {
-      newInvalid.email = { isInvalid: true, reason: "Inserisci un'email valida" };
-    }
-
-    // validazione Cellulare
-    const phoneRegex = /^\+?[\d\s]{9,15}$/;
-    const phoneValue = customer.cellphone.trim();
-
-    if (!phoneValue) {
-      newInvalid.cellphone = { isInvalid: true, reason: "Il numero di cellulare è necessario" };
-    } else if (!phoneRegex.test(phoneValue)) {
-      newInvalid.cellphone = { isInvalid: true, reason: "Inserisci un numero valido" };
-    }
-
-    // validazione Indirizzo
-    if (!customer.billing_street.trim()) {
-      newInvalid.billing_street = { isInvalid: true, reason: "L'indirizzo è necessario" };
-    }
-    // validazione Città
-    if (!customer.billing_city.trim()) {
-      newInvalid.billing_city = { isInvalid: true, reason: "La città è necessaria" };
-    }
-
-    // validazione CAP
-    if (!/^\d{5}$/.test(customer.billing_postal_code)) {
-      newInvalid.billing_postal_code = { isInvalid: true, reason: "CAP non valido" };
-    }
-
-    //validazione shipping se necessaria
-    if (!sameAsBilling) {
-      if (!customer.shipping_street.trim()) {
-        newInvalid.shipping_street = { isInvalid: true, reason: "L'indirizzo è necessario" };
-      }
-      if (!customer.shipping_city.trim()) {
-        newInvalid.shipping_city = { isInvalid: true, reason: "La città è necessaria" };
-      }
-      if (!/^\d{5}$/.test(customer.shipping_postal_code)) {
-        newInvalid.shipping_postal_code = { isInvalid: true, reason: "CAP non valido" };
-      }
-    }
+    //validazione campi
+    const newInvalid = validateFormLogic(formData, sameAsBilling);
 
     setInvalidFields(newInvalid);
 
-    // ritorna true se non ci sono campi invalidi - Object.values prende i valori di newInvalid e li mette in stringa + some ci dice se almeno un valore è invalido(true)
+    // ritorna true se NON ci sono campi invalidi:
+    // Object.values prende i valori di newInvalid e li mette in stringa
+    // Some ci dice se almeno un valore è invalido(true)
     return !Object.values(newInvalid).some((field) => field.isInvalid);
   }
 
@@ -205,15 +154,18 @@ export default function CheckoutPage() {
 
   // funzione per validare il coupon
   const applyCoupon = async () => {
+    //prendo il codice sconto dal form
     const code = formData.discount_code.trim();
+
     if (!code) {
       toast.error("Inserisci un codice prima di applicare");
       return;
     }
-
+    //disabilito bottone applica mentre carica
     setIsCheckingCoupon(true);
 
     try {
+      //check su server validità coupon
       const response = await axios.post("http://localhost:3000/ordini/validate-coupon", {
         discount_code: code,
         total_amount: subtotal,
@@ -236,6 +188,7 @@ export default function CheckoutPage() {
       setIsCheckingCoupon(false);
     }
   };
+
   //controllo su cambio carrello con reset del campo coupon
   useEffect(() => {
     // Reset dello stato coupon (messaggi e valori)
@@ -339,34 +292,11 @@ export default function CheckoutPage() {
       });
       return;
     }
-
     setIsLoading(true);
 
-    //Sanitizzazione dati
-    const sanitizedCustomer = {};
+    //creiamo il payload da inviare al server
+    const payload = prepareOrderPayload(formData, cart);
 
-    for (let key in formData.customer) {
-      // eliminiamo spazi iniziali e finali se sono stringhe
-      sanitizedCustomer[key] = typeof formData.customer[key] === "string" ? formData.customer[key].trim() : formData.customer[key];
-    }
-
-    //normalizzazione dati per backend
-    const orderCartItems = cart.map((item) => ({
-      product_id: item.id,
-      product_name: item.name,
-      quantity: item.quantity,
-      // price_frontend: getItemPrice(item), //prezzo finale effettivo considerando possibili promo
-    }));
-
-    // creiamo il payload da inviare al server
-    const payload = {
-      customer: sanitizedCustomer,
-      // total_price: subtotal, // invio il prezzo base perchè il calcolo coupon e spedizione lo fa il backend
-      cart_items: orderCartItems,
-      discount_code: formData.discount_code || null,
-    };
-
-    //chiamata axios per inviare i dati al server
     try {
       const response = await axios.post("http://localhost:3000/ordini", payload);
 
@@ -443,46 +373,10 @@ export default function CheckoutPage() {
               <section className="mb-4">
                 <h6 className="text-uppercase small fw-bold text-muted mb-3">Contatti</h6>
                 <div className="row g-3">
-                  <div className="col-md-6">
-                    <input
-                      type="text"
-                      name="first_name"
-                      placeholder="Nome"
-                      className={`form-control form-control-lg border-0 bg-light ${invalidFields.first_name.isInvalid ? "is-invalid" : ""}`}
-                      onChange={handleChange}
-                    />
-                    {invalidFields.first_name.isInvalid && <div className="invalid-feedback ps-2">{invalidFields.first_name.reason}</div>}
-                  </div>
-                  <div className="col-md-6">
-                    <input
-                      type="text"
-                      name="second_name"
-                      placeholder="Cognome"
-                      className={`form-control form-control-lg border-0 bg-light ${invalidFields.second_name.isInvalid ? "is-invalid" : ""}`}
-                      onChange={handleChange}
-                    />
-                    {invalidFields.second_name.isInvalid && <div className="invalid-feedback ps-2">{invalidFields.second_name.reason}</div>}
-                  </div>
-                  <div className="col-md-8">
-                    <input
-                      type="email"
-                      name="email"
-                      placeholder="Email"
-                      className={`form-control form-control-lg border-0 bg-light ${invalidFields.email.isInvalid ? "is-invalid" : ""}`}
-                      onChange={handleChange}
-                    />
-                    {invalidFields.email.isInvalid && <div className="invalid-feedback ps-2">{invalidFields.email.reason}</div>}
-                  </div>
-                  <div className="col-md-4">
-                    <input
-                      type="tel"
-                      name="cellphone"
-                      placeholder="Cellulare"
-                      className={`form-control form-control-lg border-0 bg-light ${invalidFields.cellphone.isInvalid ? "is-invalid" : ""}`}
-                      onChange={handleChange}
-                    />
-                    {invalidFields.cellphone.isInvalid && <div className="invalid-feedback ps-2">{invalidFields.cellphone.reason}</div>}
-                  </div>
+                  <CheckoutInput col="6" name="first_name" placeholder="Nome" invalidField={invalidFields.first_name} onChange={handleChange} />
+                  <CheckoutInput col="6" name="second_name" placeholder="Cognome" invalidField={invalidFields.second_name} onChange={handleChange} />
+                  <CheckoutInput col="8" name="email" type="email" placeholder="Email" invalidField={invalidFields.email} onChange={handleChange} />
+                  <CheckoutInput col="4" name="cellphone" type="tel" placeholder="Cellulare" invalidField={invalidFields.cellphone} onChange={handleChange} />
                 </div>
               </section>
               <section className="mb-4">
@@ -580,50 +474,7 @@ export default function CheckoutPage() {
                     {cart.length === 0 ? (
                       <p className="text-muted small">Il carrello è vuoto.</p>
                     ) : (
-                      cart.map((item) => (
-                        <div key={item.id} className="card mb-3 p-3 border-0 shadow-sm bg-white rounded-3">
-                          <h6 className="fw-bold mb-3 text-dark" style={{ fontSize: "1rem" }}>
-                            {item.name}
-                          </h6>
-
-                          <div className="row g-0 align-items-center">
-                            <div className="col-3 text-center">
-                              <img src={`http://localhost:3000/wines/${item.img}`} className="img-fluid" alt={item.name} style={{ maxHeight: "70px", objectFit: "contain" }} />
-                            </div>
-
-                            <div className="col-5 d-flex align-items-center justify-content-center gap-2">
-                              <div className="d-flex align-items-center border rounded bg-light p-1">
-                                <button onClick={() => minusOne(item)} type="button" className="btn btn-sm btn-link text-dark p-0 px-2 text-decoration-none fw-bold">
-                                  -
-                                </button>
-                                <span className="px-2 small fw-bold" style={{ minWidth: "20px", textAlign: "center" }}>
-                                  {item.quantity}
-                                </span>
-                                <button onClick={() => plusOne(item)} type="button" className="btn btn-sm btn-link text-dark p-0 px-2 text-decoration-none fw-bold">
-                                  +
-                                </button>
-                              </div>
-
-                              <button onClick={() => deleteItem(item)} type="button" className="btn btn-sm text-danger ms-2 p-0">
-                                <i className="bi bi-trash3 fs-5"></i>
-                              </button>
-                            </div>
-
-                            <div className="col-4 text-end">
-                              {item.promotion_price && (
-                                <div className="d-flex flex-column">
-                                  <span className="text-danger text-decoration-line-through small" style={{ fontSize: "0.7rem" }}>
-                                    {item.price.toFixed(2)}€
-                                  </span>
-                                </div>
-                              )}
-                              <div className="text-muted mt-1" style={{ fontSize: "0.75rem" }}>
-                                Totale: <span className="fw-bold text-dark">{(getItemPrice(item) * item.quantity).toFixed(2)}€</span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      ))
+                      cart.map((item) => <CartItem key={item.id} item={item} plusOne={plusOne} minusOne={minusOne} deleteItem={deleteItem} getItemPrice={getItemPrice} />)
                     )}
                   </div>
 
