@@ -376,19 +376,6 @@ export default function CheckoutPage() {
         const orderSummary = response.data.order_summary;
         console.log("Ordine creato con successo!", response.data.order_summary);
 
-        // faccio chiamata axios per mandare email di conferam ordine
-        // dopo che l'ordine è stato salvato con successo nel database, chiamo il nostro endpoint /email/send-confirmation per mandare una email di conferma al cliente. passimao i dati del cliente (nome, email, indirizzo di spedizione), i prodotti del carrello con quantità e prezzi, il totale e le spese di spedizione.
-        //L'email viene generata e inviata tramite Nodemailer con Maltrap come servizio di test. In produzione si può sostituire Mailtrap con un servizio reale come Gmail. Il cliente receverà una email col riepilogo completo dell'ordine, così sa esattamente cosa ha comprato e quanto ha pagato. */
-        try {
-          axios.post("http://localhost:3000/email/send-confirmation", {
-            customer: formData.customer,
-            cart_items: orderCartItems,
-            total_price: orderSummary.total,
-            shipping_fee: orderSummary.shipping,
-          });
-        } catch (emailError) {
-          console.warn("Ordine creato, ma invio email fallito:", emailError);
-        }
         //svuoto il carrello
         setCart([]);
 
