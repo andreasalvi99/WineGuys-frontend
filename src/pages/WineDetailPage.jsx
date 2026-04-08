@@ -88,20 +88,18 @@ function WineDetailPage() {
 
   /* GESTIONE CONFRONTO */
   function toggleCompare(wine) {
-  setCompareList((prev) => {
-    const exists = prev.find((w) => w.slug === wine.slug);
+    setCompareList((prev) => {
+      const exists = prev.find((w) => w.slug === wine.slug);
 
-    if (exists) {
-      return prev.filter((w) => w.slug !== wine.slug);
-    }
+      if (exists) {
+        return prev.filter((w) => w.slug !== wine.slug);
+      }
 
-    if (prev.length >= 2) return prev;
+      if (prev.length >= 2) return prev;
 
-    return [...prev, wine];
-  });
+      return [...prev, wine];
+    });
   }
-
-  
 
   /* RENDER PRINCIPALE */
 
@@ -147,171 +145,176 @@ function WineDetailPage() {
           </button>
         </div>
 
-      {/* ADD TO CART */}
-      <button
-        className={`btn mt-3 ${isAvailable ? "btn-outline-dark" : "btn-secondary"}`}
-        onClick={() => addToCart(wine, quantity)}
-        disabled={
-        !isAvailable ||
-        (cart.find((item) => item.slug === wine.slug)?.quantity ??
-        0) >= wine.stock_quantity
-        }
-      >
-        {isAvailable ? "Aggiungi al carrello" : "Non disponibile"}
-      </button>
+        {/* ADD TO CART */}
+        <button
+          className={`btn mt-3 ${isAvailable ? "btn-outline-dark" : "btn-secondary"}`}
+          onClick={() => addToCart(wine, quantity)}
+          disabled={
+            !isAvailable ||
+            (cart.find((item) => item.slug === wine.slug)?.quantity ?? 0) >=
+              wine.stock_quantity
+          }
+        >
+          {isAvailable ? "Aggiungi al carrello" : "Non disponibile"}
+        </button>
       </div>
-      </div>
-      </div>
+      {/* </div>
+      </div> */}
 
       {/* RELATED */}
       <div style={{ backgroundColor: "#ffffff", padding: "80px 0" }}>
+        <h4 className="text-center mb-4">Potrebbero piacerti</h4>
 
-      <h4 className="text-center mb-4">Potrebbero piacerti</h4>
+        <div className="container">
+          <div className="row justify-content-center">
+            {relatedWines.map((w) => (
+              <div className="col-md-4 text-center mb-4 d-flex" key={w.id}>
+                <div
+                  className="d-flex flex-column h-100"
+                  style={{ maxWidth: "200px", margin: "0 auto" }}
+                >
+                  <WineCard
+                    img={w.img ? `http://localhost:3000/wines/${w.img}` : ""}
+                    name={w.product_name}
+                    price={w.price}
+                    discounted={w.promotion_price}
+                    slug={w.slug}
+                  />
 
-      <div className="container">
-      <div className="row justify-content-center">
-        {relatedWines.map((w) => (
-      <div className="col-md-4 text-center mb-4 d-flex" key={w.id}>
-      <div className="d-flex flex-column h-100" style={{ maxWidth: "200px", margin: "0 auto" }}>
-      <WineCard
-        img={ w.img ? `http://localhost:3000/wines/${w.img}` : ""}                  
-             name={w.product_name}         
-             price={w.price}             
-             discounted={w.promotion_price}              
-             slug={w.slug}            
-      /> 
+                  {/*BOTTONE CONFRONTO*/}
+                  <button
+                    className="btn btn-sm btn-outline-dark mt-auto"
+                    onClick={() => toggleCompare(w)}
+                  >
+                    {compareList.find((c) => c.slug === w.slug)
+                      ? "Rimuovi confronto"
+                      : "Confronta"}
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
 
-      {/*BOTTONE CONFRONTO*/}   
-      <button
-        className="btn btn-sm btn-outline-dark mt-auto"
-        onClick={() => toggleCompare(w)}
-      >
-        {compareList.find((c) => c.slug === w.slug)
-          ? "Rimuovi confronto"
-          : "Confronta"}
-      </button>                
-      
-      </div>                  
-      </div>    
-        ))}
-      </div>
-      </div>
-      </div>
-      
       {/* COMPARISON TABLE */}
       {compareList.length === 2 && (
-      <div className="container mt-5">
-      <div style={{ maxWidth: "800px", margin: "0 auto" }}>
-      
-      <h4 className="text-center mb-4">Confronto vini</h4>
+        <div className="container mt-5">
+          <div style={{ maxWidth: "800px", margin: "0 auto" }}>
+            <h4 className="text-center mb-4">Confronto vini</h4>
 
-      <table className="table table-bordered text-center">
-        
-        <thead>
-          {/* IMMAGINI */}
-          <tr>
-            <th
-            style={{
-            verticalAlign: "middle",
-            textAlign: "center",
-            fontWeight: "700",
-            letterSpacing: "1px"
-            }}
-            >WineGuys</th>
-  
+            <table className="table table-bordered text-center">
+              <thead>
+                {/* IMMAGINI */}
+                <tr>
+                  <th
+                    style={{
+                      verticalAlign: "middle",
+                      textAlign: "center",
+                      fontWeight: "700",
+                      letterSpacing: "1px",
+                    }}
+                  >
+                    WineGuys
+                  </th>
 
+                  <th>
+                    <img
+                      src={`http://localhost:3000/wines/${compareList[0].img}`}
+                      alt={compareList[0].product_name}
+                      style={{
+                        height: "120px",
+                        objectFit: "contain",
+                        marginBottom: "10px",
+                      }}
+                    />
+                  </th>
 
-            <th>
-              <img
-                src={`http://localhost:3000/wines/${compareList[0].img}`}
-                alt={compareList[0].product_name}
-                style={{ height: "120px", objectFit: "contain", marginBottom: "10px" }}
-              />
-            </th>
+                  <th>
+                    <img
+                      src={`http://localhost:3000/wines/${compareList[1].img}`}
+                      alt={compareList[1].product_name}
+                      style={{
+                        height: "120px",
+                        objectFit: "contain",
+                        marginBottom: "10px",
+                      }}
+                    />
+                  </th>
+                </tr>
 
-            <th>
-              <img
-                src={`http://localhost:3000/wines/${compareList[1].img}`}
-                alt={compareList[1].product_name}
-                style={{ height: "120px", objectFit: "contain", marginBottom: "10px" }}
-              />
-            </th>
-          </tr>
+                {/* NOMI */}
+                <tr>
+                  <th>Caratteristica</th>
+                  <th>{compareList[0].product_name}</th>
+                  <th>{compareList[1].product_name}</th>
+                </tr>
+              </thead>
 
-          {/* NOMI */}
-          <tr>
-            <th>Caratteristica</th>
-            <th>{compareList[0].product_name}</th>
-            <th>{compareList[1].product_name}</th>
-          </tr>
-        </thead>
+              <tbody>
+                <tr>
+                  <td>Prezzo</td>
+                  <td>{compareList[0].price}€</td>
+                  <td>{compareList[1].price}€</td>
+                </tr>
 
-        <tbody>
-          <tr>
-            <td>Prezzo</td>
-            <td>{compareList[0].price}€</td>
-            <td>{compareList[1].price}€</td>
-          </tr>
+                <tr>
+                  <td>Annata</td>
+                  <td>{compareList[0].vintage}</td>
+                  <td>{compareList[1].vintage}</td>
+                </tr>
 
-          <tr>
-            <td>Annata</td>
-            <td>{compareList[0].vintage}</td>
-            <td>{compareList[1].vintage}</td>
-          </tr>
-
-          <tr>
-            <td>Disponibilità</td>
-            <td>{compareList[0].stock_quantity}</td>
-            <td>{compareList[1].stock_quantity}</td>
-          </tr>
-        </tbody>
-
-      </table>
-
-      </div>
-      </div>
+                <tr>
+                  <td>Disponibilità</td>
+                  <td>{compareList[0].stock_quantity}</td>
+                  <td>{compareList[1].stock_quantity}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       )}
 
       {/*PHILOSOPHY*/}
       <div
         style={{
-        marginTop: "5px",
-        padding: "60px 20px",
-        textAlign: "center",
-        maxWidth: "700px",
-        marginInline: "auto",
-        color: "#000000",
+          marginTop: "5px",
+          padding: "60px 20px",
+          textAlign: "center",
+          maxWidth: "700px",
+          marginInline: "auto",
+          color: "#000000",
         }}
       >
-      <h3 style={{ marginBottom: "20px", fontStyle: "italic" }}>
-        Un’esperienza che va oltre il vino
-      </h3>
+        <h3 style={{ marginBottom: "20px", fontStyle: "italic" }}>
+          Un’esperienza che va oltre il vino
+        </h3>
 
-      <p style={{ fontSize: "15px", lineHeight: "1.8" }}>
-        Ogni bottiglia racconta una storia fatta di territorio, passione
-        e tradizione. Scopri la nostra selezione e lasciati guidare in
-        un viaggio tra le migliori etichette, pensate per accompagnare
-        ogni momento speciale.
-      </p>
+        <p style={{ fontSize: "15px", lineHeight: "1.8" }}>
+          Ogni bottiglia racconta una storia fatta di territorio, passione e
+          tradizione. Scopri la nostra selezione e lasciati guidare in un
+          viaggio tra le migliori etichette, pensate per accompagnare ogni
+          momento speciale.
+        </p>
       </div>
-      </div>
+      {/* </div> */}
 
       {/* FOOTER */}
       <footer
         style={{
-        marginTop: "auto",
-        padding: "20px 0",
-        backgroundColor: "#ffffff",
-        borderTop: "1px solid #000000",
-        textAlign: "center",
+          marginTop: "auto",
+          padding: "20px 0",
+          backgroundColor: "#ffffff",
+          borderTop: "1px solid #000000",
+          textAlign: "center",
         }}
       >
-      <p style={{ margin: 0, fontSize: "14px", color: "#000000" }}>
-         © 2026 – Made with WineGuys🍷
-      </p>
+        <p style={{ margin: 0, fontSize: "14px", color: "#000000" }}>
+          © 2026 – Made with WineGuys🍷
+        </p>
       </footer>
-      </div>
-      </div>
+      {/* // </div> */}
+      {/* // </div> */}
     </section>
   );
 }
