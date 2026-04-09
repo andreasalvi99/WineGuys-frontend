@@ -33,7 +33,9 @@ export default function AllWinesCard({
                 </span>
               )}
               {/* se la quantity in stock è uguale a 0 appare scritto esaurito */}
-              {quantity === 0 && <span className="text-danger">Esaurito</span>}
+              {quantity === 0 && (
+                <span className="text-danger d-block">Esaurito</span>
+              )}
             </div>
             {/* se  chiave promotion ha un valore allora stampo il valore originale sbarrato e sotto il valore scontato altrimenti stampo il prezzo originale*/}
             <div>
