@@ -39,14 +39,16 @@ export default function AllWinesCard({
             <div>
               {promotion !== null && promotion !== undefined ? (
                 <>
-                  <p className="text-danger m-0">&euro;{promotion}</p>
+                  <p className="text-danger m-0 fs-4 fw-bold">
+                    &euro;{promotion}
+                  </p>
                   <p className="text-decoration-line-through m-0">
                     &euro;
                     {price}
                   </p>
                 </>
               ) : (
-                <p>&euro;{price}</p>
+                <p className="fs-4 fw-bold">&euro;{price}</p>
               )}
             </div>
           </div>
