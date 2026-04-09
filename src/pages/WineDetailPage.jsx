@@ -4,6 +4,7 @@ import WineCard from "../components/WineCard.jsx";
 import { useContext } from "react";
 import { CartContext } from "../context/CartContextObject";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 function WineDetailPage() {
   /*ROUTING e NAVIGATION*/
@@ -47,6 +48,10 @@ function WineDetailPage() {
         setRelatedWines(filtered);
       } catch (err) {
         setError(err.message);
+        toast.error("Errore di caricamento", {
+          description:
+            "Non siamo riusciti a recuperare i dettagli di questo vino.",
+        });
       } finally {
         setLoading(false);
       }
@@ -54,13 +59,13 @@ function WineDetailPage() {
 
     loadData();
   }, [slug]);
-  
-/* Quando il vino viene caricato, lo aggiungo automaticamente alla lista di confronto per facilitare l'utente */
+
+  /* Quando il vino viene caricato, lo aggiungo automaticamente alla lista di confronto per facilitare l'utente */
   useEffect(() => {
-  if (wine) {
-    setCompareList([wine]);
-  }
-}, [wine]);
+    if (wine) {
+      setCompareList([wine]);
+    }
+  }, [wine]);
 
   /* GESTIONE STATI */
   if (loading) return <p>Loading...</p>;
@@ -92,17 +97,26 @@ function WineDetailPage() {
   }
 
   /* GESTIONE CONFRONTO */
-  function toggleCompare(wine) {
+  function toggleCompare(wineToCompare) {
     setCompareList((prev) => {
-      const exists = prev.find((w) => w.slug === wine.slug);
+      const exists = prev.find((w) => w.slug === wineToCompare.slug);
 
       if (exists) {
-        return prev.filter((w) => w.slug !== wine.slug);
+        toast.info("Rimosso dal confronto");
+        return prev.filter((w) => w.slug !== wineToCompare.slug);
       }
 
-      if (prev.length >= 3) return prev;
+      if (prev.length >= 3) {
+        toast.warning("Limite raggiunto", {
+          description: "Puoi confrontare massimo 3 vini contemporaneamente.",
+        });
+        return prev;
+      }
 
-      return [...prev, wine];
+      toast.success("Aggiunto al confronto", {
+        description: wineToCompare.product_name,
+      });
+      return [...prev, wineToCompare];
     });
   }
 
@@ -256,7 +270,38 @@ function WineDetailPage() {
                   {/* ADD TO CART */}
                   <button
                     className={`btn mt-3 ${isAvailable ? "btn-outline-dark" : "btn-secondary"}`}
-                    onClick={() => addToCart(wine, quantity)}
+                    onClick={() => {
+                      // 1. Troviamo quanto di questo vino è già nel carrello
+                      const itemInCart = cart.find(
+                        (item) => item.slug === wine.slug,
+                      );
+
+                      const currentQtyInCart = itemInCart
+                        ? itemInCart.quantity
+                        : 0;
+
+                      // 2. Calcoliamo la disponibilità REALE (Stock totale - Quello che ho già nel carrello)
+                      const remainingAvailability =
+                        wine.stock_quantity - currentQtyInCart;
+
+                      // 3. Verifichiamo se l'utente sta cercando di aggiungere più di quanto rimanga
+                      if (quantity > remainingAvailability) {
+                        toast.error("Quantità non disponibile", {
+                          description:
+                            remainingAvailability > 0
+                              ? `Puoi aggiungere al massimo altre ${remainingAvailability} unità (ne hai già ${currentQtyInCart} nel carrello).`
+                              : `Hai già aggiunto tutte le ${wine.stock_quantity} bottiglie disponibili al carrello.`,
+                        });
+                        return; // Blocchiamo l'esecuzione
+                      }
+
+                      // 4. Se il controllo passa, procediamo
+                      addToCart(wine, quantity);
+                      toast.success(`${wine.product_name} aggiunto!`, {
+                        description: `${quantity} ${quantity > 1 ? "bottiglie aggiunte" : "bottiglia aggiunta"}. Disponibilità residua: ${remainingAvailability - quantity}.`,
+                        
+                      });
+                    }}
                     disabled={
                       !isAvailable ||
                       (cart.find((item) => item.slug === wine.slug)?.quantity ??
@@ -311,65 +356,75 @@ function WineDetailPage() {
             </div>
 
             {/* COMPARISON TABLE */}
-         {compareList.length >= 2 && (
-  <div className="container mt-5" style={{ maxWidth: "900px", margin: "0 auto" }}>
-    <h4 className="text-center mb-4">Confronto vini</h4>
+            {compareList.length >= 2 && (
+              <div
+                className="container mt-5"
+                style={{ maxWidth: "900px", margin: "0 auto" }}
+              >
+                <h4 className="text-center mb-4">Confronto vini</h4>
 
-    <table className="table table-bordered text-center">
-      <thead>
-        {/* IMMAGINI */}
-        <tr>
-          <th style={{ textAlign: "center", verticalAlign: "middle" }}>WineGuys</th>
-  
+                <table className="table table-bordered text-center">
+                  <thead>
+                    {/* IMMAGINI */}
+                    <tr>
+                      <th
+                        style={{ textAlign: "center", verticalAlign: "middle" }}
+                      >
+                        WineGuys
+                      </th>
 
-          {compareList.map((w) => (
-            <th key={w.slug}>
-              <img
-                src={`http://localhost:3000/wines/${w.img}`}
-                alt={w.product_name}
-                style={{ height: "120px", objectFit: "contain", marginBottom: "10px" }}
-              />
-            </th>
-          ))}
-        </tr>
+                      {compareList.map((w) => (
+                        <th key={w.slug}>
+                          <img
+                            src={`http://localhost:3000/wines/${w.img}`}
+                            alt={w.product_name}
+                            style={{
+                              height: "120px",
+                              objectFit: "contain",
+                              marginBottom: "10px",
+                            }}
+                          />
+                        </th>
+                      ))}
+                    </tr>
 
-        {/* NOMI */}
-        <tr>
-          <th>Caratteristica</th>
-          {compareList.map((w) => (
-            <th key={w.slug}>{w.product_name}</th>
-          ))}
-        </tr>
-      </thead>
+                    {/* NOMI */}
+                    <tr>
+                      <th>Caratteristica</th>
+                      {compareList.map((w) => (
+                        <th key={w.slug}>{w.product_name}</th>
+                      ))}
+                    </tr>
+                  </thead>
 
-      <tbody>
-        {/* PREZZO */}
-        <tr>
-          <td>Prezzo</td>
-          {compareList.map((w) => (
-            <td key={w.slug}>{w.price}€</td>
-          ))}
-        </tr>
+                  <tbody>
+                    {/* PREZZO */}
+                    <tr>
+                      <td>Prezzo</td>
+                      {compareList.map((w) => (
+                        <td key={w.slug}>{w.price}€</td>
+                      ))}
+                    </tr>
 
-        {/* ANNATA */}
-        <tr>
-          <td>Annata</td>
-          {compareList.map((w) => (
-            <td key={w.slug}>{w.vintage}</td>
-          ))}
-        </tr>
+                    {/* ANNATA */}
+                    <tr>
+                      <td>Annata</td>
+                      {compareList.map((w) => (
+                        <td key={w.slug}>{w.vintage}</td>
+                      ))}
+                    </tr>
 
-        {/* DISPONIBILITÀ */}
-        <tr>
-          <td>Disponibilità</td>
-          {compareList.map((w) => (
-            <td key={w.slug}>{w.stock_quantity}</td>
-          ))}
-        </tr>
-      </tbody>
-    </table>
-  </div>
-)}
+                    {/* DISPONIBILITÀ */}
+                    <tr>
+                      <td>Disponibilità</td>
+                      {compareList.map((w) => (
+                        <td key={w.slug}>{w.stock_quantity}</td>
+                      ))}
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            )}
 
             {/*PHILOSOPHY*/}
             <div
