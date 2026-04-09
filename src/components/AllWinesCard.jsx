@@ -42,7 +42,10 @@ export default function AllWinesCard({
                   {quantity} rimamenti
                 </span>
               )}
-              {quantity === 0 && <span className="text-danger">Esaurito</span>}
+              {/* se la quantity in stock è uguale a 0 appare scritto esaurito */}
+              {quantity === 0 && (
+                <span className="text-danger d-block">Esaurito</span>
+              )}
             </div>
             <div>
               {promotion !== null && promotion !== undefined ? (
