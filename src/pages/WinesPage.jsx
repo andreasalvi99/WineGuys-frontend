@@ -156,16 +156,16 @@ export default function WinesPage() {
               Resetta filtri
             </button>
           </div>
-
+          {/* se i filtri non sono settati non mostro nulla, se settati mostro numero risultati, se settati ma non c'è nessun resultato mostro "Nessun risultato trovato" */}
           <div>
             {(filterAnnata !== "" ||
               filterTipo !== "" ||
               filterVitigno !== "" ||
               filterPrezzo !== "") &&
             wines.length > 0 ? (
-              <p>{wines.length} risultati trovati</p>
+              <p className="fs-5">{wines.length} risultati trovati</p>
             ) : wines.length === 0 ? (
-              <p>Nessun risultato trovato</p>
+              <p className="fs-5"> Nessun risultato trovato</p>
             ) : null}
           </div>
 
