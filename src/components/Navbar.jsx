@@ -50,9 +50,13 @@ export default function Navbar() {
   }
   // funzione per cancellare elemento sul click del cestino
   function deleteItem(item) {
-    const prevCart = cart.filter((cartItem) => cartItem.id !== item.id);
-
-    return setCart(prevCart);
+    setCart((prevCart) =>
+      prevCart.filter((cartItem) => cartItem.id !== item.id),
+    );
+  }
+  // Ripristina l'item rimosso creando un nuovo array con gli elementi precedenti più l'item da ripristinare in fondo
+  function restoreItem(item) {
+    setCart((prevCart) => [...prevCart, item]);
   }
   // funzione per calcolare lo sconto
   function calcDiscount(original, discount) {
@@ -132,7 +136,7 @@ export default function Navbar() {
                 </li>
                 <li className="nav-item">
                   <NavLink to={"/vini"} className="nav-link">
-                    Vini
+                    La nostra cantina
                   </NavLink>
                 </li>
               </ul>
@@ -186,6 +190,7 @@ export default function Navbar() {
                   price={item.price}
                   quantity={item.quantity}
                   deleteItem={deleteItem}
+                  restoreItem={restoreItem}
                   plusOne={plusOne}
                   minusOne={minusOne}
                   calcDiscount={calcDiscount}
@@ -193,7 +198,7 @@ export default function Navbar() {
               );
             })}
           </div>
-          {/* navbar bottomo per pulsante checkout e totale carrello */}
+          {/* navbar bottom per pulsante checkout e totale carrello */}
           <nav className="navbar sticky-bottom bg-body-tertiary">
             <div className="container-fluid justify-content-between align-items-center">
               {/* invoco funzione per calcolare il prezzo totale */}

@@ -21,13 +21,13 @@ export default function AllWinesCard({
             {/* se chiave promotion ha un valore allora invoco la funzione per calcolare lo sconto e lo stampo in uno span */}
             <div>
               {promotion != null && (
-                <span className="badge text-bg-danger fs-6">
+                <span className="badge text-bg-danger fs-6 mb-2">
                   -{calcDiscount(price, promotion)}%
                 </span>
               )}
               {/* se la quantity in stock del prodotto è compresa tra 0 e 6 appare un avviso lampeggiante specificando la quantità rimanente */}
               {quantity > 0 && quantity <= 6 && (
-                <span className="text-danger blink">
+                <span className="text-danger blink d-block">
                   <div className="red-pin bg-danger"></div>
                   {quantity} rimamenti
                 </span>
@@ -39,14 +39,16 @@ export default function AllWinesCard({
             <div>
               {promotion !== null && promotion !== undefined ? (
                 <>
-                  <p className="text-danger m-0">&euro;{promotion}</p>
+                  <p className="text-danger m-0 fs-4 fw-bold">
+                    &euro;{promotion}
+                  </p>
                   <p className="text-decoration-line-through m-0">
                     &euro;
                     {price}
                   </p>
                 </>
               ) : (
-                <p>&euro;{price}</p>
+                <p className="fs-4 fw-bold">&euro;{price}</p>
               )}
             </div>
           </div>

@@ -135,6 +135,7 @@ export default function WinesPage() {
               }}
             >
               <option value="">Prezzo</option>
+              <option value="promo">In promozione</option>
               <option value="0-20">Fino a €20</option>
               <option value="20-50">€20 - €50</option>
               <option value="50+">Oltre €50</option>
@@ -155,9 +156,33 @@ export default function WinesPage() {
               Resetta filtri
             </button>
           </div>
+          {/* se i filtri non sono settati non mostro nulla, se settati mostro numero risultati, se settati ma non c'è nessun resultato mostro "Nessun risultato trovato" */}
+          <div>
+            {(filterAnnata !== "" ||
+              filterTipo !== "" ||
+              filterVitigno !== "" ||
+              filterPrezzo !== "") &&
+            wines.length > 0 ? (
+              <p className="fs-5">{wines.length} risultati trovati</p>
+            ) : wines.length === 0 ? (
+              <>
+                <p className="fs-5"> Nessun risultato trovato</p>
+                <section className="p-5">
+                  <div className="container text-center d-flex justify-content-center mt-5 playfair-display_special">
+                    <div className="not-search d-flex justify-content-center align-items-center">
+                      <p className="text-white h2">
+                        Sembra che il vino che tu stia cercando sia più
+                        difficile da trovare del previsto....
+                      </p>
+                    </div>
+                  </div>
+                </section>
+              </>
+            ) : null}
+          </div>
 
           {/* griglia dei vini filtrati dal backend */}
-          <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mt-2">
+          <div className="row row-cols-2 row-cols-md-2 row-cols-lg-4 g-4 mt-2">
             {wines.map((wine) => {
               return (
                 <AllWinesCard
