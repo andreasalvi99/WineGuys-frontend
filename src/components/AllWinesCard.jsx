@@ -27,7 +27,7 @@ export default function AllWinesCard({
               )}
               {/* se la quantity in stock del prodotto è compresa tra 0 e 6 appare un avviso lampeggiante specificando la quantità rimanente */}
               {quantity > 0 && quantity <= 6 && (
-                <span className="text-danger blink">
+                <span className="text-danger blink d-block">
                   <div className="red-pin bg-danger"></div>
                   {quantity} rimamenti
                 </span>
