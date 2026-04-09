@@ -1,6 +1,6 @@
 import axios from "axios";
 import { toast } from "sonner";
-import { useState, useMemo, useContext, useEffect } from "react";
+import { useState, useMemo, useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { CartContext } from "../context/CartContextObject";
 
@@ -11,6 +11,7 @@ import { prepareOrderPayload } from "../utils/checkoutUtils";
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
+  const refTop = useRef(null);
 
   //dati spedizione
   const shippingFee = 7.9;
@@ -290,6 +291,11 @@ export default function CheckoutPage() {
         description: "Controlla i campi evidenziati in rosso tra le informazioni di consegna",
         duration: 4000,
       });
+      //se il form non è valido ritorno all'inizio della pagina
+      refTop.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
       return;
     }
     setIsLoading(true);
@@ -358,7 +364,7 @@ export default function CheckoutPage() {
       )}
       {/* BOTTONE TORNA INDIETRO */}
       <div className="container py-3" style={{ maxWidth: "1100px" }}>
-        <div className="mb-3">
+        <div ref={refTop} className="mb-3">
           <button onClick={() => navigate(-1)} className="btn btn-link text-decoration-none text-dark p-0 d-flex align-items-center" style={{ fontSize: "0.75rem" }} type="button">
             <i className="bi bi-arrow-left me-2"></i>
             Torna indietro
