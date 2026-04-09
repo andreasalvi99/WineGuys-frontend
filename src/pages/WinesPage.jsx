@@ -58,6 +58,7 @@ export default function WinesPage() {
     }
     setSearchParams(newParams);
   }
+  console.log("WINES:", wines);
 
   return (
     <>
@@ -154,6 +155,18 @@ export default function WinesPage() {
             >
               Resetta filtri
             </button>
+          </div>
+
+          <div>
+            {(filterAnnata !== "" ||
+              filterTipo !== "" ||
+              filterVitigno !== "" ||
+              filterPrezzo !== "") &&
+            wines.length > 0 ? (
+              <p>{wines.length} risultati trovati</p>
+            ) : wines.length === 0 ? (
+              <p>Nessun risultato trovato</p>
+            ) : null}
           </div>
 
           {/* griglia dei vini filtrati dal backend */}
