@@ -135,6 +135,7 @@ export default function WinesPage() {
               }}
             >
               <option value="">Prezzo</option>
+              <option value="promo">In promozione</option>
               <option value="0-20">Fino a €20</option>
               <option value="20-50">€20 - €50</option>
               <option value="50+">Oltre €50</option>
