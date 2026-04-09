@@ -7,7 +7,7 @@ export default function WineCardSliced({ img, name, price, slug, discounted }) {
 
   return (
     <div className="col playfair-display_special">
-      <div className="card h-100 bg-transparent border-0 wine-card">
+      <div className="card h-100 bg-transparent border-0 wine-card shadow-none">
         <Link to={"/vini/" + slug}>
           <img src={img} className="card-img-top" alt={name} />
         </Link>
