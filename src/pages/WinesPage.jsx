@@ -58,7 +58,6 @@ export default function WinesPage() {
     }
     setSearchParams(newParams);
   }
-  console.log("WINES:", wines);
 
   return (
     <>
@@ -165,7 +164,19 @@ export default function WinesPage() {
             wines.length > 0 ? (
               <p className="fs-5">{wines.length} risultati trovati</p>
             ) : wines.length === 0 ? (
-              <p className="fs-5"> Nessun risultato trovato</p>
+              <>
+                <p className="fs-5"> Nessun risultato trovato</p>
+                <section className="p-5">
+                  <div className="container text-center d-flex justify-content-center mt-5 playfair-display_special">
+                    <div className="not-search d-flex justify-content-center align-items-center">
+                      <p className="text-white h2">
+                        Sembra che il vino che tu stia cercando sia più
+                        difficile da trovare del previsto....
+                      </p>
+                    </div>
+                  </div>
+                </section>
+              </>
             ) : null}
           </div>
 
