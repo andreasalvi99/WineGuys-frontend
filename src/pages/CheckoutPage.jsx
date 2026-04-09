@@ -24,9 +24,7 @@ export default function CheckoutPage() {
   async function plusOne(item) {
     try {
       // Controllo disponibilità a magazzino prima di incrementare
-      const response = await axios.get(
-        `http://localhost:3000/vini/${item.slug}`,
-      );
+      const response = await axios.get(`http://localhost:3000/vini/${item.slug}`);
       const wine = response.data?.result;
 
       if (!wine) return;
@@ -39,13 +37,7 @@ export default function CheckoutPage() {
         return;
       }
 
-      setCart((prevCart) =>
-        prevCart.map((cartItem) =>
-          cartItem.id === item.id
-            ? { ...cartItem, quantity: cartItem.quantity + 1 }
-            : cartItem,
-        ),
-      );
+      setCart((prevCart) => prevCart.map((cartItem) => (cartItem.id === item.id ? { ...cartItem, quantity: cartItem.quantity + 1 } : cartItem)));
       // Toast di aggiunta quantità vino
       toast.success("Quantità aumentata", {
         description: `Hai aggiunto un'altra bottiglia di ${item.name}`,
@@ -62,13 +54,7 @@ export default function CheckoutPage() {
       removeItem(item);
       return;
     }
-    setCart((prevCart) =>
-      prevCart.map((cartItem) =>
-        cartItem.id === item.id
-          ? { ...cartItem, quantity: cartItem.quantity - 1 }
-          : cartItem,
-      ),
-    );
+    setCart((prevCart) => prevCart.map((cartItem) => (cartItem.id === item.id ? { ...cartItem, quantity: cartItem.quantity - 1 } : cartItem)));
     //Toast di riduzione quantità vino
     toast.info("Quantità ridotta", {
       description: `Hai ridotto a ${item.quantity - 1} unità di ${item.name}`,
@@ -78,9 +64,7 @@ export default function CheckoutPage() {
 
   //funzione per eliminare vino
   function removeItem(item) {
-    setCart((prevCart) =>
-      prevCart.filter((cartItem) => cartItem.id !== item.id),
-    );
+    setCart((prevCart) => prevCart.filter((cartItem) => cartItem.id !== item.id));
 
     toast.error("Rimosso dal carrello", {
       description: `${item.name} non è più nel carrello`,
@@ -177,7 +161,7 @@ export default function CheckoutPage() {
   };
 
   //funzione di validazione
- function validateForm() {
+  function validateForm() {
     //validazione campi
     const newInvalid = validateFormLogic(formData, sameAsBilling);
 
@@ -191,8 +175,7 @@ export default function CheckoutPage() {
 
   //PREZZO TOTALE e COUPON
   //calcolo il prezzo da usare, se promo o meno
-  const getItemPrice = (item) =>
-    item.promotion_price !== null ? item.promotion_price : item.price;
+  const getItemPrice = (item) => (item.promotion_price !== null ? item.promotion_price : item.price);
 
   // funzione per validare il coupon
   const applyCoupon = async () => {
@@ -207,12 +190,11 @@ export default function CheckoutPage() {
     setIsCheckingCoupon(true);
 
     try {
-     //check su server validità coupon
+      //check su server validità coupon
       const response = await axios.post("http://localhost:3000/ordini/validate-coupon", {
         discount_code: code,
         total_amount: subtotal,
       });
-
 
       if (response.data.success) {
         setCouponDetails({
@@ -246,16 +228,11 @@ export default function CheckoutPage() {
       ...prev,
       discount_code: "", //cancella il codice scritto dall'utente
     }));
-
-   
   }, [cart]);
 
   //calcolo il subtotale della somma dei prezzi dei prodotti considerando le quantità (useMemo serve per memorizzare il calcolo e farlo dipendere solo da cart)
   const subtotal = useMemo(() => {
-    return cart.reduce(
-      (acc, item) => acc + getItemPrice(item) * item.quantity,
-      0,
-    );
+    return cart.reduce((acc, item) => acc + getItemPrice(item) * item.quantity, 0);
   }, [cart]); //array delle dipendenze di useMemo
 
   // calcolo sconto
@@ -265,8 +242,7 @@ export default function CheckoutPage() {
 
   //COSTI SPEDIZIONE
   //definiamo costi di spedizione
-  const shippingCost =
-    subtotal - discountAmount >= shippingFreeSpend ? 0 : shippingFee;
+  const shippingCost = subtotal - discountAmount >= shippingFreeSpend ? 0 : shippingFee;
   const totalWithShipping = subtotal - discountAmount + shippingCost;
 
   //FUNZIONE LETTURA FORM e gestione sincronizzazione dei cambi billing e shipping
@@ -321,8 +297,7 @@ export default function CheckoutPage() {
     //notifica carrello vuoto
     if (cart.length === 0) {
       toast.error("Attenzione", {
-        description:
-          "Il tuo carrello è vuoto. Aggiungi almeno un vino per procedere!",
+        description: "Il tuo carrello è vuoto. Aggiungi almeno un vino per procedere!",
         duration: 4000,
       });
       return; // Blocca l'invio del form
@@ -333,28 +308,25 @@ export default function CheckoutPage() {
 
     //se il form non è valido fermo il submit + notifica campi non validi
     if (!isValid) {
-      toast.error("Dati incompleti", {
-        description:
-          "Controlla i campi evidenziati in rosso tra le informazioni di consegna",
-        duration: 4000,
-      });
       //se il form non è valido ritorno all'inizio della pagina
       refTop.current?.scrollIntoView({
         behavior: "smooth",
         block: "start",
       });
+
+      toast.error("Dati incompleti", {
+        description: "Controlla i campi evidenziati in rosso tra le informazioni di consegna",
+        duration: 4000,
+      });
       return;
     }
     setIsLoading(true);
 
-   //creiamo il payload da inviare al server
+    //creiamo il payload da inviare al server
     const payload = prepareOrderPayload(formData, cart);
 
     try {
-      const response = await axios.post(
-        "http://localhost:3000/ordini",
-        payload,
-      );
+      const response = await axios.post("http://localhost:3000/ordini", payload);
 
       // se la chiamata è andata a buon fine
       if (response.data.success) {
@@ -369,25 +341,18 @@ export default function CheckoutPage() {
         navigate("/conferma-ordine", {
           state: {
             orderInfo: orderSummary,
-            customerName:
-              sanitizedCustomer.first_name +
-              " " +
-              sanitizedCustomer.second_name,
-            customerData: sanitizedCustomer,
+            customerName: `${payload.customer.first_name} ${payload.customer.second_name}`,
+            customerData: payload.customer,
             cartItems: [...cart],
             discountCode: formData.discount_code,
           },
         });
       }
     } catch (error) {
-      const backendMessage =
-        error.response?.data?.message || "Errore durante l'ordine";
+      const backendMessage = error.response?.data?.message || "Errore durante l'ordine";
 
       //gestione errori coupon (no toast)
-      if (
-        backendMessage.toLowerCase().includes("coupon") ||
-        backendMessage.toLowerCase().includes("sconto")
-      ) {
+      if (backendMessage.toLowerCase().includes("coupon") || backendMessage.toLowerCase().includes("sconto")) {
         setCouponDetails((prev) => ({
           ...prev,
           isValid: false,
@@ -416,25 +381,16 @@ export default function CheckoutPage() {
     <>
       {/* LOADING */}
       {isLoading && (
-        <div
-          className="position-fixed top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center bg-white bg-opacity-75"
-          style={{ zIndex: 9999 }}
-        >
-          <div
-            className="spinner-border text-dark"
-            role="status"
-            style={{ width: "3rem", height: "3rem" }}
-          >
+        <div className="position-fixed top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center bg-white bg-opacity-75" style={{ zIndex: 9999 }}>
+          <div className="spinner-border text-dark" role="status" style={{ width: "3rem", height: "3rem" }}>
             <span className="visually-hidden">Caricamento...</span>
           </div>
-          <h5 className="mt-3 fw-bold text-uppercase">
-            Conferma ordine WineGuys in corso...
-          </h5>
+          <h5 className="mt-3 fw-bold text-uppercase">Conferma ordine WineGuys in corso...</h5>
         </div>
       )}
       {/* BOTTONE TORNA INDIETRO */}
-      <div className="container py-3" style={{ maxWidth: "1100px" }}>
-        <div ref={refTop} className="mb-3">
+      <div className="container py-3" style={{ maxWidth: "1100px" }} ref={refTop}>
+        <div className="mb-3">
           <button onClick={() => navigate(-1)} className="btn btn-link text-decoration-none text-dark p-0 d-flex align-items-center" style={{ fontSize: "0.75rem" }} type="button">
             <i className="bi bi-arrow-left me-2"></i>
             Torna indietro
@@ -447,9 +403,7 @@ export default function CheckoutPage() {
             <div className="col-lg-7">
               <h2 className="h4 mb-3 fw-bold">Informazioni di Consegna</h2>
               <section className="mb-4">
-                <h6 className="text-uppercase small fw-bold text-muted mb-3">
-                  Contatti
-                </h6>
+                <h6 className="text-uppercase small fw-bold text-muted mb-3">Contatti</h6>
                 <div className="row g-3">
                   <CheckoutInput col="6" name="first_name" placeholder="Nome" invalidField={invalidFields.first_name} onChange={handleChange} />
                   <CheckoutInput col="6" name="second_name" placeholder="Cognome" invalidField={invalidFields.second_name} onChange={handleChange} />
@@ -458,9 +412,7 @@ export default function CheckoutPage() {
                 </div>
               </section>
               <section className="mb-4">
-                <h6 className="text-uppercase small fw-bold text-muted mb-3">
-                  Indirizzo di Fatturazione
-                </h6>
+                <h6 className="text-uppercase small fw-bold text-muted mb-3">Indirizzo di Fatturazione</h6>
                 <div className="row g-3">
                   <div className="col-12">
                     <input
@@ -470,11 +422,7 @@ export default function CheckoutPage() {
                       className={`form-control form-control-lg border-0 bg-light ${invalidFields.billing_street.isInvalid ? "is-invalid" : ""}`}
                       onChange={handleChange}
                     />
-                    {invalidFields.billing_street.isInvalid && (
-                      <div className="invalid-feedback ps-2">
-                        {invalidFields.billing_street.reason}
-                      </div>
-                    )}
+                    {invalidFields.billing_street.isInvalid && <div className="invalid-feedback ps-2">{invalidFields.billing_street.reason}</div>}
                   </div>
                   <div className="col-md-6">
                     <input
@@ -484,11 +432,7 @@ export default function CheckoutPage() {
                       className={`form-control form-control-lg border-0 bg-light ${invalidFields.billing_city.isInvalid ? "is-invalid" : ""}`}
                       onChange={handleChange}
                     />
-                    {invalidFields.billing_city.isInvalid && (
-                      <div className="invalid-feedback ps-2">
-                        {invalidFields.billing_city.reason}
-                      </div>
-                    )}
+                    {invalidFields.billing_city.isInvalid && <div className="invalid-feedback ps-2">{invalidFields.billing_city.reason}</div>}
                   </div>
                   <div className="col-md-6">
                     <input
@@ -498,23 +442,13 @@ export default function CheckoutPage() {
                       className={`form-control form-control-lg border-0 bg-light ${invalidFields.billing_postal_code.isInvalid ? "is-invalid" : ""}`}
                       onChange={handleChange}
                     />
-                    {invalidFields.billing_postal_code.isInvalid && (
-                      <div className="invalid-feedback ps-2">
-                        {invalidFields.billing_postal_code.reason}
-                      </div>
-                    )}
+                    {invalidFields.billing_postal_code.isInvalid && <div className="invalid-feedback ps-2">{invalidFields.billing_postal_code.reason}</div>}
                   </div>
                 </div>
               </section>
 
               <div className="form-check mb-4">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  id="same"
-                  checked={sameAsBilling}
-                  onChange={handleCheckboxChange}
-                />
+                <input className="form-check-input" type="checkbox" id="same" checked={sameAsBilling} onChange={handleCheckboxChange} />
                 <label className="form-check-label small" htmlFor="same">
                   L'indirizzo di spedizione è lo stesso di fatturazione
                 </label>
@@ -522,9 +456,7 @@ export default function CheckoutPage() {
               {/* Indirizzo di spedizione a scomparsa */}
               {!sameAsBilling && (
                 <section className="mb-5 p-3 border rounded bg-white shadow-sm animate__animated animate__fadeIn">
-                  <h6 className="text-uppercase small fw-bold text-muted mb-3">
-                    Indirizzo di Spedizione
-                  </h6>
+                  <h6 className="text-uppercase small fw-bold text-muted mb-3">Indirizzo di Spedizione</h6>
                   <div className="row g-3">
                     <div className="col-12">
                       <input
@@ -535,11 +467,7 @@ export default function CheckoutPage() {
                         className={`form-control form-control-lg border-0 bg-light ${invalidFields.shipping_street.isInvalid ? "is-invalid" : ""}`}
                         onChange={handleChange}
                       />
-                      {invalidFields.shipping_street.isInvalid && (
-                        <div className="invalid-feedback ps-2">
-                          {invalidFields.shipping_street.reason}
-                        </div>
-                      )}
+                      {invalidFields.shipping_street.isInvalid && <div className="invalid-feedback ps-2">{invalidFields.shipping_street.reason}</div>}
                     </div>
                     <div className="col-md-6">
                       <input
@@ -550,11 +478,7 @@ export default function CheckoutPage() {
                         className={`form-control form-control-lg border-0 bg-light ${invalidFields.shipping_city.isInvalid ? "is-invalid" : ""}`}
                         onChange={handleChange}
                       />
-                      {invalidFields.shipping_city.isInvalid && (
-                        <div className="invalid-feedback ps-2">
-                          {invalidFields.shipping_city.reason}
-                        </div>
-                      )}
+                      {invalidFields.shipping_city.isInvalid && <div className="invalid-feedback ps-2">{invalidFields.shipping_city.reason}</div>}
                     </div>
                     <div className="col-md-6">
                       <input
@@ -565,11 +489,7 @@ export default function CheckoutPage() {
                         className={`form-control form-control-lg border-0 bg-light ${invalidFields.shipping_postal_code.isInvalid ? "is-invalid" : ""}`}
                         onChange={handleChange}
                       />
-                      {invalidFields.shipping_postal_code.isInvalid && (
-                        <div className="invalid-feedback ps-2">
-                          {invalidFields.shipping_postal_code.reason}
-                        </div>
-                      )}
+                      {invalidFields.shipping_postal_code.isInvalid && <div className="invalid-feedback ps-2">{invalidFields.shipping_postal_code.reason}</div>}
                     </div>
                   </div>
                 </section>
@@ -586,7 +506,7 @@ export default function CheckoutPage() {
                     {cart.length === 0 ? (
                       <p className="text-muted small">Il carrello è vuoto.</p>
                     ) : (
-                      cart.map((item) => <CartItem key={item.id} item={item} plusOne={plusOne} minusOne={minusOne} deleteItem={deleteItem} getItemPrice={getItemPrice} />)
+                      cart.map((item) => <CartItem key={item.id} item={item} plusOne={plusOne} minusOne={minusOne} deleteItem={removeItem} getItemPrice={getItemPrice} />)
                     )}
                   </div>
 
@@ -601,10 +521,7 @@ export default function CheckoutPage() {
                   {/* SCONTO (Mostra solo se valido) */}
                   {couponDetails.isValid && (
                     <div className="d-flex justify-content-between mb-2 text-success fw-bold animate__animated animate__fadeIn">
-                      <span>
-                        Sconto Coupon (
-                        {(couponDetails.discountValue * 100).toFixed(0)}%)
-                      </span>
+                      <span>Sconto Coupon ({(couponDetails.discountValue * 100).toFixed(0)}%)</span>
                       <span>-{discountAmount.toFixed(2)}€</span>
                     </div>
                   )}
@@ -613,13 +530,7 @@ export default function CheckoutPage() {
                   {cart.length > 0 && (
                     <div className="d-flex justify-content-between mb-3">
                       <span className="text-muted">Spedizione</span>
-                      <span className="text-dark">
-                        {shippingCost === 0 ? (
-                          <strong className="text-success small">GRATIS</strong>
-                        ) : (
-                          `${shippingCost.toFixed(2)}€`
-                        )}
-                      </span>
+                      <span className="text-dark">{shippingCost === 0 ? <strong className="text-success small">GRATIS</strong> : `${shippingCost.toFixed(2)}€`}</span>
                     </div>
                   )}
 
@@ -635,10 +546,7 @@ export default function CheckoutPage() {
 
                   {/* Input Codice Sconto */}
                   <div className="mb-3">
-                    <div
-                      className="input-group shadow-sm"
-                      style={{ alignItems: "stretch" }}
-                    >
+                    <div className="input-group shadow-sm" style={{ alignItems: "stretch" }}>
                       <input
                         type="text"
                         name="discount_code"
@@ -657,9 +565,7 @@ export default function CheckoutPage() {
                         className="btn btn-outline-dark bg-light text-dark fw-bold border-0"
                         type="button"
                         onClick={applyCoupon}
-                        disabled={
-                          isCheckingCoupon || !formData.discount_code.trim()
-                        }
+                        disabled={isCheckingCoupon || !formData.discount_code.trim()}
                         style={{
                           padding: "0.75rem 1.5rem",
 
@@ -667,35 +573,21 @@ export default function CheckoutPage() {
                           alignItems: "center",
                         }}
                       >
-                        {isCheckingCoupon ? (
-                          <span className="spinner-border spinner-border-sm"></span>
-                        ) : (
-                          "Applica"
-                        )}
+                        {isCheckingCoupon ? <span className="spinner-border spinner-border-sm"></span> : "Applica"}
                       </button>
                     </div>
 
                     {/* Messaggio di feedback sotto l'input */}
                     {couponDetails.message && (
-                      <div
-                        className={`small mt-2 ps-1 fw-medium ${couponDetails.isValid ? "text-success" : "text-danger"}`}
-                      >
-                        {couponDetails.isValid ? (
-                          <i className="bi bi-check-circle-fill me-1"></i>
-                        ) : (
-                          <i className="bi bi-exclamation-circle-fill me-1"></i>
-                        )}
+                      <div className={`small mt-2 ps-1 fw-medium ${couponDetails.isValid ? "text-success" : "text-danger"}`}>
+                        {couponDetails.isValid ? <i className="bi bi-check-circle-fill me-1"></i> : <i className="bi bi-exclamation-circle-fill me-1"></i>}
                         {couponDetails.message}
                       </div>
                     )}
                   </div>
 
                   {/* Bottone Conferma*/}
-                  <button
-                    type="submit"
-                    className="btn bg-body-tertiary w-100 py-3 fw-bold text-uppercase border border-dark shadow-sm"
-                    style={{ color: "#4a4a4a" }}
-                  >
+                  <button type="submit" className="btn bg-body-tertiary w-100 py-3 fw-bold text-uppercase border border-dark shadow-sm" style={{ color: "#4a4a4a" }}>
                     Conferma e paga
                   </button>
                   <div className="text-center mt-3 text-muted small">
