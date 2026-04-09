@@ -59,6 +59,7 @@
 .wine-card {
   transition: 0.4s all ease;
   position: relative;
+  box-shadow: 4px 6px rgba(180, 180, 180, 0.2);
 }
 
 .wine-card:hover {
