@@ -21,7 +21,7 @@ export default function AllWinesCard({
             {/* se chiave promotion ha un valore allora invoco la funzione per calcolare lo sconto e lo stampo in uno span */}
             <div>
               {promotion != null && (
-                <span className="badge text-bg-danger fs-6">
+                <span className="badge text-bg-danger fs-6 mb-2">
                   -{calcDiscount(price, promotion)}%
                 </span>
               )}
