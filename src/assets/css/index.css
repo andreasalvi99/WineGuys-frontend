@@ -163,3 +163,9 @@
     opacity: 1;
   }
 }
+
+[data-sonner-toast] [data-button] {
+  background-color: var(--bs-primary) !important;
+  border-color: var(--bs-primary) !important;
+  color: #fff !important;
+}

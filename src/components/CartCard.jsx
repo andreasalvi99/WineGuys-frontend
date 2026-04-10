@@ -14,67 +14,67 @@ export default function CartCard({
   minusOne,
   calcDiscount,
 }) {
- // Rimuove l'item dal carrello e mostra un toast con la possibilità di annullare l'operazione entro 5 secondi
-const handleDelete = () => {
-  deleteItem(item);
-  toast.error("Rimosso dal carrello", {
-    description: `${name} non è più nel carrello`,
-    duration: 5000,
-    // Se l'utente clicca "Annulla" entro 5 secondi, ripristina l'item nel carrello
-    action: {
-      label: "Annulla",
-      onClick: () => {
-        restoreItem(item);
-        toast.success("Ripristinato!", {
-          description: `${name} è di nuovo nel carrello`,
-          duration: 2000,
-        });
+  // Rimuove l'item dal carrello e mostra un toast con la possibilità di annullare l'operazione entro 5 secondi
+  const handleDelete = () => {
+    deleteItem(item);
+    toast.info("Rimosso dal carrello", {
+      description: `${name} non è più nel carrello`,
+      duration: 5000,
+      // Se l'utente clicca "Annulla" entro 5 secondi, ripristina l'item nel carrello
+      action: {
+        label: "Annulla",
+        onClick: () => {
+          restoreItem(item);
+          toast.success("Ripristinato!", {
+            description: `${name} è di nuovo nel carrello`,
+            duration: 1500,
+          });
+        },
       },
-    },
-  });
-};
-
-// Aumenta di 1 la quantità dell'item nel carrello
-const handlePlus = () => {
-  // 1. Creiamo un ID univoco per questo specifico vino nel carrello
-  const toastId = `plus-action-${item.slug}`;
-
-  // 2. CONTROLLO: Se la quantità attuale è già al limite, spariamo l'errore con lo STESSO ID
-  if (quantity >= item.stock_quantity) {
-    toast.error("Limite raggiunto", {
-      id: toastId, // Sovrascrive il toast precedente, evitando lo spam
-      description: `Abbiamo solo ${item.stock_quantity} bottiglie di ${name} disponibili.`,
-      duration: 2000,
     });
-    return; // Blocca l'esecuzione delle righe successive
-  }
+  };
 
-  // 3. Se il controllo passa, eseguiamo la funzione del Context
-  plusOne(item);
-  
-  // 4. Mostriamo il successo usando lo STESSO ID del toast di prima
-  toast.success("Quantità aumentata", {
-    id: toastId, // Se clicchi 5 volte velocemente, vedrai solo un toast che si aggiorna
-    description: `Hai aggiunto un'altra bottiglia di ${name}`,
-    duration: 1500,
-  });
-};
+  // Aumenta di 1 la quantità dell'item nel carrello
+  const handlePlus = () => {
+    // 1. Creiamo un ID univoco per questo specifico vino nel carrello
+    const toastId = `plus-action-${item.slug}`;
 
-// Se la quantità è maggiore di 1 riduce di 1, altrimenti rimuove l'item dal carrello
-const handleMinus = () => {
-  // 1. Creiamo un ID univoco per questo specifico vino nel carrello
-  const toastId = `minus-action-${item.slug}`;
-  if (quantity > 1) {
-    minusOne(item);
-    toast.info("Quantità ridotta", {
-      id: toastId,
-      description: `Hai ridotto ${quantity - 1} unità di ${name}`,
+    // 2. CONTROLLO: Se la quantità attuale è già al limite, spariamo l'errore con lo STESSO ID
+    if (quantity >= item.stock_quantity) {
+      toast.error("Limite raggiunto", {
+        id: toastId, // Sovrascrive il toast precedente, evitando lo spam
+        description: `Abbiamo solo ${item.stock_quantity} bottiglie di ${name} disponibili.`,
+        duration: 1500,
+      });
+      return; // Blocca l'esecuzione delle righe successive
+    }
+
+    // 3. Se il controllo passa, eseguiamo la funzione del Context
+    plusOne(item);
+
+    // 4. Mostriamo il successo usando lo STESSO ID del toast di prima
+    toast.success("Quantità aumentata", {
+      id: toastId, // Se clicchi 5 volte velocemente, vedrai solo un toast che si aggiorna
+      description: `Hai aggiunto un'altra bottiglia di ${name}`,
       duration: 1500,
     });
-  } else {
-    handleDelete();
-  }
-};
+  };
+
+  // Se la quantità è maggiore di 1 riduce di 1, altrimenti rimuove l'item dal carrello
+  const handleMinus = () => {
+    // 1. Creiamo un ID univoco per questo specifico vino nel carrello
+    const toastId = `minus-action-${item.slug}`;
+    if (quantity > 1) {
+      minusOne(item);
+      toast.info("Quantità ridotta", {
+        id: toastId,
+        description: `Hai ridotto ${quantity - 1} unità di ${name}`,
+        duration: 1500,
+      });
+    } else {
+      handleDelete();
+    }
+  };
 
   return (
     <div className="card mb-3 p-3">
