@@ -142,9 +142,9 @@ export default function WinesPage() {
             </select>
 
             {/* bottone per resettare tutti i filtri */}
-            <button
-              className="btn btn-dark"
-              style={{ width: "110px" }}
+            <a
+              href="#"
+              className="link-offset-2 link-dark pe-auto"
               onClick={() => {
                 setFilterAnnata("");
                 setFilterTipo("");
@@ -154,7 +154,7 @@ export default function WinesPage() {
               }}
             >
               Resetta filtri
-            </button>
+            </a>
           </div>
           {/* se i filtri non sono settati non mostro nulla, se settati mostro numero risultati, se settati ma non c'è nessun resultato mostro "Nessun risultato trovato" */}
           <div>
