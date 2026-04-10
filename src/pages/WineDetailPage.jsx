@@ -98,25 +98,35 @@ function WineDetailPage() {
 
   /* GESTIONE CONFRONTO */
   function toggleCompare(wineToCompare) {
-    setCompareList((prev) => {
-      const exists = prev.find((w) => w.slug === wineToCompare.slug);
+    // Controlla se esiste già
+    const exists = compareList.find((w) => w.slug === wineToCompare.slug);
 
-      if (exists) {
-        toast.info("Rimosso dal confronto");
-        return prev.filter((w) => w.slug !== wineToCompare.slug);
-      }
-
-      if (prev.length >= 3) {
-        toast.warning("Limite raggiunto", {
-          description: "Puoi confrontare massimo 3 vini contemporaneamente.",
-        });
-        return prev;
-      }
-
-      toast.success("Aggiunto al confronto", {
+    if (exists) {
+      // RIMOZIONE
+      setCompareList((prev) =>
+        prev.filter((w) => w.slug !== wineToCompare.slug),
+      );
+      toast.info("Rimosso dal confronto", {
         description: wineToCompare.product_name,
+        duration: 1500,
       });
-      return [...prev, wineToCompare];
+      return;
+    }
+
+    // Controlla il limite
+    if (compareList.length >= 3) {
+      toast.warning("Limite raggiunto", {
+        description: "Puoi confrontare massimo 3 vini contemporaneamente.",
+        duration: 1500,
+      });
+      return;
+    }
+
+    // Aggiunge al confronto
+    setCompareList((prev) => [...prev, wineToCompare]);
+    toast.success("Aggiunto al confronto", {
+      description: wineToCompare.product_name,
+      duration: 1500,
     });
   }
 
@@ -298,8 +308,7 @@ function WineDetailPage() {
                       // 4. Se il controllo passa, procediamo
                       addToCart(wine, quantity);
                       toast.success(`${wine.product_name} aggiunto!`, {
-                        description: `${quantity} ${quantity > 1 ? "bottiglie aggiunte" : "bottiglia aggiunta"}. Disponibilità residua: ${remainingAvailability - quantity}.`,
-                        
+                        description: `${quantity} ${quantity > 1 ? "bottiglie aggiunte" : "bottiglia aggiunta"}.`,
                       });
                     }}
                     disabled={
