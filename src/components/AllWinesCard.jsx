@@ -37,14 +37,18 @@ export default function AllWinesCard({
           <div className="d-flex justify-content-between align-items-start">
             <div>
               {quantity > 0 && quantity <= 6 && (
-                <span className="text-danger blink d-lg-block d-none">
-                  <div className="red-pin bg-danger"></div>
-                  {quantity} rimamenti
-                </span>
+                <small>
+                  <span className="text-danger blink d-block mt-1">
+                    <div className="red-pin bg-danger"></div>
+                    {quantity} rimaste
+                  </span>{" "}
+                </small>
               )}
               {/* se la quantity in stock è uguale a 0 appare scritto esaurito */}
               {quantity === 0 && (
-                <span className="text-danger d-block">Esaurito</span>
+                <span className="text-danger d-block">
+                  <small>Esaurito</small>
+                </span>
               )}
             </div>
             <div>
