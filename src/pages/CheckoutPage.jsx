@@ -68,7 +68,7 @@ export default function CheckoutPage() {
   function removeItem(item) {
     setCart((prevCart) => prevCart.filter((cartItem) => cartItem.id !== item.id));
 
-    toast.error("Rimosso dal carrello", {
+    toast.info("Rimosso dal carrello", {
       description: `${item.name} non è più nel carrello`,
       duration: 5000,
       action: {
@@ -77,7 +77,7 @@ export default function CheckoutPage() {
           restoreItem(item);
           toast.success("Ripristinato!", {
             description: `${item.name} è di nuovo nel carrello`,
-            duration: 2000,
+            duration: 1500,
           });
         },
       },

@@ -13,7 +13,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 export default function App() {
   return (
     <BrowserRouter>
-      <Toaster position="top-right" richColors closeButton />
+      <Toaster visibleToasts={3} position="top-right" richColors closeButton />
       <Routes>
         <Route element={<DefaultLayout />}>
           <Route index element={<HomePage />} />
