@@ -17,7 +17,7 @@ export default function AllWinesCard({
 
   const handleAddToCart = () => {
     addToCart(wine, 1);
-    
+
     // Mostra il toast
     toast.success("Aggiunto al carrello", {
       description: `${name} è stato aggiunto al carrello`,
@@ -66,11 +66,11 @@ export default function AllWinesCard({
         </Link>
         <div className="card-body text-center d-flex flex-column justify-content-between">
           <p className="card-text">{name}</p>
-          
+
           <button
             onClick={handleAddToCart}
             type="button"
-            className="btn btn-outline-danger"
+            className="btn btn-outline-danger d-none d-lg-block"
             disabled={
               quantity <= 0 ||
               (cart.find((item) => item.slug === wine.slug)?.quantity ?? 0) >=
@@ -78,6 +78,18 @@ export default function AllWinesCard({
             }
           >
             Aggiungi al carrello
+          </button>
+          <button
+            onClick={handleAddToCart}
+            type="button"
+            className="btn btn-outline-danger d-lg-none"
+            disabled={
+              quantity <= 0 ||
+              (cart.find((item) => item.slug === wine.slug)?.quantity ?? 0) >=
+                wine.stock_quantity
+            }
+          >
+            <i class="bi bi-cart-plus"></i>
           </button>
         </div>
       </div>
