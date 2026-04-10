@@ -131,13 +131,13 @@ export default function Navbar() {
               >
                 <ul className="navbar-nav mb-2 mb-lg-0 navbar-links-list">
                   <li className="nav-item">
-                    <NavLink to={"/"} className="nav-link my-2 my-lg-0">
+                    <NavLink to={"/"} className="nav-link mt-2 mt-lg-0">
                       Home
                     </NavLink>
                   </li>
                   <li className="nav-item">
                     <NavLink to={"/vini"} className="nav-link">
-                      La nostra cantina
+                      Cantina
                     </NavLink>
                   </li>
                 </ul>
