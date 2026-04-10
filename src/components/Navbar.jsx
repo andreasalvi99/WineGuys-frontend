@@ -130,7 +130,7 @@ export default function Navbar() {
             >
               <ul className="navbar-nav mb-2 mb-lg-0 navbar-links-list">
                 <li className="nav-item">
-                  <NavLink to={"/"} className="nav-link my-2">
+                  <NavLink to={"/"} className="nav-link my-2 my-lg-0">
                     Home
                   </NavLink>
                 </li>
