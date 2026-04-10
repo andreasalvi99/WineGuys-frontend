@@ -1,6 +1,5 @@
 import { toast } from "sonner";
 
-
 export default function CartCard({
   img,
   name,
@@ -36,42 +35,43 @@ export default function CartCard({
 
   // Aumenta di 1 la quantità dell'item nel carrello
   const handlePlus = () => {
-    // 1. Creiamo un ID univoco per questo specifico vino nel carrello
+    //Creo un ID univoco per questo specifico vino nel carrello
     const toastId = `plus-action-${item.slug}`;
 
-    // 2. CONTROLLO: Se la quantità attuale è già al limite, spariamo l'errore con lo STESSO ID
+    // Se ho raggiunto il limite di stock mostro il warning (considerando anche il carrello)
     if (quantity >= item.stock_quantity) {
-      toast.error("Limite raggiunto", {
+      toast.warning("Scorte esaurite", {
         id: toastId, // Sovrascrive il toast precedente, evitando lo spam
-        description: `Abbiamo solo ${item.stock_quantity} bottiglie di ${name} disponibili.`,
+        description: `Non ci sono altre bottiglie di ${name} disponibili.`,
         duration: 1500,
       });
-      return; // Blocca l'esecuzione delle righe successive
+      return; // Esci dalla funzione senza incrementare 'quantity'
     }
-    
-    // 3. Se il controllo passa, eseguiamo la funzione del Context
+
+    // Se c'è ancora disponibilità, incrementa
     plusOne(item);
 
-    // 4. Mostriamo il successo usando lo STESSO ID del toast di prima
+    //Mostriamo il successo usando lo STESSO ID del toast di prima
     toast.success("Quantità aumentata", {
-      id: toastId, // Se clicchi 5 volte velocemente, vedrai solo un toast che si aggiorna
-      description: `Hai aggiunto un'altra bottiglia di ${name}`,
+      id: toastId, // Sovrascrive il toast precedente, evitando lo spam
+      description: `Hai aggiunto ${1} bottiglia di ${name}`,
       duration: 1500,
     });
   };
 
   // Se la quantità è maggiore di 1 riduce di 1, altrimenti rimuove l'item dal carrello
   const handleMinus = () => {
-    // 1. Creiamo un ID univoco per questo specifico vino nel carrello
+    //  Creo un ID univoco per questo specifico vino nel carrello
     const toastId = `minus-action-${item.slug}`;
     if (quantity > 1) {
       minusOne(item);
       toast.info("Quantità ridotta", {
-        id: toastId,
-        description: `Hai ridotto ${quantity - 1} unità di ${name}`,
+        id: toastId, // Sovrascrivo il toast precedente, evitando lo spam
+        description: `Hai tolto ${1} bottiglia di ${name} dal carrello`,
         duration: 1500,
       });
     } else {
+      // Rimuove l'item dal carrello e mostra un toast con la possibilità di annullare l'operazione entro 3 secondi
       handleDelete();
     }
   };
@@ -116,7 +116,7 @@ export default function CartCard({
                   onClick={handlePlus}
                   type="button"
                   className="btn btn-light m-0"
-                  disabled={quantity >= item.stock_quantity}
+                  disabled={false}
                 >
                   +
                 </button>

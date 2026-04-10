@@ -132,8 +132,6 @@ function WineDetailPage() {
   // Calcoliamo quanto di questo vino è già nel carrello
   const itemInCart = cart.find((item) => item.slug === wine.slug);
   const currentQtyInCart = itemInCart ? itemInCart.quantity : 0;
-  // Calcoliamo se il carrello ha già tutto lo stock disponibile
-  const isWineStockLimit = currentQtyInCart >= wine.stock_quantity;
 
   //variabile globale in modo tale che il carrello puo vedere il +
   const isMaxReached = wine
@@ -141,34 +139,36 @@ function WineDetailPage() {
     : false;
 
   const handlePlus = () => {
+    //Creo un ID univoco per questo specifico vino nel carrello
     const toastId = `plus-action-${wine.slug}`;
-
+    // Se ho raggiunto il limite di stock mostro il warning (considerando anche il carrello)
     if (isMaxReached) {
-      toast.error("Limite raggiunto", {
-        id: toastId,
-        description: `Disponibili solo ${wine.stock_quantity} bottiglie in totale.`,
+      toast.warning("Scorte esaurite", {
+        id: toastId, // Sovrascrive il toast precedente, evitando lo spam
+        description: `Non ci sono altre bottiglie di ${wine.product_name} disponibili.`,
         duration: 1500,
       });
-      return;
+      return; // Esci dalla funzione senza incrementare 'quantity'
     }
 
+    // Se c'è ancora disponibilità, incrementa
     setQuantity((prev) => prev + 1);
 
     toast.success("Quantità aumentata", {
-      id: toastId,
-      description: `Hai selezionato ${quantity + 1} bottiglia di ${wine.product_name}`,
+      id: toastId, // Sovrascrive il toast precedente, evitando lo spam
+      description: `Hai aggiunto ${1} bottiglia di ${wine.product_name}`,
       duration: 1500,
     });
   };
-
+  // Se la quantità è maggiore di 1 riduce di 1, altrimenti rimuove l'item dal carrello
   const handleMinus = () => {
-    // 1. Creiamo un ID univoco per questo specifico vino nel carrello
+    // Creiamo un ID univoco per questo specifico vino nel carrello
     const toastId = `minus-action-${wine.slug}`;
     if (quantity > 1) {
       setQuantity((prev) => prev - 1);
       toast.info("Quantità ridotta", {
-        id: toastId,
-        description: `Hai ridotto ${quantity - 1} bottiglia di ${wine.product_name}`,
+        id: toastId, // Sovrascrivo il toast precedente, evitando lo spam
+        description: `Hai tolto ${1} bottiglia di ${wine.product_name}`,
         duration: 1500,
       });
     }
@@ -295,7 +295,6 @@ function WineDetailPage() {
                     <button
                       className="btn btn-outline-dark"
                       onClick={handleMinus}
-                      disabled={quantity <= 1 || isWineStockLimit}
                     >
                       -
                     </button>
@@ -309,7 +308,7 @@ function WineDetailPage() {
                     <button
                       className="btn btn-outline-dark"
                       onClick={handlePlus}
-                      disabled={isMaxReached}
+                      disabled={false}
                     >
                       +
                     </button>
