@@ -11,7 +11,7 @@
 .navbar-logo {
   height: 100px;
   width: 100%;
-  border-radius: 50%;
+  /* border-radius: 50%; */
 }
 
 /* ^SECTIONS^ */
@@ -168,4 +168,10 @@
   background-color: var(--bs-primary) !important;
   border-color: var(--bs-primary) !important;
   color: #fff !important;
+}
+
+@media screen and (min-width: 992px) {
+  .navbar-logo {
+    width: 500px;
+  }
 }

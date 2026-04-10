@@ -100,122 +100,124 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="container-fluid text-center">
-        <Link to={"/"}>
-          <img
-            src="../src/assets/img/wineguys2.png"
-            alt="navbar-logo"
-            className="navbar-logo p-2"
-          />
-        </Link>
-      </div>
-      <div className="d-flex justify-content-between bg-body-tertiary align-items-start align-items-lg-center sticky-top">
-        <nav className="navbar navbar-expand-lg bg-body-tertiary">
-          <div className="container-fluid">
-            <button
-              className="navbar-toggler"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <span className="navbar-toggler-icon"></span>
-            </button>
-
-            <div
-              className="collapse navbar-collapse justify-content-lg-between align-items-center"
-              id="navbarSupportedContent"
-            >
-              <ul className="navbar-nav mb-2 mb-lg-0 navbar-links-list">
-                <li className="nav-item">
-                  <NavLink to={"/"} className="nav-link my-2 my-lg-0">
-                    Home
-                  </NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink to={"/vini"} className="nav-link">
-                    La nostra cantina
-                  </NavLink>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </nav>
-        <div className="d-flex align-items-center mx-3">
-          <SearchBar />
-          <button
-            className="btn shopping-cart-btn"
-            type="button"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#offcanvasRight"
-            aria-controls="offcanvasRight"
-          >
-            {/* icona carrello con badge successo che mostra dinamicamente il numero di elementi nel cart */}
-            <i className="bi bi-cart shopping-cart position-relative">
-              <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
-                <span className="fw-light">{calcTotalQuantity(cart)}</span>
-              </span>
-            </i>
-          </button>
+      <div>
+        <div className="container-fluid text-center">
+          <Link to={"/"}>
+            <img
+              src="../src/assets/img/wineguys2.png"
+              alt="navbar-logo"
+              className="navbar-logo p-2"
+            />
+          </Link>
         </div>
-        {/* offcanvas per visualizzare carrello */}
-        <div
-          className="offcanvas offcanvas-end playfair-display_special"
-          tabIndex={-1}
-          id="offcanvasRight"
-          aria-labelledby="offcanvasRightLabel"
-        >
-          <div className="offcanvas-header">
-            <h5 className="offcanvas-title" id="offcanvasRightLabel">
-              Carrello
-            </h5>
-            <button
-              type="button"
-              className="btn-close"
-              data-bs-dismiss="offcanvas"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div className="offcanvas-body">
-            {cart.map((item, index) => {
-              return (
-                <CartCard
-                  item={item}
-                  key={index}
-                  img={item.img}
-                  name={item.name}
-                  promotion={item.promotion_price}
-                  price={item.price}
-                  quantity={item.quantity}
-                  deleteItem={deleteItem}
-                  restoreItem={restoreItem}
-                  plusOne={plusOne}
-                  minusOne={minusOne}
-                  calcDiscount={calcDiscount}
-                />
-              );
-            })}
-          </div>
-          {/* navbar bottom per pulsante checkout e totale carrello */}
-          <nav className="navbar sticky-bottom bg-body-tertiary">
-            <div className="container-fluid justify-content-between align-items-center">
-              {/* invoco funzione per calcolare il prezzo totale */}
-              <a className="navbar-brand" href="#">
-                Totale: &euro;{calcTotalAmount(cart)}
-              </a>
-              {/* doppio check per il disabled, se lungezza array cart = 0 */}
+        <div className="d-flex justify-content-between bg-body-tertiary align-items-start align-items-lg-center sticky-top">
+          <nav className="navbar navbar-expand-lg bg-body-tertiary">
+            <div className="container-fluid">
               <button
+                className="navbar-toggler"
                 type="button"
-                onClick={handleCheckoutNavigation}
-                disabled={cart.length === 0}
-                className={`btn btn-success m-0 ${cart.length === 0 ? "disabled" : ""}`}
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
               >
-                Checkout
+                <span className="navbar-toggler-icon"></span>
               </button>
+
+              <div
+                className="collapse navbar-collapse justify-content-lg-between align-items-center"
+                id="navbarSupportedContent"
+              >
+                <ul className="navbar-nav mb-2 mb-lg-0 navbar-links-list">
+                  <li className="nav-item">
+                    <NavLink to={"/"} className="nav-link my-2 my-lg-0">
+                      Home
+                    </NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink to={"/vini"} className="nav-link">
+                      La nostra cantina
+                    </NavLink>
+                  </li>
+                </ul>
+              </div>
             </div>
           </nav>
+          <div className="d-flex align-items-center mx-3">
+            <SearchBar />
+            <button
+              className="btn shopping-cart-btn"
+              type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasRight"
+              aria-controls="offcanvasRight"
+            >
+              {/* icona carrello con badge successo che mostra dinamicamente il numero di elementi nel cart */}
+              <i className="bi bi-cart shopping-cart position-relative">
+                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
+                  <span className="fw-light">{calcTotalQuantity(cart)}</span>
+                </span>
+              </i>
+            </button>
+          </div>
+          {/* offcanvas per visualizzare carrello */}
+          <div
+            className="offcanvas offcanvas-end playfair-display_special"
+            tabIndex={-1}
+            id="offcanvasRight"
+            aria-labelledby="offcanvasRightLabel"
+          >
+            <div className="offcanvas-header">
+              <h5 className="offcanvas-title" id="offcanvasRightLabel">
+                Carrello
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="offcanvas-body">
+              {cart.map((item, index) => {
+                return (
+                  <CartCard
+                    item={item}
+                    key={index}
+                    img={item.img}
+                    name={item.name}
+                    promotion={item.promotion_price}
+                    price={item.price}
+                    quantity={item.quantity}
+                    deleteItem={deleteItem}
+                    restoreItem={restoreItem}
+                    plusOne={plusOne}
+                    minusOne={minusOne}
+                    calcDiscount={calcDiscount}
+                  />
+                );
+              })}
+            </div>
+            {/* navbar bottom per pulsante checkout e totale carrello */}
+            <nav className="navbar sticky-bottom bg-body-tertiary">
+              <div className="container-fluid justify-content-between align-items-center">
+                {/* invoco funzione per calcolare il prezzo totale */}
+                <a className="navbar-brand" href="#">
+                  Totale: &euro;{calcTotalAmount(cart)}
+                </a>
+                {/* doppio check per il disabled, se lungezza array cart = 0 */}
+                <button
+                  type="button"
+                  onClick={handleCheckoutNavigation}
+                  disabled={cart.length === 0}
+                  className={`btn btn-success m-0 ${cart.length === 0 ? "disabled" : ""}`}
+                >
+                  Checkout
+                </button>
+              </div>
+            </nav>
+          </div>
         </div>
       </div>
     </>
