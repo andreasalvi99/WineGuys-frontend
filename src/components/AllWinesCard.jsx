@@ -17,7 +17,7 @@ export default function AllWinesCard({
 
   const handleAddToCart = () => {
     addToCart(wine, 1);
-    
+
     // Mostra il toast
     toast.success("Aggiunto al carrello", {
       description: `${name} è stato aggiunto al carrello`,
@@ -27,17 +27,17 @@ export default function AllWinesCard({
 
   return (
     <div className="col">
-      <div className="card h-100 p-3 wine-card bg-body-tertiary">
+      <div className="card h-100 p-1 p-lg-3 wine-card bg-body-tertiary position-relative">
+        {promotion != null && (
+          <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            -{calcDiscount(price, promotion)}%
+          </span>
+        )}
         <Link to={"/vini/" + slug} className="text-black text-decoration-none">
-          <div className="d-flex justify-content-between">
+          <div className="d-flex justify-content-between align-items-start">
             <div>
-              {promotion != null && (
-                <span className="badge text-bg-danger fs-6 mb-2">
-                  -{calcDiscount(price, promotion)}%
-                </span>
-              )}
               {quantity > 0 && quantity <= 6 && (
-                <span className="text-danger blink d-block">
+                <span className="text-danger blink d-lg-block d-none">
                   <div className="red-pin bg-danger"></div>
                   {quantity} rimamenti
                 </span>
@@ -50,15 +50,17 @@ export default function AllWinesCard({
             <div>
               {promotion !== null && promotion !== undefined ? (
                 <>
-                  <p className="text-danger m-0 fs-4 fw-bold">
-                    &euro;{promotion}
-                  </p>
-                  <p className="text-decoration-line-through m-0">
-                    &euro;{price}
-                  </p>
+                  <div>
+                    <p className="text-danger m-0 fs-4 fw-bold">
+                      &euro;{promotion}
+                    </p>
+                    <p className="text-decoration-line-through m-0 mb-4">
+                      &euro;{price}
+                    </p>
+                  </div>
                 </>
               ) : (
-                <p className="fs-4 fw-bold">&euro;{price}</p>
+                <p className="fs-4 fw-bold mb-5">&euro;{price}</p>
               )}
             </div>
           </div>
@@ -66,11 +68,11 @@ export default function AllWinesCard({
         </Link>
         <div className="card-body text-center d-flex flex-column justify-content-between">
           <p className="card-text">{name}</p>
-          
+
           <button
             onClick={handleAddToCart}
             type="button"
-            className="btn btn-outline-danger"
+            className="btn btn-outline-danger d-none d-lg-block"
             disabled={
               quantity <= 0 ||
               (cart.find((item) => item.slug === wine.slug)?.quantity ?? 0) >=
@@ -78,6 +80,18 @@ export default function AllWinesCard({
             }
           >
             Aggiungi al carrello
+          </button>
+          <button
+            onClick={handleAddToCart}
+            type="button"
+            className="btn btn-outline-danger d-lg-none"
+            disabled={
+              quantity <= 0 ||
+              (cart.find((item) => item.slug === wine.slug)?.quantity ?? 0) >=
+                wine.stock_quantity
+            }
+          >
+            <i className="bi bi-cart-plus"></i>
           </button>
         </div>
       </div>

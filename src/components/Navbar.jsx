@@ -109,7 +109,7 @@ export default function Navbar() {
           />
         </Link>
       </div>
-      <div className="d-flex justify-content-between bg-body-tertiary align-items-center sticky-top">
+      <div className="d-flex justify-content-between bg-body-tertiary align-items-start align-items-lg-center sticky-top">
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
           <div className="container-fluid">
             <button
@@ -130,7 +130,7 @@ export default function Navbar() {
             >
               <ul className="navbar-nav mb-2 mb-lg-0 navbar-links-list">
                 <li className="nav-item">
-                  <NavLink to={"/"} className="nav-link">
+                  <NavLink to={"/"} className="nav-link my-2 my-lg-0">
                     Home
                   </NavLink>
                 </li>

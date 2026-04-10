@@ -68,8 +68,22 @@ export default function WinesPage() {
               LA NOSTRA CANTINA
             </h1>
           </div>
+          {/* bottone per resettare tutti i filtri */}
+          <a
+            href="#"
+            className="link-offset-2 link-dark pe-auto"
+            onClick={() => {
+              setFilterAnnata("");
+              setFilterTipo("");
+              setFilterVitigno("");
+              setFilterPrezzo("");
+              setSearchParams({});
+            }}
+          >
+            Resetta filtri
+          </a>
           {/* barra dei filtri */}
-          <div className="d-flex flex-wrap gap-3 mb-4">
+          <div className="d-flex flex-wrap gap-3 my-4">
             {/* filtro per annata - prende i valori unici dal database */}
             <select
               className="btn btn-outline-dark"
@@ -140,21 +154,6 @@ export default function WinesPage() {
               <option value="20-50">€20 - €50</option>
               <option value="50+">Oltre €50</option>
             </select>
-
-            {/* bottone per resettare tutti i filtri */}
-            <button
-              className="btn btn-dark"
-              style={{ width: "110px" }}
-              onClick={() => {
-                setFilterAnnata("");
-                setFilterTipo("");
-                setFilterVitigno("");
-                setFilterPrezzo("");
-                setSearchParams({});
-              }}
-            >
-              Resetta filtri
-            </button>
           </div>
           {/* se i filtri non sono settati non mostro nulla, se settati mostro numero risultati, se settati ma non c'è nessun resultato mostro "Nessun risultato trovato" */}
           <div>
