@@ -27,15 +27,25 @@ export default function AllWinesCard({
 
   return (
     <div className="col">
-      <div className="card h-100 p-3 wine-card bg-body-tertiary">
+      <div className="card h-100 p-3 wine-card bg-body-tertiary position-relative">
+        {promotion != null && (
+          <span className="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger">
+            -{calcDiscount(price, promotion)}%
+          </span>
+        )}
+
+        {/* <span className="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger">
+          99+
+          <span className="visually-hidden">unread messages</span>
+        </span> */}
         <Link to={"/vini/" + slug} className="text-black text-decoration-none">
           <div className="d-flex justify-content-between">
             <div>
-              {promotion != null && (
+              {/* {promotion != null && (
                 <span className="badge text-bg-danger fs-6 mb-2">
                   -{calcDiscount(price, promotion)}%
                 </span>
-              )}
+              )} */}
               {quantity > 0 && quantity <= 6 && (
                 <span className="text-danger blink d-block">
                   <div className="red-pin bg-danger"></div>
@@ -89,7 +99,7 @@ export default function AllWinesCard({
                 wine.stock_quantity
             }
           >
-            <i class="bi bi-cart-plus"></i>
+            <i className="bi bi-cart-plus"></i>
           </button>
         </div>
       </div>
