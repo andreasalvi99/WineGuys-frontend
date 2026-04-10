@@ -86,7 +86,7 @@ export default function WinesPage() {
           <div className="d-flex flex-wrap gap-3 my-4">
             {/* filtro per annata - prende i valori unici dal database */}
             <select
-              className="btn btn-outline-dark"
+              className="form-select"
               style={{ width: "150px" }}
               value={filterAnnata}
               onChange={(e) => {
@@ -104,7 +104,7 @@ export default function WinesPage() {
 
             {/* filtro per tipologia - prende i valori unici dal database */}
             <select
-              className="btn btn-outline-dark"
+              className="form-select"
               style={{ width: "150px" }}
               value={filterTipo}
               onChange={(e) => {
@@ -122,7 +122,7 @@ export default function WinesPage() {
 
             {/* filtro per vitigno - prende i valori unici dal database */}
             <select
-              className="btn btn-outline-dark"
+              className="form-select"
               style={{ width: "150px" }}
               value={filterVitigno}
               onChange={(e) => {
@@ -140,7 +140,7 @@ export default function WinesPage() {
 
             {/* filtro per fascia di prezzo - valori fissi */}
             <select
-              className="btn btn-outline-dark"
+              className="form-select"
               style={{ width: "150px" }}
               value={filterPrezzo}
               onChange={(e) => {
