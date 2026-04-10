@@ -19,7 +19,7 @@ export default function CartCard({
     deleteItem(item);
     toast.info("Rimosso dal carrello", {
       description: `${name} non è più nel carrello`,
-      duration: 5000,
+      duration: 3000,
       // Se l'utente clicca "Annulla" entro 5 secondi, ripristina l'item nel carrello
       action: {
         label: "Annulla",

@@ -21,7 +21,7 @@ export default function AllWinesCard({
     // Mostra il toast
     toast.success("Aggiunto al carrello", {
       description: `${name} è stato aggiunto al carrello`,
-      duration: 2000,
+      duration: 1500,
     });
   };
 

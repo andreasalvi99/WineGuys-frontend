@@ -70,7 +70,7 @@ export default function CheckoutPage() {
 
     toast.info("Rimosso dal carrello", {
       description: `${item.name} non è più nel carrello`,
-      duration: 5000,
+      duration: 3000,
       action: {
         label: "Annulla",
         onClick: () => {
@@ -300,7 +300,7 @@ export default function CheckoutPage() {
     if (cart.length === 0) {
       toast.error("Attenzione", {
         description: "Il tuo carrello è vuoto. Aggiungi almeno un vino per procedere!",
-        duration: 4000,
+        duration: 1500,
       });
       return; // Blocca l'invio del form
     }
@@ -318,7 +318,7 @@ export default function CheckoutPage() {
 
       toast.error("Dati incompleti", {
         description: "Controlla i campi evidenziati in rosso tra le informazioni di consegna",
-        duration: 4000,
+        duration: 1500,
       });
       return;
     }
@@ -366,7 +366,7 @@ export default function CheckoutPage() {
       else {
         toast.error("Non è stato possibile completare l'ordine", {
           description: backendMessage,
-          duration: 5000,
+          duration: 3000,
         });
       }
       console.error("Dettaglio Errore:", error.response?.data);
@@ -611,7 +611,7 @@ export default function CheckoutPage() {
                           });
                           toast.error("Dati incompleti", {
                             description: "Controlla i campi evidenziati in rosso prima di pagare con PayPal",
-                            duration: 4000,
+                            duration: 3000,
                           });
                           return;
                         }
