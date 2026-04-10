@@ -64,7 +64,7 @@ export default function WinesPage() {
       <section id="wines-catalog" className="playfair-display_special">
         <div className="container p-3">
           <div className="d-flex justify-content-start">
-            <h1 className="my-4 border-bottom border-dark">
+            <h1 className="mt-4 border-bottom border-dark mb-5">
               LA NOSTRA CANTINA
             </h1>
           </div>
