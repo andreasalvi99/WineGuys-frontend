@@ -14,13 +14,13 @@ export default function CartCard({
   minusOne,
   calcDiscount,
 }) {
-  // Rimuove l'item dal carrello e mostra un toast con la possibilità di annullare l'operazione entro 5 secondi
+  // Rimuove l'item dal carrello e mostra un toast con la possibilità di annullare l'operazione entro 3 secondi
   const handleDelete = () => {
     deleteItem(item);
     toast.info("Rimosso dal carrello", {
       description: `${name} non è più nel carrello`,
       duration: 3000,
-      // Se l'utente clicca "Annulla" entro 5 secondi, ripristina l'item nel carrello
+      // Se l'utente clicca "Annulla" entro 3 secondi, ripristina l'item nel carrello
       action: {
         label: "Annulla",
         onClick: () => {
@@ -48,7 +48,7 @@ export default function CartCard({
       });
       return; // Blocca l'esecuzione delle righe successive
     }
-
+    
     // 3. Se il controllo passa, eseguiamo la funzione del Context
     plusOne(item);
 

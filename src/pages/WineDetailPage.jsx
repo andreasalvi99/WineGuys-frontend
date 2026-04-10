@@ -129,8 +129,50 @@ function WineDetailPage() {
       duration: 1500,
     });
   }
+  // Calcoliamo quanto di questo vino è già nel carrello
+  const itemInCart = cart.find((item) => item.slug === wine.slug);
+  const currentQtyInCart = itemInCart ? itemInCart.quantity : 0;
+  // Calcoliamo se il carrello ha già tutto lo stock disponibile
+  const isWineStockLimit = currentQtyInCart >= wine.stock_quantity;
 
-  /* RENDER PRINCIPALE */
+  //variabile globale in modo tale che il carrello puo vedere il +
+  const isMaxReached = wine
+    ? quantity + currentQtyInCart >= wine.stock_quantity
+    : false;
+
+  const handlePlus = () => {
+    const toastId = `plus-action-${wine.slug}`;
+
+    if (isMaxReached) {
+      toast.error("Limite raggiunto", {
+        id: toastId,
+        description: `Disponibili solo ${wine.stock_quantity} bottiglie in totale.`,
+        duration: 1500,
+      });
+      return;
+    }
+
+    setQuantity((prev) => prev + 1);
+
+    toast.success("Quantità aumentata", {
+      id: toastId,
+      description: `Hai selezionato ${quantity + 1} bottiglia di ${wine.product_name}`,
+      duration: 1500,
+    });
+  };
+
+  const handleMinus = () => {
+    // 1. Creiamo un ID univoco per questo specifico vino nel carrello
+    const toastId = `minus-action-${wine.slug}`;
+    if (quantity > 1) {
+      setQuantity((prev) => prev - 1);
+      toast.info("Quantità ridotta", {
+        id: toastId,
+        description: `Hai ridotto ${quantity - 1} bottiglia di ${wine.product_name}`,
+        duration: 1500,
+      });
+    }
+  };
 
   return (
     /* LAYOUT PRINCIPALE */
@@ -252,9 +294,8 @@ function WineDetailPage() {
                     {/*BOTTONE DECREMENTO*/}
                     <button
                       className="btn btn-outline-dark"
-                      onClick={() =>
-                        setQuantity((prev) => Math.max(1, prev - 1))
-                      }
+                      onClick={handleMinus}
+                      disabled={quantity <= 1 || isWineStockLimit}
                     >
                       -
                     </button>
@@ -267,11 +308,8 @@ function WineDetailPage() {
                     {/*BOTTONE INCREMENTO*/}
                     <button
                       className="btn btn-outline-dark"
-                      onClick={() =>
-                        setQuantity((prev) =>
-                          prev < wine.stock_quantity ? prev + 1 : prev,
-                        )
-                      }
+                      onClick={handlePlus}
+                      disabled={isMaxReached}
                     >
                       +
                     </button>
@@ -458,8 +496,6 @@ function WineDetailPage() {
               </p>
             </div>
           </div>
-
-          
         </div>
       </div>
     </section>

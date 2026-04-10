@@ -45,6 +45,7 @@ export function CartProvider({ children }) {
             : null,
           quantity,
           img: wine.img,
+          stock_quantity: vino.stock_quantity,
         },
       ]);
     }
