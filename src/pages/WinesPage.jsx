@@ -13,6 +13,9 @@ export default function WinesPage() {
   const [filterVitigno, setFilterVitigno] = useState("");
   const [filterPrezzo, setFilterPrezzo] = useState("");
 
+  // stato per la checkbox non esauriti
+  const [filterNonEsauriti, setFilterNonEsauriti] = useState(false);
+
   // stato per i valori unici dei filtri - caricati una volta sola
   const [allWines, setAllWines] = useState([]);
 
@@ -46,6 +49,9 @@ export default function WinesPage() {
     setFilterTipo(searchParams.get("tipo") || "");
     setFilterVitigno(searchParams.get("vitigno") || "");
     setFilterPrezzo(searchParams.get("prezzo") || "");
+
+    // vini non esauriti
+    setFilterNonEsauriti(searchParams.get("nonEsauriti") === "true");
   }, []);
 
   // aggiorna l'URL quando cambiano i filtri
@@ -77,6 +83,9 @@ export default function WinesPage() {
               setFilterTipo("");
               setFilterVitigno("");
               setFilterPrezzo("");
+
+              // vini non esautiti
+              setFilterNonEsauriti(false);
               setSearchParams({});
             }}
           >
@@ -101,7 +110,6 @@ export default function WinesPage() {
                 </option>
               ))}
             </select>
-
             {/* filtro per tipologia - prende i valori unici dal database */}
             <select
               className="form-select"
@@ -119,7 +127,6 @@ export default function WinesPage() {
                 </option>
               ))}
             </select>
-
             {/* filtro per vitigno - prende i valori unici dal database */}
             <select
               className="form-select"
@@ -137,7 +144,6 @@ export default function WinesPage() {
                 </option>
               ))}
             </select>
-
             {/* filtro per fascia di prezzo - valori fissi */}
             <select
               className="form-select"
@@ -154,6 +160,22 @@ export default function WinesPage() {
               <option value="20-50">€20 - €50</option>
               <option value="50+">Oltre €50</option>
             </select>
+            {/* checkbox per vini non esauriti */}
+            <div className="d-flex align-items-center gap-2">
+              <input
+                type="checkbox"
+                id="nonEsauriti"
+                className="form-check-input"
+                checked={filterNonEsauriti}
+                onChange={(e) => {
+                  setFilterNonEsauriti(e.target.checked);
+                  updateFilters("nonEsauriti", e.target.checked ? "true" : "");
+                }}
+              />
+              <label htmlFor="nonEsauriti" className="form-check-label">
+                Solo disponibili
+              </label>
+            </div>
           </div>
           {/* se i filtri non sono settati non mostro nulla, se settati mostro numero risultati, se settati ma non c'è nessun resultato mostro "Nessun risultato trovato" */}
           <div>
