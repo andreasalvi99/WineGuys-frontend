@@ -189,13 +189,11 @@ export default function WinesPage() {
               <>
                 <p className="fs-5"> Nessun risultato trovato</p>
                 <section className="p-5">
-                  <div className="container text-center d-flex justify-content-center mt-5 playfair-display_special">
-                    <div className="not-search d-flex justify-content-center align-items-center">
-                      <p className="text-white h2">
-                        Sembra che il vino che tu stia cercando sia più
-                        difficile da trovare del previsto....
-                      </p>
-                    </div>
+                  <div>
+                    <p className="h2">
+                      Sembra che il vino che tu stia cercando sia più difficile
+                      da trovare del previsto...
+                    </p>
                   </div>
                 </section>
               </>

@@ -137,21 +137,6 @@
   color: white;
 }
 
-.not-search {
-  background-image: url("/img/searchwine.png");
-  background-size: cover;
-  background-position: center;
-  box-shadow: 6px 6px rgba(59, 59, 59, 0.2);
-  height: 600px;
-  width: 90%;
-  border-radius: 10px;
-  transition: 0.3s all ease;
-}
-
-.not-search:hover {
-  transform: scale(1.03);
-}
-
 @keyframes blink {
   0% {
     opacity: 1;
